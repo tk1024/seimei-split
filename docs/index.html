@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>seimei-split デモ</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: #6e6e73;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtitle a {
+      color: #06c;
+      text-decoration: none;
+    }
+
+    .main {
+      display: flex;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 640px) {
+      .main {
+        flex-direction: column;
+      }
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+      padding: 1.5rem;
+    }
+
+    .input-panel {
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 640px) {
+      .input-panel {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .input-panel h2 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6e6e73;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 240px;
+      font-family: inherit;
+      font-size: 1rem;
+      line-height: 1.75;
+      padding: 0.75rem;
+      border: 1px solid #d2d2d7;
+      border-radius: 0.5rem;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.15s;
+    }
+
+    textarea:focus {
+      border-color: #0071e3;
+    }
+
+    textarea::placeholder {
+      color: #adadb1;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    button {
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    button:hover {
+      background: #0077ed;
+    }
+
+    button:active {
+      background: #006edb;
+    }
+
+    .controls label {
+      font-size: 0.75rem;
+      color: #6e6e73;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+    }
+
+    .sample-btn {
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      border: 1px solid #d2d2d7;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    .sample-btn:hover {
+      background: #e8e8ed;
+    }
+
+    .sample-btn:active {
+      background: #d2d2d7;
+    }
+
+    .output-panel {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .output-panel h2 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6e6e73;
+      margin-bottom: 0.75rem;
+    }
+
+    .empty-state {
+      color: #adadb1;
+      font-size: 0.875rem;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+    }
+
+    th,
+    td {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    th {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6e6e73;
+      position: sticky;
+      top: 0;
+      background: #fff;
+    }
+
+    td.sei {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    td.mei {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    td.score {
+      font-size: 0.8125rem;
+      color: #86868b;
+      font-variant-numeric: tabular-nums;
+    }
+
+    tr.unsplit td {
+      color: #adadb1;
+    }
+
+    tr.unsplit td.input-name {
+      color: #6e6e73;
+    }
+
+    .copy-btn {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      border: 1px solid #d2d2d7;
+    }
+
+    .copy-btn:hover {
+      background: #e8e8ed;
+    }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .output-header h2 {
+      margin-bottom: 0;
+    }
+
+    .usage {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 2rem;
+    }
+
+    .usage h2 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .usage h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .usage p {
+      font-size: 0.875rem;
+      color: #6e6e73;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .usage pre {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      border-radius: 0.5rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin-bottom: 0.75rem;
+    }
+
+    .usage code {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    .usage .inline-code {
+      background: #f0f0f0;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>seimei-split</h1>
+  <p class="subtitle">日本語氏名の姓名分割 &mdash; <a href="https://github.com/tk1024/seimei-split" target="_blank" rel="noopener">GitHub</a></p>
+
+  <div class="main">
+    <div class="panel input-panel">
+      <h2>入力</h2>
+      <button class="sample-btn" id="sampleBtn">サンプルを挿入</button>
+      <textarea id="nameInput" placeholder="氏名を1行ずつ入力&#10;&#10;田中太郎&#10;佐藤花子&#10;鈴木一郎"></textarea>
+      <div class="controls">
+        <button id="splitBtn">分割</button>
+        <label>
+          <input type="checkbox" id="lowConfidence">
+          低信頼度も表示
+        </label>
+      </div>
+    </div>
+
+    <div class="panel output-panel">
+      <div class="output-header">
+        <h2>結果</h2>
+        <button class="copy-btn" id="copyBtn" style="display:none;">TSVコピー</button>
+      </div>
+      <div class="empty-state" id="emptyState">左の入力欄に氏名を入力して「分割」を押してください</div>
+      <table id="resultTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>入力</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>スコア</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="usage panel">
+    <h2>使い方</h2>
+
+    <h3>インストール</h3>
+    <pre><code>npm install seimei-split</code></pre>
+
+    <h3>基本的な使い方</h3>
+    <p>辞書が同梱されているので、インポートするだけで使えます。</p>
+    <pre><code>import { split } from "seimei-split";
+
+split("田中太郎");    // => { sei: "田中", mei: "太郎" }
+split("田中 太郎");   // => { sei: "田中", mei: "太郎" }
+split("さとうはなこ"); // => { sei: "さとう", mei: "はなこ" }</code></pre>
+
+    <h3>詳細な分析</h3>
+    <p><code class="inline-code">analyze()</code> を使うと、信頼度スコアや候補一覧を取得できます。</p>
+    <pre><code>import { analyze } from "seimei-split";
+
+const result = analyze("田中太郎");
+// result.best       => { sei: "田中", mei: "太郎" }
+// result.confidence  => スコア値
+// result.candidates  => 全候補の配列</code></pre>
+
+    <h3>オプション</h3>
+    <p>信頼度が低い場合でもベストエフォートで結果を返すには <code class="inline-code">allowLowConfidence</code> を指定します。</p>
+    <pre><code>split("珍しい名前", { allowLowConfidence: true });</code></pre>
+
+    <h3>辞書なしで使う（軽量版）</h3>
+    <p><code class="inline-code">seimei-split/core</code> からインポートすると辞書を同梱せずに使えます（約 3.5 KB）。<code class="inline-code">setLexicon()</code> で独自の辞書を設定してください。</p>
+    <pre><code>import { split, setLexicon } from "seimei-split/core";
+
+setLexicon(myCustomLexicon);
+split("田中太郎");</code></pre>
+  </div>
+
+  <script type="module">
+    import { split, analyze } from "./seimei-split.js";
+
+    const nameInput = document.getElementById("nameInput");
+    const splitBtn = document.getElementById("splitBtn");
+    const lowConfidence = document.getElementById("lowConfidence");
+    const emptyState = document.getElementById("emptyState");
+    const resultTable = document.getElementById("resultTable");
+    const resultBody = document.getElementById("resultBody");
+    const copyBtn = document.getElementById("copyBtn");
+
+    let lastResults = [];
+
+    function run() {
+      const text = nameInput.value.trim();
+      if (!text) return;
+
+      const names = text.split(/\n/).map((s) => s.trim()).filter(Boolean);
+      const allowLowConfidence = lowConfidence.checked;
+
+      lastResults = [];
+      resultBody.innerHTML = "";
+
+      for (const name of names) {
+        const result = split(name, { allowLowConfidence });
+        const detail = analyze(name, { allowLowConfidence });
+        const ok = result.sei && result.mei;
+
+        lastResults.push({
+          input: name,
+          sei: ok ? result.sei : "",
+          mei: ok ? result.mei : "",
+          score: detail.confidence,
+        });
+
+        const tr = document.createElement("tr");
+        if (!ok) tr.classList.add("unsplit");
+        tr.innerHTML = `
+          <td class="input-name">${esc(name)}</td>
+          <td class="sei">${ok ? esc(result.sei) : "—"}</td>
+          <td class="mei">${ok ? esc(result.mei) : "—"}</td>
+          <td class="score">${detail.confidence.toFixed(2)}</td>
+        `;
+        resultBody.appendChild(tr);
+      }
+
+      emptyState.style.display = "none";
+      resultTable.style.display = "";
+      copyBtn.style.display = "";
+    }
+
+    function esc(s) {
+      const d = document.createElement("div");
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    splitBtn.addEventListener("click", run);
+    nameInput.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run();
+    });
+
+    const sampleNames = "田中太郎\n佐藤花子\n鈴木一郎\n山田太一\n渡辺真理子\n長谷川京子\n齋藤飛鳥";
+
+    document.getElementById("sampleBtn").addEventListener("click", () => {
+      nameInput.value = sampleNames;
+      run();
+    });
+
+    // 初期表示でサンプルデータを実行
+    nameInput.value = sampleNames;
+    run();
+
+    copyBtn.addEventListener("click", () => {
+      const header = "入力\t姓\t名\tスコア";
+      const rows = lastResults.map(
+        (r) => `${r.input}\t${r.sei}\t${r.mei}\t${r.score.toFixed(2)}`
+      );
+      const tsv = [header, ...rows].join("\n");
+      navigator.clipboard.writeText(tsv).then(() => {
+        copyBtn.textContent = "コピー済み";
+        setTimeout(() => {
+          copyBtn.textContent = "TSVコピー";
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>

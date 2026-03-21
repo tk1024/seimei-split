@@ -27,6 +27,7 @@
     "build": "vite build",
     "test": "vitest run",
     "eval": "tsx internal/eval/run.ts",
+    "build:docs": "vite build --config vite.config.docs.ts",
     "prepack": "npm run generate:data && npm run build"
   },
   "keywords": [
