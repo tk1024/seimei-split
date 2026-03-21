@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { split, analyze, setLexicon } from "../index";
-import type { PackedLexicon } from "../types";
+import { split, analyze, setLexicon } from "../src/core/splitter";
+import type { PackedLexicon } from "../src/core/types";
 
 // Minimal test lexicon
 const testLexicon: PackedLexicon = {

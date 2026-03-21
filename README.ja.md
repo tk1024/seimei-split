@@ -6,44 +6,34 @@
 
 - スペース区切り・スペースなしの両方に対応
 - 漢字・ひらがな・カタカナに対応
-- UniDic辞書ベースの分離
+- UniDic辞書同梱
 - ESM / CJS デュアルパブリッシュ
 - TypeScript ファーストクラスサポート
 
 ## インストール
 
 ```bash
-npm install @seimei-split/core @seimei-split/data-unidic
+npm install seimei-split
 ```
 
 ## 使い方
 
 ```typescript
-import { split } from "@seimei-split/core";
+// 辞書同梱版（推奨）
+import { split } from "seimei-split";
 
-// スペース区切り
-split("田中 太郎");
-// => { sei: "田中", mei: "太郎" }
+split("田中 太郎");  // => { sei: "田中", mei: "太郎" }
+split("田中太郎");   // => { sei: "田中", mei: "太郎" }
 
-// スペースなし（辞書データが必要、実装予定）
-// split("田中太郎");
-// => { sei: "田中", mei: "太郎" }
+// 辞書なし版（独自辞書を使う場合）
+import { split, setLexicon } from "seimei-split/core";
 ```
-
-## パッケージ構成
-
-| パッケージ | 説明 |
-|---|---|
-| `@seimei-split/core` | 分離ロジック本体（辞書なし） |
-| `@seimei-split/data-unidic` | UniDic由来の辞書 |
-| `@seimei-split/frequency-plugin` | 頻度ベーススコアリングプラグイン（予定） |
 
 ## 仕組み
 
 スペースなしの名前に対して、全ての分割位置を列挙し、各候補をスコアリングします:
 
 - **辞書照合** - 姓・名として辞書に存在するか
-- **ソース重み** - 高品質な辞書ソースほど高スコア
 - **文字数ヒューリスティクス** - よくある姓名の文字数を優遇
 - **ペアボーナス** - 姓名両方が辞書に一致すると加点
 
@@ -51,24 +41,12 @@ split("田中 太郎");
 
 ## 開発状況
 
-> 本プロジェクトは開発中です。以下は**目標精度**であり、まだ検証されていません。
-
-| データセット | 目標精度 |
+| データセット | 精度 |
 |---|---|
-| 一般的な名前（2文字姓 + 2文字名） | >= 97% |
-| かな名（ひらがな / カタカナ） | >= 90% |
-| 難問（1文字姓、4文字以上の姓、異体字） | >= 80% |
-
-## データソースとライセンス
-
-辞書データは以下のOSS辞書から派生しています:
-
-- **UniDic**（国立国語研究所） - GPL v2.0 / LGPL v2.1 / 修正BSD トリプルライセンス
-
-詳細は各データパッケージの `LICENSES/` ディレクトリを参照してください。
+| MVP（208件） | 正解94.7%, 誤分割0%, unsplit 5.3% |
 
 ## ライセンス
 
-コード（`@seimei-split/core`, `@seimei-split/frequency-plugin`）: [MIT](LICENSE)
+コード: [MIT](LICENSE) | 辞書データ: [BSD 3-Clause](LICENSES/BSD-3-Clause-Unidic.txt)
 
-辞書データパッケージ: 各 `LICENSES/` ディレクトリを参照。
+詳細は [LICENSES/README.md](LICENSES/README.md) を参照。

@@ -4,10 +4,11 @@ import dts from "vite-plugin-dts";
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/index.ts",
-      name: "seimeiSplitCore",
-      formats: ["es", "cjs"],
-      fileName: "index",
+      entry: {
+        index: "src/index.ts",
+        core: "src/core.ts",
+      },
+      formats: ["es"],
     },
   },
   plugins: [

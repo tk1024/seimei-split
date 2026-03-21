@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
-import { split, setLexicon } from "../../packages/core/src/splitter.js";
-import { lexicon } from "../../packages/data-unidic/src/generated/lexicon.js";
+import { split, setLexicon } from "../../src/core/splitter.js";
+import { lexicon } from "../../src/data/generated/unidic.js";
 
 interface TestCase {
   input: string;
@@ -72,7 +72,7 @@ function main(): void {
   setLexicon(lexicon);
 
   const goldFiles = [
-    "eval/gold/mvp.tsv",
+    "internal/eval/gold/mvp.tsv",
   ];
 
   for (const file of goldFiles) {

@@ -1,11 +1,11 @@
 import { createReadStream, mkdirSync, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
-import { normalizeReading, normalizeSurface } from "../shared/normalize.js";
-import type { ExtractedEntry, NameKind } from "../shared/types.js";
-import { SOURCE_FLAGS } from "../shared/types.js";
+import { normalizeReading, normalizeSurface } from "./shared/normalize.js";
+import type { ExtractedEntry, NameKind } from "./shared/types.js";
+import { SOURCE_FLAGS } from "./shared/types.js";
 
-const LEX_CSV_PATH = "vendor/src/unidic/current/lex.csv";
-const OUTPUT_PATH = "tmp/extracted/unidic.tsv";
+const LEX_CSV_PATH = "internal/vendor/unidic/current/lex.csv";
+const OUTPUT_PATH = "internal/.cache/unidic.tsv";
 
 // UniDic lex.csv column indices
 const COL = {
@@ -82,7 +82,7 @@ async function extract(): Promise<void> {
   }
 
   // Write TSV
-  mkdirSync("tmp/extracted", { recursive: true });
+  mkdirSync("internal/.cache", { recursive: true });
   const header = "kind\tsurface\treading\tnormalized\tsource\tsource_id\tsource_flags";
   const lines = deduped.map(
     (e) =>

@@ -1,10 +1,10 @@
 import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
-import { foldVariants, hasVariants } from "../shared/variants.js";
-import type { NameKind, PackedEntry, PackedLexicon } from "../shared/types.js";
+import { foldVariants, hasVariants } from "./shared/variants.js";
+import type { NameKind, PackedEntry, PackedLexicon } from "./shared/types.js";
 
-const INPUT_PATH = "tmp/extracted/unidic.tsv";
-const OUTPUT_DIR = "packages/data-unidic/src/generated";
-const LEXICON_PATH = `${OUTPUT_DIR}/lexicon.ts`;
+const INPUT_PATH = "internal/.cache/unidic.tsv";
+const OUTPUT_DIR = "src/data/generated";
+const LEXICON_PATH = `${OUTPUT_DIR}/unidic.ts`;
 const META_PATH = `${OUTPUT_DIR}/meta.ts`;
 
 interface RawEntry {

@@ -1,19 +1,57 @@
 {
-  "private": true,
-  "workspaces": [
-    "packages/*"
+  "name": "seimei-split",
+  "version": "0.1.0",
+  "description": "Split Japanese full names into family name and given name",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "default": "./dist/core.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "LICENSES",
+    "README.md",
+    "README.ja.md"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "dict:extract": "tsx tools/extract/unidic.ts",
-    "dict:pack": "tsx tools/build/pack.ts",
-    "dict:build": "npm run dict:extract && npm run dict:pack",
-    "eval": "tsx tools/eval/run.ts"
+    "generate:data": "tsx internal/unidic/extract.ts && tsx internal/unidic/pack.ts",
+    "build": "vite build",
+    "test": "vitest run",
+    "eval": "tsx internal/eval/run.ts",
+    "prepack": "npm run generate:data && npm run build"
   },
+  "keywords": [
+    "japanese",
+    "name",
+    "split",
+    "parser",
+    "seimei",
+    "kanji"
+  ],
+  "license": "(MIT AND BSD-3-Clause)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tk1024/seimei-split.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tk1024/seimei-split/issues"
+  },
+  "homepage": "https://github.com/tk1024/seimei-split#readme",
   "devDependencies": {
     "@types/node": "^25.5.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^8.0.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.1.0"
   }
 }
