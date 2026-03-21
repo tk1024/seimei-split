@@ -1,4 +1,4 @@
-import type { MatchType, PackedLexicon } from "./types.js";
+import type { MatchType, PackedLexicon, ReadingData } from "./types.js";
 import { foldVariants, hiraganaToKatakana } from "./normalize.js";
 
 // Score weights — dictionary evidence is primary, length is secondary
@@ -30,10 +30,6 @@ const MEI_LENGTH_SCORE: Record<number, number> = {
 const PAIR_BONUS = 0.8;
 const BOTH_SINGLE_CHAR_PENALTY = -1.0;
 
-/**
- * Look up a candidate string in the lexicon.
- * Returns the match type: surface > folded > reading > none.
- */
 // Cache for Set-based lookups built from string[]
 const setCache = new WeakMap<PackedLexicon, { sei: Set<string>; mei: Set<string> }>();
 
@@ -58,6 +54,7 @@ export function lookupMatch(
   kind: "sei" | "mei",
   lexicon: PackedLexicon,
   isKana: boolean,
+  readingData?: ReadingData,
 ): MatchType {
   const sets = getSets(lexicon);
   const dict = kind === "sei" ? sets.sei : sets.mei;
@@ -76,9 +73,9 @@ export function lookupMatch(
     return "folded";
   }
 
-  // Reading match (for kana input)
-  if (isKana) {
-    const readingDict = kind === "sei" ? lexicon.reading.sei : lexicon.reading.mei;
+  // Reading match (for kana input, only if reading data is loaded)
+  if (isKana && readingData) {
+    const readingDict = kind === "sei" ? readingData.sei : readingData.mei;
     const kataReading = hiraganaToKatakana(candidate);
     if (kataReading in readingDict) {
       return "reading";
