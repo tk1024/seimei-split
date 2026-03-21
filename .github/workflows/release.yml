@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Upgrade npm for OIDC Trusted Publisher support
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download UniDic
+        run: |
+          mkdir -p internal/vendor/unidic/current
+          curl -sL -o /tmp/unidic-full.zip "https://clrd.ninjal.ac.jp/unidic_archive/2512/unidic-cwj-202512_full.zip"
+          unzip -q /tmp/unidic-full.zip -d internal/vendor/unidic/current
+
+      - name: Generate data and build
+        run: npm run generate:data && npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Publish to npm
+        run: |
+          npm config delete '//registry.npmjs.org/:_authToken' 2>/dev/null || true
+          npm publish --provenance --access public
+
+      - name: Create GitHub Release
+        run: gh release create ${{ github.ref_name }} --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
