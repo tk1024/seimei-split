@@ -1,5 +1,7 @@
 # seimei-split
 
+[日本語ドキュメント](README.ja.md)
+
 Split Japanese full names into family name (sei) and given name (mei).
 
 ## Features
