@@ -1,0 +1,54 @@
+{
+  "name": "seimei-split",
+  "version": "0.1.0",
+  "description": "Split Japanese full names into family name and given name",
+  "type": "module",
+  "main": "./dist/seimei-split.cjs",
+  "module": "./dist/seimei-split.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/seimei-split.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/seimei-split.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tk1024/seimei-split.git"
+  },
+  "keywords": [
+    "japanese",
+    "name",
+    "split",
+    "parser",
+    "seimei",
+    "kanji"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tk1024/seimei-split/issues"
+  },
+  "homepage": "https://github.com/tk1024/seimei-split#readme",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.0.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.1.0"
+  }
+}
