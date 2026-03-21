@@ -34,25 +34,44 @@ const BOTH_SINGLE_CHAR_PENALTY = -1.0;
  * Look up a candidate string in the lexicon.
  * Returns the match type: surface > folded > reading > none.
  */
+// Cache for Set-based lookups built from string[]
+const setCache = new WeakMap<PackedLexicon, { sei: Set<string>; mei: Set<string> }>();
+
+function getSets(lexicon: PackedLexicon): { sei: Set<string>; mei: Set<string> } {
+  let cached = setCache.get(lexicon);
+  if (!cached) {
+    cached = {
+      sei: new Set(lexicon.sei),
+      mei: new Set(lexicon.mei),
+    };
+    setCache.set(lexicon, cached);
+  }
+  return cached;
+}
+
+/**
+ * Look up a candidate string in the lexicon.
+ * Returns the match type: surface > folded > reading > none.
+ */
 export function lookupMatch(
   candidate: string,
   kind: "sei" | "mei",
   lexicon: PackedLexicon,
   isKana: boolean,
 ): MatchType {
-  const dict = kind === "sei" ? lexicon.sei : lexicon.mei;
+  const sets = getSets(lexicon);
+  const dict = kind === "sei" ? sets.sei : sets.mei;
 
   // Direct surface match
-  if (candidate in dict) {
+  if (dict.has(candidate)) {
     return "surface";
   }
 
   // Folded (variant kanji) match
   const folded = foldVariants(candidate);
-  if (folded !== candidate && folded in dict) {
+  if (folded !== candidate && dict.has(folded)) {
     return "folded";
   }
-  // Also check if the folded form maps to known surfaces
   if (folded in lexicon.folded) {
     return "folded";
   }

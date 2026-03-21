@@ -19,15 +19,9 @@ export interface AnalyzeResult {
 
 export type MatchType = "surface" | "folded" | "reading" | "none";
 
-export type PackedEntry = readonly [
-  flags: number,
-  reading: string,
-  normalized: string,
-];
-
 export interface PackedLexicon {
-  sei: Record<string, PackedEntry>;
-  mei: Record<string, PackedEntry>;
+  sei: string[];
+  mei: string[];
   reading: {
     sei: Record<string, number>;
     mei: Record<string, number>;
