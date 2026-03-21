@@ -1,3 +1,6 @@
 node_modules
 dist
 *.tsbuildinfo
+vendor/src
+tmp
+packages/data-unidic/src/generated/

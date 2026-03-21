@@ -5,9 +5,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "seimeiSplit",
+      name: "seimeiSplitCore",
       formats: ["es", "cjs"],
-      fileName: "seimei-split",
+      fileName: "index",
     },
   },
   plugins: [
