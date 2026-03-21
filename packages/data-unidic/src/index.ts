@@ -1,2 +1,2 @@
-// Generated dictionary data will be re-exported here
-export {};
+export { lexicon } from "./generated/lexicon.js";
+export { meta } from "./generated/meta.js";
