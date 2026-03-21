@@ -6,10 +6,6 @@ import type { PackedLexicon } from "../src/core/types";
 const testLexicon: PackedLexicon = {
   sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤"],
   mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎"],
-  reading: {
-    sei: { "タナカ": 1, "サトウ": 1, "ハヤシ": 1 },
-    mei: { "タロウ": 1, "ハナコ": 1 },
-  },
   folded: {
     "斎藤": ["齋藤"],
   },
@@ -73,7 +69,7 @@ describe("split", () => {
 
     it("辞書なしの場合はunsplitで返す", () => {
       const emptyLexicon: PackedLexicon = {
-        sei: [], mei: [], reading: { sei: {}, mei: {} },
+        sei: [], mei: [],
         folded: {}, maxSeiLen: 6, maxMeiLen: 6,
       };
       expect(split("田中太郎", { lexicon: emptyLexicon })).toEqual({

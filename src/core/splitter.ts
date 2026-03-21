@@ -1,6 +1,7 @@
 import type {
   AnalyzeResult,
   PackedLexicon,
+  ReadingData,
   SeimeiCandidate,
   SeimeiResult,
   SplitOptions,
@@ -12,12 +13,21 @@ const CONFIDENCE_THRESHOLD = 6.0;
 const CONFIDENCE_GAP = 1.0;
 
 let defaultLexicon: PackedLexicon | undefined;
+let defaultReading: ReadingData | undefined;
 
 /**
  * Set the default lexicon for all split/analyze calls.
  */
 export function setLexicon(lexicon: PackedLexicon): void {
   defaultLexicon = lexicon;
+}
+
+/**
+ * Set the reading data for kana-based name splitting.
+ * This is optional — without it, kana input will not be matched by reading.
+ */
+export function setReading(reading: ReadingData): void {
+  defaultReading = reading;
 }
 
 /**
@@ -94,8 +104,9 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
 
     if (meiLen > lexicon.maxMeiLen) continue;
 
-    const seiMatch = lookupMatch(sei, "sei", lexicon, isKana);
-    const meiMatch = lookupMatch(mei, "mei", lexicon, isKana);
+    const readingData = options?.readingData ?? defaultReading;
+    const seiMatch = lookupMatch(sei, "sei", lexicon, isKana, readingData);
+    const meiMatch = lookupMatch(mei, "mei", lexicon, isKana, readingData);
     const score = calcScore(seiMatch, meiMatch, seiLen, meiLen);
 
     candidates.push({ sei, mei, score, seiMatch, meiMatch });

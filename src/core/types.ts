@@ -22,13 +22,14 @@ export type MatchType = "surface" | "folded" | "reading" | "none";
 export interface PackedLexicon {
   sei: string[];
   mei: string[];
-  reading: {
-    sei: Record<string, number>;
-    mei: Record<string, number>;
-  };
   folded: Record<string, string[]>;
   maxSeiLen: number;
   maxMeiLen: number;
+}
+
+export interface ReadingData {
+  sei: Record<string, number>;
+  mei: Record<string, number>;
 }
 
 export interface SplitOptions {
@@ -36,4 +37,6 @@ export interface SplitOptions {
   allowLowConfidence?: boolean;
   /** Custom lexicon to use */
   lexicon?: PackedLexicon;
+  /** Reading data for kana-based matching */
+  readingData?: ReadingData;
 }
