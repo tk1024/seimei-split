@@ -4,35 +4,11 @@ import type { PackedLexicon } from "../src/core/types";
 
 // Minimal test lexicon
 const testLexicon: PackedLexicon = {
-  sei: {
-    "田中": [1, "タナカ", "田中"],
-    "佐藤": [1, "サトウ", "佐藤"],
-    "大瀬良": [1, "オオセラ", "大瀬良"],
-    "林": [1, "ハヤシ", "林"],
-    "勅使河原": [1, "テシガワラ", "勅使河原"],
-    "小鳥遊": [1, "タカナシ", "小鳥遊"],
-    "西園寺": [1, "サイオンジ", "西園寺"],
-    "齋藤": [1, "サイトウ", "齋藤"],
-  },
-  mei: {
-    "太郎": [1, "タロウ", "太郎"],
-    "花子": [1, "ハナコ", "花子"],
-    "大地": [1, "ダイチ", "大地"],
-    "健太": [1, "ケンタ", "健太"],
-    "公望": [1, "キンモチ", "公望"],
-    "翔": [1, "ショウ", "翔"],
-    "一郎": [1, "イチロウ", "一郎"],
-  },
+  sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤"],
+  mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎"],
   reading: {
-    sei: {
-      "タナカ": 1,
-      "サトウ": 1,
-      "ハヤシ": 1,
-    },
-    mei: {
-      "タロウ": 1,
-      "ハナコ": 1,
-    },
+    sei: { "タナカ": 1, "サトウ": 1, "ハヤシ": 1 },
+    mei: { "タロウ": 1, "ハナコ": 1 },
   },
   folded: {
     "斎藤": ["齋藤"],
@@ -96,9 +72,8 @@ describe("split", () => {
     });
 
     it("辞書なしの場合はunsplitで返す", () => {
-      // Empty lexicon to simulate no dictionary
       const emptyLexicon: PackedLexicon = {
-        sei: {}, mei: {}, reading: { sei: {}, mei: {} },
+        sei: [], mei: [], reading: { sei: {}, mei: {} },
         folded: {}, maxSeiLen: 6, maxMeiLen: 6,
       };
       expect(split("田中太郎", { lexicon: emptyLexicon })).toEqual({
