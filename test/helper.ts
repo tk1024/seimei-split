@@ -52,10 +52,38 @@ async function ensureLexicon(): Promise<boolean> {
   return false;
 }
 
+function runAccuracyReport(
+  suiteName: string,
+  cases: TestCase[],
+  mode: "normal" | "lowConfidence",
+): void {
+  let correct = 0;
+  let wrong = 0;
+  let unsplit = 0;
+
+  const opts = mode === "lowConfidence" ? { allowLowConfidence: true } : {};
+
+  for (const tc of cases) {
+    const result = split(tc.input, opts);
+    if (result.sei === tc.sei && result.mei === tc.mei) {
+      correct++;
+    } else if (result.mei === "") {
+      unsplit++;
+    } else {
+      wrong++;
+    }
+  }
+
+  const total = correct + wrong + unsplit;
+  const label = mode === "lowConfidence" ? `${suiteName} [lowConf]` : suiteName;
+  console.log(
+    `${label}: ${correct}/${total} correct (${((correct / total) * 100).toFixed(1)}%), ${wrong} wrong, ${unsplit} unsplit`
+  );
+}
+
 /**
  * Run a data-driven test suite from a TSV file using the bundled dictionary.
- * Uses locally generated data if available, otherwise falls back to the
- * published npm package (seimei-split).
+ * Tests both normal mode and allowLowConfidence mode.
  */
 export function runTsvTest(suiteName: string, tsvPath: string): void {
   describe(suiteName, () => {
@@ -97,28 +125,14 @@ export function runTsvTest(suiteName: string, tsvPath: string): void {
       }
     });
 
-    it("reports accuracy", () => {
+    it("reports accuracy (normal)", () => {
       if (!available) return;
+      runAccuracyReport(suiteName, cases, "normal");
+    });
 
-      let correct = 0;
-      let wrong = 0;
-      let unsplit = 0;
-
-      for (const tc of cases) {
-        const result = split(tc.input);
-        if (result.sei === tc.sei && result.mei === tc.mei) {
-          correct++;
-        } else if (result.mei === "") {
-          unsplit++;
-        } else {
-          wrong++;
-        }
-      }
-
-      const total = correct + wrong + unsplit;
-      console.log(
-        `${suiteName}: ${correct}/${total} correct (${((correct / total) * 100).toFixed(1)}%), ${wrong} wrong, ${unsplit} unsplit`
-      );
+    it("reports accuracy (allowLowConfidence)", () => {
+      if (!available) return;
+      runAccuracyReport(suiteName, cases, "lowConfidence");
     });
   });
 }
