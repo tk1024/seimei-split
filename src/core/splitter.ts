@@ -164,7 +164,29 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
     }
   }
 
-  // 3. Low confidence mode
+  // 3. Katakana-sei exception: when the best candidate's sei is all katakana
+  //    (e.g. ジャガー/横田), real Japanese surnames are never pure katakana.
+  //    Re-score the boundary candidate by looking up mei in sei dict instead.
+  if (boundary?.direction === "kana-to-kanji" && boundaryIndex !== undefined) {
+    const boundaryCandidate = candidates.find(
+      (c) => [...c.sei].length === boundaryIndex && isAllKatakana(c.sei)
+    );
+    if (boundaryCandidate) {
+      const meiAsSei = lookupMatch(
+        boundaryCandidate.mei, "sei", lexicon, false,
+        options?.readingData ?? defaultReading,
+      );
+      if (meiAsSei === "surface" || meiAsSei === "folded") {
+        return {
+          best: { sei: boundaryCandidate.sei, mei: boundaryCandidate.mei },
+          confidence: BOUNDARY_CONFIDENCE,
+          candidates,
+        };
+      }
+    }
+  }
+
+  // 4. Low confidence mode
   if (options?.allowLowConfidence) {
     return {
       best: { sei: best.sei, mei: best.mei },
