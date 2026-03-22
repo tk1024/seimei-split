@@ -4,3 +4,4 @@ dist
 src/data/generated/
 internal/vendor/
 internal/.cache/
+docs-site/node_modules
