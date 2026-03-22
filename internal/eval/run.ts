@@ -73,6 +73,7 @@ function main(): void {
 
   const goldFiles = [
     "internal/eval/gold/mvp.tsv",
+    "internal/eval/gold/edge-cases.tsv",
   ];
 
   for (const file of goldFiles) {
