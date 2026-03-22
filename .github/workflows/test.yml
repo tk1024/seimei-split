@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -25,4 +29,39 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm test
+        run: npx vitest run --reporter=verbose 2>&1 | tee test-output.txt
+
+      - name: Generate accuracy report
+        if: always()
+        run: |
+          cat > report.md << 'HEADER'
+          ## Test Results
+
+          | Category | Correct | Wrong | Unsplit | Accuracy |
+          |---|---|---|---|---|
+          HEADER
+
+          grep -E "correct \(" test-output.txt | while IFS= read -r line; do
+            name=$(echo "$line" | sed 's/:.*//')
+            correct=$(echo "$line" | grep -oE '[0-9]+/[0-9]+' | head -1)
+            pct=$(echo "$line" | grep -oE '[0-9]+\.[0-9]+%' | head -1)
+            wrong=$(echo "$line" | grep -oE '[0-9]+ wrong' | grep -oE '[0-9]+')
+            unsplit=$(echo "$line" | grep -oE '[0-9]+ unsplit' | grep -oE '[0-9]+')
+            echo "| ${name} | ${correct} | ${wrong} | ${unsplit} | ${pct} |" >> report.md
+          done
+
+          # Add unit test summary
+          if grep -q "passed" test-output.txt; then
+            files=$(grep "Test Files" test-output.txt | grep -oE '[0-9]+ passed' | head -1)
+            tests=$(grep "Tests" test-output.txt | grep -oE '[0-9]+ passed' | head -1)
+            echo "" >> report.md
+            echo "**Unit Tests**: ${files} files, ${tests} tests" >> report.md
+          fi
+
+          cat report.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: report.md
