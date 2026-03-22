@@ -59,3 +59,37 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.btn {
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+}
+.btn:hover {
+  border-color: var(--border-hover);
+  background-color: var(--surface-hover);
+}
+
+.sample-btn {
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.sample-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.detail-btn {
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.detail-btn:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-tertiary);
+}
+
+tr.result-row {
+  transition: background-color 0.1s;
+}
+tr.result-row:hover {
+  background-color: var(--surface-hover);
+}

@@ -9,16 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SamplesRouteImport } from './routes/samples'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
 
-const SamplesRoute = SamplesRouteImport.update({
-  id: '/samples',
-  path: '/samples',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
@@ -39,45 +33,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsRoute
   '/how-it-works': typeof HowItWorksRoute
-  '/samples': typeof SamplesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs': typeof DocsRoute
   '/how-it-works': typeof HowItWorksRoute
-  '/samples': typeof SamplesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs': typeof DocsRoute
   '/how-it-works': typeof HowItWorksRoute
-  '/samples': typeof SamplesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs' | '/how-it-works' | '/samples'
+  fullPaths: '/' | '/docs' | '/how-it-works'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/how-it-works' | '/samples'
-  id: '__root__' | '/' | '/docs' | '/how-it-works' | '/samples'
+  to: '/' | '/docs' | '/how-it-works'
+  id: '__root__' | '/' | '/docs' | '/how-it-works'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DocsRoute: typeof DocsRoute
   HowItWorksRoute: typeof HowItWorksRoute
-  SamplesRoute: typeof SamplesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/samples': {
-      id: '/samples'
-      path: '/samples'
-      fullPath: '/samples'
-      preLoaderRoute: typeof SamplesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/how-it-works': {
       id: '/how-it-works'
       path: '/how-it-works'
@@ -106,7 +89,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocsRoute: DocsRoute,
   HowItWorksRoute: HowItWorksRoute,
-  SamplesRoute: SamplesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
