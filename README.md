@@ -1,149 +1,125 @@
 # seimei-split
 
-[日本語ドキュメント](README.ja.md)
+[English](README.en.md)
 
-Split Japanese full names into family name (sei) and given name (mei).
+日本人のフルネームを姓（sei）と名（mei）に分離するライブラリです。
 
-## Features
+**[Playground](https://tk1024.github.io/seimei-split/)** で動作を試せます。
 
-- Handles both space-delimited and non-delimited Japanese names
-- Supports kanji, hiragana, and katakana
-- Dictionary-based splitting using UniDic (bundled)
-- Written in TypeScript with full type definitions
+## 特徴
 
-## Install
+- スペース区切り・スペースなしの両方に対応
+- 漢字・ひらがな・カタカナに対応
+- UniDic辞書同梱
+- TypeScript ファーストクラスサポート
+
+## インストール
 
 ```bash
 npm install seimei-split
 ```
 
-## Usage
+## 使い方
 
 ```typescript
-// With bundled dictionary (recommended)
+// 辞書同梱版（推奨）
 import { split } from "seimei-split";
 
 split("田中 太郎");  // => { sei: "田中", mei: "太郎" }
 split("田中太郎");   // => { sei: "田中", mei: "太郎" }
 
-// Without bundled dictionary (bring your own)
+// 辞書なし版（独自辞書を使う場合）
 import { split, setLexicon } from "seimei-split/core";
 ```
 
-## How It Works
+## 仕組み
 
-### Space-delimited input
+### スペース区切りの入力
 
-If the input contains a space (half-width or full-width), it is split directly at the space boundary. No dictionary lookup is performed.
+入力にスペース（半角・全角）が含まれる場合、スペース位置で直接分割します。辞書照合は行いません。
 
-### Non-delimited input
+### スペースなしの入力
 
-For names without spaces (e.g. `田中太郎`), the library uses a dictionary-based scoring algorithm:
+スペースなしの名前（例: `田中太郎`）に対しては、辞書ベースのスコアリングアルゴリズムを使用します。
 
-#### 1. Candidate enumeration
+#### 1. 候補列挙
 
-All possible split positions are enumerated. For `田中太郎` (4 characters):
+全ての分割位置を列挙します。`田中太郎`（4文字）の場合:
 
-| Split position | Surname | Given name |
+| 分割位置 | 姓 | 名 |
 |---|---|---|
 | 1 | 田 | 中太郎 |
 | 2 | 田中 | 太郎 |
 | 3 | 田中太 | 郎 |
 
-The maximum split position is capped at `maxSeiLen` (11 characters in the bundled dictionary).
+最大分割位置は `maxSeiLen`（同梱辞書では11文字）で制限されます。
 
-#### 2. Dictionary matching
+#### 2. 辞書照合
 
-Each candidate's surname and given name parts are looked up in the dictionary. Three match levels exist:
+各候補の姓・名部分を辞書で照合します。3段階のマッチレベルがあります:
 
-| Match type | Score | Description |
+| マッチ種別 | スコア | 説明 |
 |---|---|---|
-| `surface` | 4.0 | Exact match in the dictionary |
-| `folded` | 2.5 | Match after kanji variant folding (e.g. 齋藤 → 斎藤) |
-| `reading` | 1.0 | Kana input matches a known reading (requires optional reading data) |
-| `none` | 0 | No match |
+| `surface` | 4.0 | 辞書に完全一致 |
+| `folded` | 2.5 | 異体字変換後に一致（例: 齋藤 → 斎藤） |
+| `reading` | 1.0 | かな入力が既知の読みに一致（オプションの読みデータが必要） |
+| `none` | 0 | 一致なし |
 
-#### 3. Scoring
+#### 3. スコアリング
 
-Each candidate is scored as:
+各候補のスコアを算出します:
 
 ```
-score = matchScore(sei) + matchScore(mei) + lengthScore(sei) + lengthScore(mei) + pairBonus
+score = matchScore(姓) + matchScore(名) + lengthScore(姓) + lengthScore(名) + pairBonus
 ```
 
-- **matchScore**: Dictionary match score (see table above)
-- **lengthScore**: Small bonus/penalty based on character count. 2-character names score highest (+0.5), uncommon lengths (5+) are penalized (-0.2 to -0.4)
-- **pairBonus**: +0.8 if both surname and given name match the dictionary
-- **Constraints**: 1-character surnames require a dictionary hit; otherwise the candidate is rejected
+- **matchScore**: 辞書マッチスコア（上表参照）
+- **lengthScore**: 文字数に基づく小さなボーナス/ペナルティ。2文字が最高（+0.5）、5文字以上はペナルティ（-0.2〜-0.4）
+- **pairBonus**: 姓名両方が辞書に一致すると +0.8
+- **制約**: 1文字姓は辞書ヒット必須。ヒットしない場合は候補から除外
 
-#### 4. Confidence threshold
+#### 4. 信頼度閾値
 
-The best candidate is accepted if:
-- `score >= 6.0` (confidence threshold)
-- `bestScore - secondBestScore >= 1.0` (sufficient gap)
+最良候補が以下の条件を満たす場合に採用:
+- `score >= 6.0`（信頼度閾値）
+- `bestScore - secondBestScore >= 1.0`（十分な差）
 
-If the threshold is not met, the name is returned unsplit. Use `allowLowConfidence: true` to get best-effort results regardless.
+閾値を満たさない場合は未分割で返します。`allowLowConfidence: true` を指定するとベストエフォートの結果を返します。
 
-### Kanji variant folding
+### 異体字フォールディング
 
-Old/variant kanji forms are automatically mapped to modern equivalents for matching:
+旧字体・異体字は自動的に現代の標準字体にマッピングされます:
 
-齋→斎, 齊→斉, 邊→辺, 濱→浜, 﨑→崎, 髙→高, 德→徳, 廣→広, 嶋→島, 國→国, 澤→沢, 櫻→桜, 龍→竜, etc.
+齋→斎, 齊→斉, 邊→辺, 濱→浜, 﨑→崎, 髙→高, 德→徳, 廣→広, 嶋→島, 國→国, 澤→沢, 櫻→桜, 龍→竜 など
 
-## Dictionary
+## 辞書データ
 
-The bundled dictionary is derived from [UniDic](https://clrd.ninjal.ac.jp/unidic/) (現代書き言葉UniDic), filtering for personal name entries (`名詞,固有名詞,人名,{姓|名}`).
+同梱辞書は [UniDic](https://clrd.ninjal.ac.jp/unidic/)（現代書き言葉UniDic）から人名エントリ（`名詞,固有名詞,人名,{姓|名}`）を抽出したものです。
 
-| | Count |
+| | 件数 |
 |---|---|
-| Surnames (姓) | 18,364 |
-| Given names (名) | 37,084 |
-| Variant kanji mappings | 1,002 |
-| Reading entries (optional) | 25,742 |
+| 姓 | 18,364 |
+| 名 | 37,084 |
+| 異体字マッピング | 1,002 |
+| 読みエントリ（オプション） | 25,742 |
 
-## Bundle Size
+## バンドルサイズ
 
-| Entry point | Raw | gzip |
+| エントリポイント | 生サイズ | gzip |
 |---|---|---|
-| `seimei-split` (dictionary bundled) | 458 KB | 213 KB |
-| `seimei-split/core` (no dictionary) | 3.5 KB | 1.6 KB |
+| `seimei-split`（辞書同梱） | 458 KB | 213 KB |
+| `seimei-split/core`（辞書なし） | 3.5 KB | 1.6 KB |
 
-Reading data for kana input matching is tree-shaken out by default. Import and call `setReading()` to enable it.
+かな入力用の読みデータはデフォルトで tree shaking により除外されます。`setReading()` を呼ぶと有効になります。
 
-## Status
+## 開発状況
 
-> This project is under active development.
-
-| Dataset | Accuracy |
+| データセット | 精度 |
 |---|---|
-| MVP (208 names) | 94.7% correct, 0% wrong split, 5.3% unsplit |
+| MVP（208件） | 正解94.7%, 誤分割0%, unsplit 5.3% |
 
-## Data Sources & Licenses
+## ライセンス
 
-Dictionary data is derived from **UniDic** (National Institute for Japanese Language and Linguistics) under BSD 3-Clause license.
+コード: [MIT](LICENSE) | 辞書データ: [BSD 3-Clause](LICENSES/BSD-3-Clause-Unidic.txt)
 
-See `LICENSES/` directory for full license texts and attribution.
-
-## Development
-
-```bash
-npm install
-
-# Generate dictionary data (requires UniDic in internal/vendor/)
-npm run generate:data
-
-# Build
-npm run build
-
-# Test
-npm run test
-
-# Evaluate accuracy
-npm run eval
-```
-
-## License
-
-Code: [MIT](LICENSE) | Dictionary data: [BSD 3-Clause](LICENSES/BSD-3-Clause-Unidic.txt)
-
-See [LICENSES/README.md](LICENSES/README.md) for details.
+詳細は [LICENSES/README.md](LICENSES/README.md) を参照。

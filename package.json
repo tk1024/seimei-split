@@ -20,13 +20,14 @@
     "LICENSE",
     "LICENSES",
     "README.md",
-    "README.ja.md"
+    "README.en.md"
   ],
   "scripts": {
     "generate:data": "tsx internal/unidic/extract.ts && tsx internal/unidic/pack.ts",
     "build": "vite build",
     "test": "vitest run",
     "build:docs": "vite build --config vite.config.docs.ts",
+    "build:docs-site": "cd docs-site && npm run build",
     "prepack": "npm run generate:data && npm run build"
   },
   "keywords": [
