@@ -2,8 +2,9 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, it, expect, beforeAll } from "vitest";
 import { split, setLexicon } from "../src/core/splitter";
+import type { PackedLexicon } from "../src/core/types";
 
-const LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
+const LOCAL_LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
 
 interface TestCase {
   input: string;
@@ -17,51 +18,72 @@ function loadTsv(tsvPath: string): TestCase[] {
   return lines.slice(1).map((line) => {
     const [input, sei, mei] = line.split("\t");
     return { input, sei: sei ?? "", mei: mei ?? "" };
-  }).filter((tc) => tc.mei); // skip entries without expected mei
+  }).filter((tc) => tc.mei);
 }
 
 let lexiconLoaded = false;
 
 async function ensureLexicon(): Promise<boolean> {
   if (lexiconLoaded) return true;
-  if (!existsSync(LEXICON_PATH)) return false;
-  const { lexicon } = await import("../src/data/generated/unidic.ts");
-  setLexicon(lexicon);
-  lexiconLoaded = true;
-  return true;
+
+  // 1. Try locally generated data first
+  if (existsSync(LOCAL_LEXICON_PATH)) {
+    const { lexicon } = await import("../src/data/generated/unidic.ts");
+    setLexicon(lexicon);
+    lexiconLoaded = true;
+    return true;
+  }
+
+  // 2. Fall back to published npm package
+  try {
+    const pkg = await import("seimei-split") as { split: typeof split; getLexicon: () => PackedLexicon | undefined };
+    const lexicon = pkg.getLexicon();
+    if (lexicon) {
+      setLexicon(lexicon);
+      lexiconLoaded = true;
+      return true;
+    }
+  } catch {
+    // package not installed
+  }
+
+  return false;
 }
 
 /**
  * Run a data-driven test suite from a TSV file using the bundled dictionary.
- * Skips if the dictionary has not been generated.
+ * Uses locally generated data if available, otherwise falls back to the
+ * published npm package (seimei-split).
  */
 export function runTsvTest(suiteName: string, tsvPath: string): void {
   describe(suiteName, () => {
     let cases: TestCase[] = [];
+    let available = false;
 
     beforeAll(async () => {
-      const loaded = await ensureLexicon();
-      if (!loaded) return;
+      available = await ensureLexicon();
+      if (!available) return;
       cases = loadTsv(tsvPath);
     });
 
-    it("dictionary is available", async () => {
-      const loaded = await ensureLexicon();
-      if (!loaded) {
-        console.warn("Skipping: dictionary not generated. Run `npm run generate:data` first.");
-        return;
+    it("dictionary is available", () => {
+      if (!available) {
+        console.warn(
+          "Skipping: no dictionary available.\n" +
+          "  - Run `npm run generate:data` to generate locally, or\n" +
+          "  - Run `npm install seimei-split` to use the published package."
+        );
       }
-      expect(loaded).toBe(true);
+      expect(available).toBe(true);
     });
 
-    it("should not produce wrong splits (may unsplit)", async () => {
-      const loaded = await ensureLexicon();
-      if (!loaded) return;
+    it("should not produce wrong splits (may unsplit)", () => {
+      if (!available) return;
 
       const errors: string[] = [];
       for (const tc of cases) {
         const result = split(tc.input);
-        if (result.mei === "") continue; // unsplit is acceptable
+        if (result.mei === "") continue;
         if (result.sei !== tc.sei || result.mei !== tc.mei) {
           errors.push(
             `${tc.input}: expected [${tc.sei} / ${tc.mei}] got [${result.sei} / ${result.mei}]`
@@ -73,9 +95,8 @@ export function runTsvTest(suiteName: string, tsvPath: string): void {
       }
     });
 
-    it("reports accuracy", async () => {
-      const loaded = await ensureLexicon();
-      if (!loaded) return;
+    it("reports accuracy", () => {
+      if (!available) return;
 
       let correct = 0;
       let wrong = 0;
