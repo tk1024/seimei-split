@@ -1,6 +1,6 @@
 {
   "name": "seimei-split",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Split Japanese full names into family name and given name",
   "type": "module",
   "main": "./dist/index.js",
