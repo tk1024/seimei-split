@@ -92,6 +92,26 @@ function seiMixedScriptPenalty(sei: string, seiMatch: MatchType): number {
 }
 
 /**
+ * Penalty for OOV given names that start with kana followed by kanji (e.g. モン閣下, イク眞木).
+ * When a kana→kanji boundary exists, the mei side should be pure kanji.
+ * Only applied when the given name has no dictionary hit.
+ */
+function meiMixedScriptPenalty(mei: string, meiMatch: MatchType): number {
+  if (meiMatch !== "none") return 0;
+
+  const p = scriptPattern(mei);
+  if (!/^[HT]+K+$/.test(p)) return 0;
+
+  const prefix = p.match(/^[HT]+/)![0];
+  if (prefix.length === 1) {
+    return prefix[0] === "T"
+      ? SEI_MIXED_SINGLE_KATA_PENALTY
+      : SEI_MIXED_SINGLE_HIRA_PENALTY;
+  }
+  return SEI_MIXED_MULTI_KANA_PENALTY;
+}
+
+/**
  * Look up a candidate string in the lexicon.
  * Returns the match type: surface > folded > reading > none.
  */
@@ -140,6 +160,7 @@ export function lookupMatch(
  */
 export function calcScore(
   sei: string,
+  mei: string,
   seiMatch: MatchType,
   meiMatch: MatchType,
   seiLen: number,
@@ -191,7 +212,8 @@ export function calcScore(
     }
   }
 
-  // OOV surname mixed-script penalty
+  // OOV surname mixed-script penalty (mei side is not penalized —
+  // names like よね子, ルミ子, 美つ子 naturally mix scripts)
   score += seiMixedScriptPenalty(sei, seiMatch);
 
   return score;

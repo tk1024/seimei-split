@@ -50,17 +50,23 @@ function scriptOf(ch: string): ScriptType {
 }
 
 /**
- * Find the split position where a single kanji→kana boundary occurs.
- * Returns the character index (not byte index) of the boundary,
- * or undefined if no unique boundary exists.
+ * Find the split position where a single script boundary occurs
+ * between kanji and kana (in either direction).
+ * Returns the character index and direction, or undefined if no unique boundary exists.
  *
  * Examples:
- *   "夏色まつり" → 2 (漢字→ひらがな at index 2)
- *   "白銀ノエル" → 2 (漢字→カタカナ at index 2)
+ *   "夏色まつり" → { index: 2, direction: "kanji-to-kana" }
+ *   "白銀ノエル" → { index: 2, direction: "kanji-to-kana" }
+ *   "デーモン閣下" → { index: 4, direction: "kana-to-kanji" }
  *   "もこ田めめめ" → undefined (2 transitions)
  *   "田中太郎" → undefined (all kanji, no transition)
  */
-export function findSingleKanjiToKanaBoundary(fullName: string): number | undefined {
+export interface ScriptBoundary {
+  index: number;
+  direction: "kanji-to-kana" | "kana-to-kanji";
+}
+
+export function findSingleScriptBoundary(fullName: string): ScriptBoundary | undefined {
   const chars = [...fullName];
   let transitionCount = 0;
   let splitIndex: number | undefined;
@@ -79,10 +85,28 @@ export function findSingleKanjiToKanaBoundary(fullName: string): number | undefi
     toScript = next;
   }
 
-  if (transitionCount !== 1) return undefined;
-  if (fromScript !== "kanji") return undefined;
-  if (toScript !== "hiragana" && toScript !== "katakana") return undefined;
-  return splitIndex;
+  if (transitionCount !== 1 || splitIndex === undefined) return undefined;
+
+  const fromIsKanji = fromScript === "kanji";
+  const toIsKanji = toScript === "kanji";
+  const fromIsKana = fromScript === "hiragana" || fromScript === "katakana";
+  const toIsKana = toScript === "hiragana" || toScript === "katakana";
+
+  if (fromIsKanji && toIsKana) {
+    return { index: splitIndex, direction: "kanji-to-kana" };
+  }
+  if (fromIsKana && toIsKanji) {
+    return { index: splitIndex, direction: "kana-to-kanji" };
+  }
+
+  return undefined;
+}
+
+/** @deprecated Use findSingleScriptBoundary instead */
+export function findSingleKanjiToKanaBoundary(fullName: string): number | undefined {
+  const result = findSingleScriptBoundary(fullName);
+  if (result?.direction === "kanji-to-kana") return result.index;
+  return undefined;
 }
 
 /**
