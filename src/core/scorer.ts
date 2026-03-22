@@ -30,6 +30,10 @@ const MEI_LENGTH_SCORE: Record<number, number> = {
 const PAIR_BONUS = 0.8;
 const BOTH_SINGLE_CHAR_PENALTY = -1.0;
 
+// Surname hit is stronger evidence than given name hit,
+// because surnames are a finite known set while given names are creative
+const SEI_HIT_BONUS = 0.5;
+
 // Script boundary scoring
 const BOUNDARY_MATCH_BONUS = 1.2;
 const BOUNDARY_MATCH_WITH_DICT_BONUS = 0.8;
@@ -173,6 +177,12 @@ export function calcScore(
   // Match scores (primary signal)
   score += MATCH_SCORE[seiMatch];
   score += MATCH_SCORE[meiMatch];
+
+  // Surname hit bonus: surnames are a known finite set,
+  // so a dictionary hit on sei is stronger evidence than on mei
+  if (seiMatch === "surface" || seiMatch === "folded") {
+    score += SEI_HIT_BONUS;
+  }
 
   // Length scores (secondary signal)
   score += SEI_LENGTH_SCORE[Math.min(seiLen, 6)] ?? -0.5;
