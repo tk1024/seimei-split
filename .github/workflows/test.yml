@@ -25,9 +25,6 @@ jobs:
       - name: Install published package for dictionary data
         run: npm install seimei-split --no-save
 
-      - name: Build
-        run: npm run build
-
       - name: Test
         run: npx vitest run --reporter=verbose 2>&1 | tee test-output.txt
 
