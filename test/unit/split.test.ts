@@ -3,8 +3,10 @@ import { split, analyze, setLexicon } from "../../src/core/splitter";
 import type { PackedLexicon } from "../../src/core/types";
 
 // Minimal test lexicon
+// Note: 夏色 and 白銀 are NOT included as surnames — they must be resolved
+// by script boundary heuristic, not dictionary lookup
 const testLexicon: PackedLexicon = {
-  sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤", "綾瀬", "白銀", "夏色"],
+  sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤", "綾瀬", "夏", "周防"],
   mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎"],
   folded: {
     "斎藤": ["齋藤"],
@@ -79,36 +81,47 @@ describe("split", () => {
     });
   });
 
-  describe("境界ヒューリスティック", () => {
-    it("漢字姓 + ひらがな名を境界フォールバックで救済する", () => {
+  describe("文字種境界スコアリング", () => {
+    it("辞書ヒット姓 + かな名を境界で分離する（綾瀬はるか）", () => {
       const result = analyze("綾瀬はるか");
       expect(result.best).toEqual({ sei: "綾瀬", mei: "はるか" });
-      expect(result.confidence).toBe(0.8);
+      expect(result.confidence).toBeGreaterThanOrEqual(0.8);
     });
 
-    it("漢字姓 + カタカナ名を救済する", () => {
-      const result = analyze("白銀ノエル");
+    it("辞書ヒット姓 + カタカナ名を境界で分離する（周防パトラ）", () => {
+      const result = analyze("周防パトラ");
+      expect(result.best).toEqual({ sei: "周防", mei: "パトラ" });
+      expect(result.confidence).toBeGreaterThanOrEqual(0.8);
+    });
+
+    it("allowLowConfidence: 辞書未登録でも境界位置が最高スコアになる（夏色まつり）", () => {
+      // 夏色 is NOT in the dictionary, but boundary scoring should
+      // make 夏色/まつり rank higher than 夏/色まつり
+      const result = analyze("夏色まつり", { allowLowConfidence: true });
+      expect(result.best).toEqual({ sei: "夏色", mei: "まつり" });
+    });
+
+    it("allowLowConfidence: 漢字→カタカナ境界が勝つ（白銀ノエル）", () => {
+      const result = analyze("白銀ノエル", { allowLowConfidence: true });
       expect(result.best).toEqual({ sei: "白銀", mei: "ノエル" });
-      expect(result.confidence).toBe(0.8);
     });
 
-    it("漢字姓(辞書ヒット) + ひらがな名を救済する", () => {
-      expect(split("夏色まつり")).toEqual({ sei: "夏色", mei: "まつり" });
-    });
-
-    it("姓側に辞書根拠がない場合は救済しない", () => {
+    it("辞書根拠がない場合は通常モードで unsplit", () => {
       expect(split("東京はなこ")).toEqual({ sei: "東京はなこ", mei: "" });
     });
 
-    it("文字種遷移が2回以上ある場合は境界救済しない", () => {
-      // "夢野あき子" — 遷移2回（漢字→ひらがな→漢字）、辞書ヒットもなし
+    it("文字種遷移が2回以上ある場合は境界ボーナスなし", () => {
       expect(split("夢野あき子")).toEqual({ sei: "夢野あき子", mei: "" });
     });
 
-    it("通常の辞書高信頼ケースは従来どおり confidence 1.0", () => {
+    it("全漢字名は境界スコアの影響を受けない", () => {
       const result = analyze("田中太郎");
       expect(result.best).toEqual({ sei: "田中", mei: "太郎" });
       expect(result.confidence).toBe(1.0);
+    });
+
+    it("1文字姓の正当な辞書ヒットは境界がなければ維持される（林一郎）", () => {
+      expect(split("林一郎")).toEqual({ sei: "林", mei: "一郎" });
     });
   });
 

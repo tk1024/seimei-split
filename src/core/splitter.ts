@@ -12,11 +12,10 @@ import { calcScore, lookupMatch } from "./scorer.js";
 const CONFIDENCE_THRESHOLD = 6.0;
 const CONFIDENCE_GAP = 1.0;
 
-// Boundary heuristic: rescue candidates at kanji→kana boundaries
-// when normal scoring falls below threshold
-const BOUNDARY_RESCUE_BONUS = 3.0;
-const BOUNDARY_RESCUE_MIN_GAP = 0.5;
-const BOUNDARY_RESCUE_CONFIDENCE = 0.8;
+// Boundary confidence: when the best candidate aligns with a script boundary
+// and has dictionary evidence on sei side, grant confidence 0.8
+const BOUNDARY_CONFIDENCE = 0.8;
+const BOUNDARY_CONFIDENCE_GAP = 0.5;
 
 let defaultLexicon: PackedLexicon | undefined;
 let defaultReading: ReadingData | undefined;
@@ -79,7 +78,6 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
 
   const lexicon = options?.lexicon ?? defaultLexicon;
   if (!lexicon) {
-    // No lexicon loaded: return unsplit
     return {
       best: { sei: trimmed, mei: "" },
       confidence: 0,
@@ -100,6 +98,7 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
 
   const isKana = isAllHiragana(trimmed) || isAllKatakana(trimmed);
   const maxSplit = Math.min(lexicon.maxSeiLen, n - 1);
+  const boundaryIndex = findSingleKanjiToKanaBoundary(trimmed);
   const candidates: SeimeiCandidate[] = [];
 
   for (let i = 1; i <= maxSplit; i++) {
@@ -113,7 +112,7 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
     const readingData = options?.readingData ?? defaultReading;
     const seiMatch = lookupMatch(sei, "sei", lexicon, isKana, readingData);
     const meiMatch = lookupMatch(mei, "mei", lexicon, isKana, readingData);
-    const score = calcScore(seiMatch, meiMatch, seiLen, meiLen);
+    const score = calcScore(sei, seiMatch, meiMatch, seiLen, meiLen, i, boundaryIndex);
 
     candidates.push({ sei, mei, score, seiMatch, meiMatch });
   }
@@ -144,21 +143,20 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
     };
   }
 
-  // 2. Boundary fallback: rescue at kanji→kana boundary
-  const fallbackConfidence = tryBoundaryFallback(trimmed, candidates);
-  if (fallbackConfidence !== undefined) {
-    // Find the boundary candidate (may differ from score-based best)
-    const boundaryIndex = findSingleKanjiToKanaBoundary(trimmed);
-    const boundaryCandidate = candidates.find(
-      (c) => [...c.sei].length === boundaryIndex
-    );
-    if (boundaryCandidate) {
-      return {
-        best: { sei: boundaryCandidate.sei, mei: boundaryCandidate.mei },
-        confidence: fallbackConfidence,
-        candidates,
-      };
-    }
+  // 2. Boundary confidence: best candidate aligns with script boundary
+  //    and has dictionary evidence on sei side
+  if (
+    boundaryIndex !== undefined &&
+    [...best.sei].length === boundaryIndex &&
+    (best.seiMatch === "surface" || best.seiMatch === "folded") &&
+    best.score >= CONFIDENCE_THRESHOLD &&
+    gap >= BOUNDARY_CONFIDENCE_GAP
+  ) {
+    return {
+      best: { sei: best.sei, mei: best.mei },
+      confidence: BOUNDARY_CONFIDENCE,
+      candidates,
+    };
   }
 
   // 3. Low confidence mode
@@ -176,44 +174,4 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
     confidence: 0,
     candidates,
   };
-}
-
-/**
- * Try to rescue a split using kanji→kana script boundary heuristic.
- * Only applies when:
- * - There is exactly one script transition (kanji → hiragana/katakana)
- * - The boundary candidate has dictionary evidence on the surname side
- * - The rescue score meets the confidence threshold
- */
-function tryBoundaryFallback(
-  fullName: string,
-  candidates: SeimeiCandidate[],
-): number | undefined {
-  const boundaryIndex = findSingleKanjiToKanaBoundary(fullName);
-  if (boundaryIndex === undefined) return undefined;
-
-  const boundaryCandidate = candidates.find(
-    (c) => [...c.sei].length === boundaryIndex
-  );
-  if (!boundaryCandidate) return undefined;
-
-  // Require dictionary evidence on surname side
-  if (
-    boundaryCandidate.seiMatch === "none" ||
-    boundaryCandidate.seiMatch === "reading"
-  ) {
-    return undefined;
-  }
-
-  const rescueScore = boundaryCandidate.score + BOUNDARY_RESCUE_BONUS;
-  if (rescueScore < CONFIDENCE_THRESHOLD) return undefined;
-
-  // Check gap against other candidates' rescue scores
-  const otherBest = candidates
-    .filter((c) => [...c.sei].length !== boundaryIndex)
-    .reduce((max, c) => Math.max(max, c.score), -Infinity);
-  const rescueGap = rescueScore - otherBest;
-  if (rescueGap < BOUNDARY_RESCUE_MIN_GAP) return undefined;
-
-  return BOUNDARY_RESCUE_CONFIDENCE;
 }
