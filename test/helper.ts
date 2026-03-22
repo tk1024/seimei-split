@@ -2,9 +2,9 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, it, expect, beforeAll } from "vitest";
 import { split, setLexicon } from "../src/core/splitter";
-import type { PackedLexicon } from "../src/core/types";
 
 const LOCAL_LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
+const NPM_LEXICON_PATH = resolve(__dirname, "../node_modules/seimei-split/dist/index.js");
 
 interface TestCase {
   input: string;
@@ -26,7 +26,7 @@ let lexiconLoaded = false;
 async function ensureLexicon(): Promise<boolean> {
   if (lexiconLoaded) return true;
 
-  // 1. Try locally generated data first
+  // 1. Try locally generated data
   if (existsSync(LOCAL_LEXICON_PATH)) {
     const { lexicon } = await import("../src/data/generated/unidic.ts");
     setLexicon(lexicon);
@@ -34,17 +34,19 @@ async function ensureLexicon(): Promise<boolean> {
     return true;
   }
 
-  // 2. Fall back to published npm package
-  try {
-    const pkg = await import("seimei-split") as { split: typeof split; getLexicon: () => PackedLexicon | undefined };
-    const lexicon = pkg.getLexicon();
-    if (lexicon) {
-      setLexicon(lexicon);
-      lexiconLoaded = true;
-      return true;
+  // 2. Fall back to published npm package's dist
+  if (existsSync(NPM_LEXICON_PATH)) {
+    try {
+      const pkg = await import(NPM_LEXICON_PATH);
+      const lexicon = pkg.getLexicon?.();
+      if (lexicon) {
+        setLexicon(lexicon);
+        lexiconLoaded = true;
+        return true;
+      }
+    } catch {
+      // import failed
     }
-  } catch {
-    // package not installed
   }
 
   return false;
