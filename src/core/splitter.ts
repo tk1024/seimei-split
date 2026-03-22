@@ -6,11 +6,17 @@ import type {
   SeimeiResult,
   SplitOptions,
 } from "./types.js";
-import { isAllHiragana, isAllKatakana, isNonJapanese } from "./normalize.js";
+import { isAllHiragana, isAllKatakana, isNonJapanese, findSingleKanjiToKanaBoundary } from "./normalize.js";
 import { calcScore, lookupMatch } from "./scorer.js";
 
 const CONFIDENCE_THRESHOLD = 6.0;
 const CONFIDENCE_GAP = 1.0;
+
+// Boundary heuristic: rescue candidates at kanji→kana boundaries
+// when normal scoring falls below threshold
+const BOUNDARY_RESCUE_BONUS = 3.0;
+const BOUNDARY_RESCUE_MIN_GAP = 0.5;
+const BOUNDARY_RESCUE_CONFIDENCE = 0.8;
 
 let defaultLexicon: PackedLexicon | undefined;
 let defaultReading: ReadingData | undefined;
@@ -129,18 +135,85 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
   const confident =
     best.score >= CONFIDENCE_THRESHOLD && gap >= CONFIDENCE_GAP;
 
-  if (confident || options?.allowLowConfidence) {
+  // 1. Normal confidence: dictionary-based high score
+  if (confident) {
     return {
       best: { sei: best.sei, mei: best.mei },
-      confidence: confident ? 1.0 : best.score / CONFIDENCE_THRESHOLD,
+      confidence: 1.0,
       candidates,
     };
   }
 
-  // Not confident enough: return unsplit
+  // 2. Boundary fallback: rescue at kanji→kana boundary
+  const fallbackConfidence = tryBoundaryFallback(trimmed, candidates);
+  if (fallbackConfidence !== undefined) {
+    // Find the boundary candidate (may differ from score-based best)
+    const boundaryIndex = findSingleKanjiToKanaBoundary(trimmed);
+    const boundaryCandidate = candidates.find(
+      (c) => [...c.sei].length === boundaryIndex
+    );
+    if (boundaryCandidate) {
+      return {
+        best: { sei: boundaryCandidate.sei, mei: boundaryCandidate.mei },
+        confidence: fallbackConfidence,
+        candidates,
+      };
+    }
+  }
+
+  // 3. Low confidence mode
+  if (options?.allowLowConfidence) {
+    return {
+      best: { sei: best.sei, mei: best.mei },
+      confidence: best.score / CONFIDENCE_THRESHOLD,
+      candidates,
+    };
+  }
+
+  // 4. Not confident enough: return unsplit
   return {
     best: { sei: trimmed, mei: "" },
     confidence: 0,
     candidates,
   };
+}
+
+/**
+ * Try to rescue a split using kanji→kana script boundary heuristic.
+ * Only applies when:
+ * - There is exactly one script transition (kanji → hiragana/katakana)
+ * - The boundary candidate has dictionary evidence on the surname side
+ * - The rescue score meets the confidence threshold
+ */
+function tryBoundaryFallback(
+  fullName: string,
+  candidates: SeimeiCandidate[],
+): number | undefined {
+  const boundaryIndex = findSingleKanjiToKanaBoundary(fullName);
+  if (boundaryIndex === undefined) return undefined;
+
+  const boundaryCandidate = candidates.find(
+    (c) => [...c.sei].length === boundaryIndex
+  );
+  if (!boundaryCandidate) return undefined;
+
+  // Require dictionary evidence on surname side
+  if (
+    boundaryCandidate.seiMatch === "none" ||
+    boundaryCandidate.seiMatch === "reading"
+  ) {
+    return undefined;
+  }
+
+  const rescueScore = boundaryCandidate.score + BOUNDARY_RESCUE_BONUS;
+  if (rescueScore < CONFIDENCE_THRESHOLD) return undefined;
+
+  // Check gap against other candidates' rescue scores
+  const otherBest = candidates
+    .filter((c) => [...c.sei].length !== boundaryIndex)
+    .reduce((max, c) => Math.max(max, c.score), -Infinity);
+  const rescueGap = rescueScore - otherBest;
+  if (rescueGap < BOUNDARY_RESCUE_MIN_GAP) return undefined;
+
+  return BOUNDARY_RESCUE_CONFIDENCE;
 }

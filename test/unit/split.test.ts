@@ -4,7 +4,7 @@ import type { PackedLexicon } from "../../src/core/types";
 
 // Minimal test lexicon
 const testLexicon: PackedLexicon = {
-  sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤"],
+  sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤", "綾瀬", "白銀", "夏色"],
   mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎"],
   folded: {
     "斎藤": ["齋藤"],
@@ -76,6 +76,39 @@ describe("split", () => {
         sei: "田中太郎",
         mei: "",
       });
+    });
+  });
+
+  describe("境界ヒューリスティック", () => {
+    it("漢字姓 + ひらがな名を境界フォールバックで救済する", () => {
+      const result = analyze("綾瀬はるか");
+      expect(result.best).toEqual({ sei: "綾瀬", mei: "はるか" });
+      expect(result.confidence).toBe(0.8);
+    });
+
+    it("漢字姓 + カタカナ名を救済する", () => {
+      const result = analyze("白銀ノエル");
+      expect(result.best).toEqual({ sei: "白銀", mei: "ノエル" });
+      expect(result.confidence).toBe(0.8);
+    });
+
+    it("漢字姓(辞書ヒット) + ひらがな名を救済する", () => {
+      expect(split("夏色まつり")).toEqual({ sei: "夏色", mei: "まつり" });
+    });
+
+    it("姓側に辞書根拠がない場合は救済しない", () => {
+      expect(split("東京はなこ")).toEqual({ sei: "東京はなこ", mei: "" });
+    });
+
+    it("文字種遷移が2回以上ある場合は境界救済しない", () => {
+      // "夢野あき子" — 遷移2回（漢字→ひらがな→漢字）、辞書ヒットもなし
+      expect(split("夢野あき子")).toEqual({ sei: "夢野あき子", mei: "" });
+    });
+
+    it("通常の辞書高信頼ケースは従来どおり confidence 1.0", () => {
+      const result = analyze("田中太郎");
+      expect(result.best).toEqual({ sei: "田中", mei: "太郎" });
+      expect(result.confidence).toBe(1.0);
     });
   });
 
