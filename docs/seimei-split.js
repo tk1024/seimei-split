@@ -105,7 +105,7 @@ function k(t, n, r, i, a) {
 	let o = S(r), c = n === "sei" ? o.sei : o.mei;
 	if (c.has(t)) return "surface";
 	let l = s(t);
-	if (l !== t && c.has(l) || l in r.folded) return "folded";
+	if (c.has(l) || r.folded[l]?.some((e) => c.has(e))) return "folded";
 	if (i && a) {
 		let r = n === "sei" ? a.sei : a.mei;
 		if (e(t) in r) return "reading";
