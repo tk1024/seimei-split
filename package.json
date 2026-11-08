@@ -25,9 +25,10 @@
   "scripts": {
     "download:data": "bash internal/unidic/download.sh",
     "generate:data": "tsx internal/unidic/extract.ts && tsx internal/unidic/pack.ts",
-    "build": "vite build",
+    "build": "npm run typecheck && vite build",
     "test": "vitest run",
     "test:update": "vitest run -u",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
     "build:docs": "vite build --config vite.config.docs.ts",
     "build:docs-site": "cd docs-site && npm run build",
     "prepack": "npm run generate:data && npm run build"

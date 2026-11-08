@@ -18,9 +18,8 @@ interface LineResult {
 }
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>): SearchParams => ({
-    name: typeof search.name === "string" ? search.name : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): SearchParams =>
+    typeof search.name === "string" ? { name: search.name } : {},
   component: PlaygroundPage,
 });
 
