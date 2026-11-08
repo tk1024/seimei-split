@@ -48,11 +48,12 @@
   },
   "homepage": "https://github.com/tk1024/seimei-split#readme",
   "devDependencies": {
-    "@types/node": "^25.5.0",
+    "@microsoft/api-extractor": "^7.59.4",
+    "@types/node": "^26.6.5",
     "tsx": "^4.19.0",
     "typescript": "^5.9.3",
     "vite": "^8.0.1",
-    "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.0"
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.0.5"
   }
 }
