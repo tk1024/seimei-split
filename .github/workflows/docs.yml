@@ -23,8 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install published package for dictionary data
-        run: npm install seimei-split --no-save
+      - uses: ./.github/actions/prepare-dictionary
 
       - name: Build docs
         run: npm run build:docs

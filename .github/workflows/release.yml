@@ -27,10 +27,7 @@ jobs:
         run: npm install
 
       - name: Download UniDic
-        run: |
-          mkdir -p internal/vendor/unidic/current
-          curl -sL -o /tmp/unidic-full.zip "https://clrd.ninjal.ac.jp/unidic_archive/2512/unidic-cwj-202512_full.zip"
-          unzip -q /tmp/unidic-full.zip -d internal/vendor/unidic/current
+        run: npm run download:data
 
       - name: Generate data and build
         run: npm run generate:data && npm run build

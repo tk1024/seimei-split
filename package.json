@@ -23,6 +23,7 @@
     "README.en.md"
   ],
   "scripts": {
+    "download:data": "bash internal/unidic/download.sh",
     "generate:data": "tsx internal/unidic/extract.ts && tsx internal/unidic/pack.ts",
     "build": "vite build",
     "test": "vitest run",
