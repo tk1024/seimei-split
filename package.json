@@ -26,6 +26,7 @@
     "generate:data": "tsx internal/unidic/extract.ts && tsx internal/unidic/pack.ts",
     "build": "vite build",
     "test": "vitest run",
+    "test:update": "vitest run -u",
     "build:docs": "vite build --config vite.config.docs.ts",
     "build:docs-site": "cd docs-site && npm run build",
     "prepack": "npm run generate:data && npm run build"
