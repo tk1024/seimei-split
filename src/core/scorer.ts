@@ -136,10 +136,7 @@ export function lookupMatch(
 
   // Folded (variant kanji) match
   const folded = foldVariants(candidate);
-  if (folded !== candidate && dict.has(folded)) {
-    return "folded";
-  }
-  if (folded in lexicon.folded) {
+  if (dict.has(folded) || lexicon.folded[folded]?.some((surface) => dict.has(surface))) {
     return "folded";
   }
 

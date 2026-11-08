@@ -5,9 +5,10 @@ import type { PackedLexicon } from "../../src/core/types";
 
 const testLexicon: PackedLexicon = {
   sei: ["田中", "佐藤", "大瀬良", "林", "勅使河原", "小鳥遊", "西園寺", "齋藤", "綾瀬", "夏", "周防", "横田", "池田", "秋山", "松村", "高峰"],
-  mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎", "リン", "田"],
+  mei: ["太郎", "花子", "大地", "健太", "公望", "翔", "一郎", "リン", "田", "廣志"],
   folded: {
     "斎藤": ["齋藤"],
+    "広志": ["廣志"],
   },
   maxSeiLen: 4,
   maxMeiLen: 5,
@@ -16,6 +17,34 @@ const testLexicon: PackedLexicon = {
 describe("split", () => {
   beforeAll(() => {
     setLexicon(testLexicon);
+  });
+
+  describe("異体字の照合", () => {
+    it("元の表記がある種別では folded として一致する", () => {
+      expect(analyze("斎藤太郎").candidates[0]).toMatchObject({
+        sei: "斎藤",
+        mei: "太郎",
+        seiMatch: "folded",
+      });
+      expect(analyze("田中広志").candidates[0]).toMatchObject({
+        sei: "田中",
+        mei: "広志",
+        meiMatch: "folded",
+      });
+    });
+
+    it("元の表記がない種別では folded として一致しない", () => {
+      const seiOnly = analyze("佐藤斎藤").candidates.find(
+        (c) => c.sei === "佐藤" && c.mei === "斎藤",
+      );
+      expect(seiOnly?.meiMatch).toBe("none");
+      expect(split("佐藤斎藤")).toEqual({ sei: "佐藤斎藤", mei: "" });
+
+      const meiOnly = analyze("広志太郎").candidates.find(
+        (c) => c.sei === "広志" && c.mei === "太郎",
+      );
+      expect(meiOnly?.seiMatch).toBe("none");
+    });
   });
 
   describe("名前でない入力", () => {

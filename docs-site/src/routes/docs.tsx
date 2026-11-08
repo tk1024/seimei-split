@@ -135,9 +135,9 @@ setReading(readingData);`}</CodeBlock>
 
 // 独自の辞書データを設定
 setLexicon({
-  sei: ["田中", "佐藤", ...],
+  sei: ["田中", "佐藤", "齋藤", ...],
   mei: ["太郎", "花子", ...],
-  folded: { "齋": ["斎"], ... },
+  folded: { "斎藤": ["齋藤"], ... }, // 異体字をまとめた表記: 元の表記
   maxSeiLen: 11,
   maxMeiLen: 11,
 });
