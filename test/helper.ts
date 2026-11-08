@@ -92,11 +92,7 @@ function runAccuracyReport(
  * data file. After an intended behavior change, run `npm run test:update`
  * and review the baseline diff.
  */
-export function runTsvTest(
-  suiteName: string,
-  tsvPath: string,
-  options: { allowWrongSplits?: boolean } = {},
-): void {
+export function runTsvTest(suiteName: string, tsvPath: string): void {
   describe(suiteName, () => {
     let cases: TestCase[] = [];
     let available = false;
@@ -123,7 +119,7 @@ export function runTsvTest(
       );
     });
 
-    it.skipIf(options.allowWrongSplits)("should not produce wrong splits (may unsplit)", () => {
+    it("should not produce wrong splits (may unsplit)", () => {
       if (!available) return;
 
       const errors: string[] = [];

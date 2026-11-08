@@ -17,6 +17,26 @@ const CONFIDENCE_GAP = 1.0;
 const BOUNDARY_CONFIDENCE = 0.8;
 const BOUNDARY_CONFIDENCE_GAP = 0.5;
 
+// Words that follow a surname but are not a given name: titles and common
+// business words. This is a short list of frequent words, not a full dictionary.
+const NON_NAME_MEI = new Set([
+  "さん", "さま", "様", "くん", "君", "ちゃん", "殿", "氏", "先生",
+  "サン", "サマ", "クン", "チャン",
+  "ビル", "マンション", "アパート", "ホテル", "商店", "病院", "医院",
+  "銀行", "会社", "学校", "大学", "工業", "製薬", "電器", "食堂",
+  "うどん", "そば", "ラーメン", "カレー",
+]);
+
+function isSingleDictionaryWord(
+  input: string,
+  lexicon: PackedLexicon,
+  isKana: boolean,
+  readingData: ReadingData | undefined,
+): boolean {
+  return lookupMatch(input, "sei", lexicon, isKana, readingData) !== "none"
+    || lookupMatch(input, "mei", lexicon, isKana, readingData) !== "none";
+}
+
 let defaultLexicon: PackedLexicon | undefined;
 let defaultReading: ReadingData | undefined;
 
@@ -100,6 +120,7 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
   const maxSplit = Math.min(lexicon.maxSeiLen, n - 1);
   const boundary = findSingleScriptBoundary(trimmed);
   const boundaryIndex = boundary?.index;
+  const readingData = options?.readingData ?? defaultReading;
   const candidates: SeimeiCandidate[] = [];
 
   for (let i = 1; i <= maxSplit; i++) {
@@ -110,7 +131,6 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
 
     if (meiLen > lexicon.maxMeiLen) continue;
 
-    const readingData = options?.readingData ?? defaultReading;
     const seiMatch = lookupMatch(sei, "sei", lexicon, isKana, readingData);
     const meiMatch = lookupMatch(mei, "mei", lexicon, isKana, readingData);
     const score = calcScore(sei, mei, seiMatch, meiMatch, seiLen, meiLen, i, boundaryIndex);
@@ -130,6 +150,16 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
   }
 
   const best = candidates[0];
+
+  // Not a full name: never split, even in low confidence mode
+  if (isSingleDictionaryWord(trimmed, lexicon, isKana, readingData) || NON_NAME_MEI.has(best.mei)) {
+    return {
+      best: { sei: trimmed, mei: "" },
+      confidence: 0,
+      candidates,
+    };
+  }
+
   const second = candidates[1];
   const gap = second ? best.score - second.score : Infinity;
   const confident =
@@ -173,8 +203,7 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
     );
     if (boundaryCandidate) {
       const meiAsSei = lookupMatch(
-        boundaryCandidate.mei, "sei", lexicon, false,
-        options?.readingData ?? defaultReading,
+        boundaryCandidate.mei, "sei", lexicon, false, readingData,
       );
       if (meiAsSei === "surface" || meiAsSei === "folded") {
         return {

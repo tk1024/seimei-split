@@ -18,6 +18,38 @@ describe("split", () => {
     setLexicon(testLexicon);
   });
 
+  describe("名前でない入力", () => {
+    it("辞書の姓だけの入力は分割しない", () => {
+      expect(split("田中")).toEqual({ sei: "田中", mei: "" });
+      expect(split("田中", { allowLowConfidence: true })).toEqual({ sei: "田中", mei: "" });
+    });
+
+    it("辞書の名だけの入力は分割しない", () => {
+      expect(split("太郎")).toEqual({ sei: "太郎", mei: "" });
+    });
+
+    it("敬称が付いた入力は分割しない", () => {
+      expect(split("佐藤さん", { allowLowConfidence: true })).toEqual({ sei: "佐藤さん", mei: "" });
+    });
+
+    it("組織語が続く入力は分割しない", () => {
+      expect(split("佐藤ビル", { allowLowConfidence: true })).toEqual({ sei: "佐藤ビル", mei: "" });
+    });
+
+    it("カタカナの敬称が付いた入力は分割しない", () => {
+      expect(split("佐藤サン", { allowLowConfidence: true })).toEqual({ sei: "佐藤サン", mei: "" });
+    });
+
+    it("読みデータにある語だけの入力は分割しない", () => {
+      const readingData = { sei: {}, mei: { "ケンタ": 1 } };
+      expect(split("ケンタ", { allowLowConfidence: true, readingData })).toEqual({ sei: "ケンタ", mei: "" });
+    });
+
+    it("分割しない場合も候補は返す", () => {
+      expect(analyze("佐藤さん").candidates.length).toBeGreaterThan(0);
+    });
+  });
+
   describe("スペース区切り", () => {
     it("半角スペース区切りの姓名を分離する", () => {
       expect(split("田中 太郎")).toEqual({ sei: "田中", mei: "太郎" });
