@@ -5,7 +5,6 @@ import { analyze, split, setLexicon } from "../src/core/splitter";
 import type { AnalyzeResult } from "../src/core/types";
 
 const LOCAL_LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
-const NPM_LEXICON_PATH = resolve(__dirname, "../node_modules/seimei-split/dist/index.js");
 
 interface TestCase {
   input: string;
@@ -48,31 +47,12 @@ let lexiconLoaded = false;
 
 async function ensureLexicon(): Promise<boolean> {
   if (lexiconLoaded) return true;
+  if (!existsSync(LOCAL_LEXICON_PATH)) return false;
 
-  // 1. Try locally generated data
-  if (existsSync(LOCAL_LEXICON_PATH)) {
-    const { lexicon } = await import("../src/data/generated/unidic.ts");
-    setLexicon(lexicon);
-    lexiconLoaded = true;
-    return true;
-  }
-
-  // 2. Fall back to published npm package's dist
-  if (existsSync(NPM_LEXICON_PATH)) {
-    try {
-      const pkg = await import(NPM_LEXICON_PATH);
-      const lexicon = pkg.getLexicon?.();
-      if (lexicon) {
-        setLexicon(lexicon);
-        lexiconLoaded = true;
-        return true;
-      }
-    } catch {
-      // import failed
-    }
-  }
-
-  return false;
+  const { lexicon } = await import("../src/data/generated/unidic.ts");
+  setLexicon(lexicon);
+  lexiconLoaded = true;
+  return true;
 }
 
 function runAccuracyReport(
@@ -130,9 +110,7 @@ export function runTsvTest(
     it("dictionary is available", () => {
       if (!available) {
         console.warn(
-          "Skipping: no dictionary available.\n" +
-          "  - Run `npm run generate:data` to generate locally, or\n" +
-          "  - Run `npm install seimei-split` to use the published package."
+          "No dictionary available. Run `npm run download:data && npm run generate:data`."
         );
       }
       expect(available).toBe(true);

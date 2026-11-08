@@ -1,0 +1,19 @@
+name: Prepare dictionary
+description: Restore UniDic and generate the bundled dictionary data
+
+runs:
+  using: composite
+  steps:
+    - name: Restore UniDic
+      uses: actions/cache@v4
+      with:
+        path: internal/vendor/unidic/current
+        key: unidic-${{ hashFiles('internal/unidic/VERSION') }}
+
+    - name: Download UniDic
+      shell: bash
+      run: npm run download:data
+
+    - name: Generate dictionary data
+      shell: bash
+      run: npm run generate:data
