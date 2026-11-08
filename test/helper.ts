@@ -1,7 +1,8 @@
 import { readFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { describe, it, expect, beforeAll } from "vitest";
-import { split, setLexicon } from "../src/core/splitter";
+import { analyze, split, setLexicon } from "../src/core/splitter";
+import type { AnalyzeResult } from "../src/core/types";
 
 const LOCAL_LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
 const NPM_LEXICON_PATH = resolve(__dirname, "../node_modules/seimei-split/dist/index.js");
@@ -18,7 +19,29 @@ function loadTsv(tsvPath: string): TestCase[] {
   return lines.slice(1).map((line) => {
     const [input, sei, mei] = line.split("\t");
     return { input, sei: sei ?? "", mei: mei ?? "" };
-  }).filter((tc) => tc.mei);
+  });
+}
+
+function formatResult(result: AnalyzeResult): string {
+  const split = result.best.mei === "" ? "(unsplit)" : `${result.best.sei}/${result.best.mei}`;
+  const confidence = Number.isFinite(result.confidence)
+    ? Number(result.confidence.toFixed(4))
+    : result.confidence;
+  return `${split}\t${confidence}`;
+}
+
+/**
+ * Render every input's result in both modes, one input per line,
+ * so that a behavior change shows up as a readable per-input diff.
+ */
+function renderBaseline(cases: TestCase[]): string {
+  const header = "input\tnormal\tnormal_confidence\tlow_confidence\tlow_confidence_confidence";
+  const rows = cases.map((tc) => {
+    const normal = analyze(tc.input);
+    const low = analyze(tc.input, { allowLowConfidence: true });
+    return `${tc.input}\t${formatResult(normal)}\t${formatResult(low)}`;
+  });
+  return [header, ...rows].join("\n") + "\n";
 }
 
 let lexiconLoaded = false;
@@ -84,8 +107,16 @@ function runAccuracyReport(
 /**
  * Run a data-driven test suite from a TSV file using the bundled dictionary.
  * Tests both normal mode and allowLowConfidence mode.
+ *
+ * Each suite compares every input's result with `baseline.tsv` next to its
+ * data file. After an intended behavior change, run `npm run test:update`
+ * and review the baseline diff.
  */
-export function runTsvTest(suiteName: string, tsvPath: string): void {
+export function runTsvTest(
+  suiteName: string,
+  tsvPath: string,
+  options: { allowWrongSplits?: boolean } = {},
+): void {
   describe(suiteName, () => {
     let cases: TestCase[] = [];
     let available = false;
@@ -107,7 +138,14 @@ export function runTsvTest(suiteName: string, tsvPath: string): void {
       expect(available).toBe(true);
     });
 
-    it("should not produce wrong splits (may unsplit)", () => {
+    it("matches the per-input baseline", async () => {
+      if (!available) return;
+      await expect(renderBaseline(cases)).toMatchFileSnapshot(
+        resolve(dirname(tsvPath), "baseline.tsv"),
+      );
+    });
+
+    it.skipIf(options.allowWrongSplits)("should not produce wrong splits (may unsplit)", () => {
       if (!available) return;
 
       const errors: string[] = [];

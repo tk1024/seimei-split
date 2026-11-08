@@ -26,6 +26,7 @@ jobs:
         run: npm install seimei-split --no-save
 
       - name: Test
+        shell: bash
         run: npx vitest run --reporter=verbose 2>&1 | sed 's/\x1b\[[0-9;]*m//g' | tee test-output.txt
 
       - name: Generate accuracy report
