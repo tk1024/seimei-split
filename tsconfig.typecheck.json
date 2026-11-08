@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src", "test", "internal/unidic", "vite.config.ts", "vite.config.docs.ts"]
+}
