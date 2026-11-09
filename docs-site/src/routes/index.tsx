@@ -364,7 +364,7 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
   let bg: string, text: string;
   if (confidence >= 1.0) {
     bg = "rgba(34,197,94,0.1)"; text = "#22c55e";
-  } else if (confidence >= 0.8) {
+  } else if (confidence >= 0.75) {
     bg = "rgba(59,130,246,0.1)"; text = "#3b82f6";
   } else if (confidence > 0) {
     bg = "rgba(234,179,8,0.1)"; text = "#eab308";

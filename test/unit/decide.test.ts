@@ -5,7 +5,7 @@ import type { MatchType, PackedLexicon, SeimeiCandidate } from "../../src/core/t
 
 const lexicon: PackedLexicon = {
   sei: ["田中", "横田"],
-  mei: ["太郎"],
+  mei: ["太郎", "賢一", "賢二", "賢三", "賢吾", "賢治", "直人", "雅人", "正人", "和人", "優人"],
   folded: {},
   maxSeiLen: 4,
   maxMeiLen: 4,
@@ -106,6 +106,78 @@ describe("decide", () => {
       const hasMei = [candidate("かた", "梨乃", 6.0, "none", "surface"), candidate("か", "た梨乃", 5.5)];
       expect(decide(hasMei, context("かた梨乃", { boundary: kanaToKanji })).confidence).toBe(0.8);
     });
+  });
+
+  describe("姓の辞書一致", () => {
+    const seiOnly = (mei: string, score = 5.5, second = 3.0) => [
+      candidate("山崎", mei, score, "surface", "none"),
+      candidate("山", "崎" + mei, second, "none", "none"),
+    ];
+
+    it("名が名らしく差が十分なら信頼度 0.75 で採用する", () => {
+      expect(decide(seiOnly("賢人"), context("山崎賢人"))).toMatchObject({
+        best: { sei: "山崎", mei: "賢人" },
+        confidence: 0.75,
+        reason: "sei-match",
+      });
+    });
+
+    it("閾値を超えても片側一致は信頼度 1.0 にならない", () => {
+      expect(decide(seiOnly("賢人", 7.0), context("山崎賢人")).reason).toBe("sei-match");
+    });
+
+    it("差が足りなければ未分割", () => {
+      expect(decide(seiOnly("賢人", 5.5, 3.6), context("山崎賢人")).reason).toBe("insufficient");
+    });
+
+    it("名の先頭字や末尾字が名の辞書に少なければ未分割", () => {
+      expect(decide(seiOnly("工務店"), context("山崎工務店")).reason).toBe("insufficient");
+    });
+
+    it("全かなの入力には適用しない", () => {
+      expect(decide(seiOnly("賢人"), context("やまざきけんと", { isKana: true })).reason).toBe("insufficient");
+    });
+
+    it("名の末尾が敬称や役職語なら、字の統計を満たしても未分割", () => {
+      const withEndings: PackedLexicon = {
+        ...lexicon,
+        mei: [...lexicon.mei, "一氏", "二氏", "三氏", "四氏", "五氏", "一長", "二長", "三長", "四長", "五長"],
+      };
+      expect(decide(seiOnly("賢氏"), context("山崎賢氏", { lexicon: withEndings })).reason).toBe("insufficient");
+      expect(decide(seiOnly("賢社長"), context("山崎賢社長", { lexicon: withEndings })).reason).toBe("insufficient");
+      expect(decide(seiOnly("賢一長"), context("山崎賢一長", { lexicon: withEndings })).reason).toBe("sei-match");
+    });
+
+    it("名が 4 文字以上なら未分割", () => {
+      expect(decide(seiOnly("賢太賢人"), context("山崎賢太賢人")).reason).toBe("insufficient");
+    });
+
+    it("名が 1 文字なら未分割", () => {
+      expect(decide(seiOnly("人"), context("山崎人")).reason).toBe("insufficient");
+    });
+
+    it("文字種境界のある入力には適用しない", () => {
+      const boundary = { index: 3, direction: "kanji-to-kana" } as const;
+      expect(decide(seiOnly("賢人"), context("山崎賢人", { boundary })).reason).toBe("insufficient");
+    });
+
+    it("名だけの一致では採用しない", () => {
+      const candidates = [candidate("山崎", "賢人", 7.0, "none", "surface"), candidate("山", "崎賢人", 3.0)];
+      expect(decide(candidates, context("山崎賢人")).reason).toBe("insufficient");
+    });
+  });
+
+  it("次点以下の候補の名が組織語でも未分割", () => {
+    const candidates = [
+      candidate("株式会", "社", 5.0, "none", "none"),
+      candidate("株式", "会社", 4.0, "none", "none"),
+    ];
+    expect(decide(candidates, context("株式会社", { allowLowConfidence: true })).reason).toBe("not-full-name");
+  });
+
+  it("次点以下の候補の名が敬称でも、最良候補が氏名なら分割する", () => {
+    const candidates = [candidate("足利", "尊氏", 10.0), candidate("足利尊", "氏", 5.0)];
+    expect(decide(candidates, context("足利尊氏")).reason).toBe("dictionary");
   });
 
   it("カタカナ＋姓の辞書語は最良候補でなくても採用する", () => {

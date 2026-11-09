@@ -6,10 +6,10 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 髙橋ひかる	髙橋/ひかる	1	dictionary	髙橋/ひかる	1	dictionary
 髙嶋政宏	髙嶋/政宏	1	dictionary	髙嶋/政宏	1	dictionary
 渡邊圭祐	渡邊/圭祐	1	dictionary	渡邊/圭祐	1	dictionary
-濵田崇裕	(unsplit)	0	insufficient	濵田/崇裕	0.6417	low-confidence
+濵田崇裕	濵田/崇裕	0.75	sei-match	濵田/崇裕	0.75	sei-match
 兒玉清	兒玉/清	1	dictionary	兒玉/清	1	dictionary
 眞鍋かをり	眞鍋/かをり	1	dictionary	眞鍋/かをり	1	dictionary
-柳樂優弥	(unsplit)	0	insufficient	柳樂/優弥	0.5833	low-confidence
+柳樂優弥	(unsplit)	0	insufficient	柳樂/優弥	0.6349	low-confidence
 櫻井翔	櫻井/翔	1	dictionary	櫻井/翔	1	dictionary
 澤穂希	澤/穂希	1	dictionary	澤/穂希	1	dictionary
 榮倉奈々	榮倉/奈々	1	dictionary	榮倉/奈々	1	dictionary
