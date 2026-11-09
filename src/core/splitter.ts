@@ -281,7 +281,7 @@ export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult
   const parts = trimmed.split(/[\s\u3000]+/);
   if (parts.length >= 2) {
     return {
-      best: { sei: parts[0], mei: parts.slice(1).join(" ") },
+      best: { sei: parts[0]!, mei: parts.slice(1).join(" ") },
       confidence: 1.0,
       reason: "space",
       candidates: [],

@@ -9,6 +9,7 @@ import {
   BOUNDARY_MATCH_WITH_DICT_BONUS,
   MATCH_SCORE,
   MEI_LENGTH_SCORE,
+  lengthBucket,
   ONE_SIDED_SINGLE_CHAR_PENALTY,
   PAIR_BONUS,
   POSITION_WEIGHT,
@@ -138,8 +139,8 @@ export function calcScore({
   }
 
   // Length scores (secondary signal)
-  score += SEI_LENGTH_SCORE[Math.min(seiLen, 6)];
-  score += MEI_LENGTH_SCORE[Math.min(meiLen, 6)];
+  score += SEI_LENGTH_SCORE[lengthBucket(seiLen)];
+  score += MEI_LENGTH_SCORE[lengthBucket(meiLen)];
 
   // Pair bonus: both sides hit
   const seiHit = seiMatch !== "none";

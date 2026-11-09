@@ -17,7 +17,7 @@ export function loadTsv(tsvPath: string): TestCase[] {
   const lines = content.trim().split("\n");
   return lines.slice(1).map((line) => {
     const [input, sei, mei] = line.split("\t");
-    return { input, sei: sei ?? "", mei: mei ?? "" };
+    return { input: input!, sei: sei ?? "", mei: mei ?? "" };
   });
 }
 

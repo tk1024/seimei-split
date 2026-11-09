@@ -20,13 +20,18 @@ function increment(counts: Map<string, number>, char: string): void {
   counts.set(char, (counts.get(char) ?? 0) + 1);
 }
 
+/** The first and last characters of a non-empty word. */
+function ends(chars: string[]): [first: string, last: string] {
+  return [chars[0]!, chars[chars.length - 1]!];
+}
+
 function countPositions(words: string[]): PositionCounts {
   const first = new Map<string, number>();
   const last = new Map<string, number>();
   for (const word of words) {
-    const chars = [...word];
-    increment(first, foldVariants(chars[0]));
-    increment(last, foldVariants(chars[chars.length - 1]));
+    const [head, tail] = ends([...word]);
+    increment(first, foldVariants(head));
+    increment(last, foldVariants(tail));
   }
   return { first, last, total: Math.max(words.length, 1) };
 }
@@ -60,10 +65,11 @@ export function positionLogRatio(word: string, kind: NameKind, lexicon: PackedLe
   if (!chars.every((ch) => scriptOf(ch) === "K")) return 0;
 
   const stats = getStats(lexicon);
-  const first = meiLogRatio(chars[0], "first", stats);
+  const [head, tail] = ends(chars);
+  const first = meiLogRatio(head, "first", stats);
   const ratio = chars.length === 1
     ? first
-    : first + meiLogRatio(chars[chars.length - 1], "last", stats);
+    : first + meiLogRatio(tail, "last", stats);
   return kind === "mei" ? ratio : -ratio;
 }
 
@@ -79,8 +85,7 @@ export function hasNameLikeEnds(mei: string, lexicon: PackedLexicon): boolean {
 
 
   const stats = getStats(lexicon);
-  const head = chars[0];
-  const tail = chars[chars.length - 1];
+  const [head, tail] = ends(chars);
   if (
     (stats.mei.first.get(foldVariants(head)) ?? 0) < SEI_MATCH_MIN_CHAR_COUNT
     || (stats.mei.last.get(foldVariants(tail)) ?? 0) < SEI_MATCH_MIN_CHAR_COUNT

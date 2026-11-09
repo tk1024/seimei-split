@@ -379,13 +379,13 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
 }
 
 function MatchBadge({ type }: { type: string }) {
+  const none = { bg: "rgba(148,163,184,0.1)", text: "#94a3b8" };
   const colors: Record<string, { bg: string; text: string }> = {
     surface: { bg: "rgba(34,197,94,0.1)", text: "#22c55e" },
     folded: { bg: "rgba(234,179,8,0.1)", text: "#eab308" },
     reading: { bg: "rgba(59,130,246,0.1)", text: "#3b82f6" },
-    none: { bg: "rgba(148,163,184,0.1)", text: "#94a3b8" },
   };
-  const c = colors[type] || colors.none;
+  const c = colors[type] ?? none;
   return (
     <span className="inline-block px-2 py-0.5 rounded text-xs font-medium" style={{ backgroundColor: c.bg, color: c.text }}>
       {type}
