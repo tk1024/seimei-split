@@ -2,7 +2,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { describe, it, expect, beforeAll } from "vitest";
 import { analyze, split, setLexicon } from "../src/core/splitter";
-import type { AnalyzeResult } from "../src/core/types";
+import type { AnalyzeResult, SplitOptions } from "../src/core/types";
 
 const LOCAL_LEXICON_PATH = resolve(__dirname, "../src/data/generated/unidic.ts");
 
@@ -12,7 +12,7 @@ interface TestCase {
   mei: string;
 }
 
-function loadTsv(tsvPath: string): TestCase[] {
+export function loadTsv(tsvPath: string): TestCase[] {
   const content = readFileSync(tsvPath, "utf-8");
   const lines = content.trim().split("\n");
   return lines.slice(1).map((line) => {
@@ -30,11 +30,11 @@ function formatResult(result: AnalyzeResult): string {
  * Render every input's result in both modes, one input per line,
  * so that a behavior change shows up as a readable per-input diff.
  */
-function renderBaseline(cases: TestCase[]): string {
+export function renderBaseline(cases: TestCase[], options: SplitOptions = {}): string {
   const header = "input\tnormal\tnormal_confidence\tnormal_reason\tlow_confidence\tlow_confidence_confidence\tlow_confidence_reason";
   const rows = cases.map((tc) => {
-    const normal = analyze(tc.input);
-    const low = analyze(tc.input, { allowLowConfidence: true });
+    const normal = analyze(tc.input, options);
+    const low = analyze(tc.input, { ...options, allowLowConfidence: true });
     return `${tc.input}\t${formatResult(normal)}\t${formatResult(low)}`;
   });
   return [header, ...rows].join("\n") + "\n";
@@ -42,7 +42,7 @@ function renderBaseline(cases: TestCase[]): string {
 
 let lexiconLoaded = false;
 
-async function ensureLexicon(): Promise<boolean> {
+export async function ensureLexicon(): Promise<boolean> {
   if (lexiconLoaded) return true;
   if (!existsSync(LOCAL_LEXICON_PATH)) return false;
 

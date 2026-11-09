@@ -74,3 +74,7 @@ export const SEI_MATCH_MIN_LOG_RATIO = 0.3;
 // Low confidence stays below BOUNDARY_CONFIDENCE and above 0, which means unsplit
 export const LOW_CONFIDENCE_MIN = 0.01;
 export const LOW_CONFIDENCE_MAX = 0.7;
+
+// A reading match also hits ordinary words (アメ/リカ), so it stays in the low range,
+// at the top of it because weaker guesses must not outrank it
+export const READING_CONFIDENCE = LOW_CONFIDENCE_MAX;

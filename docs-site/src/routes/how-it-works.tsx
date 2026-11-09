@@ -111,7 +111,7 @@ function HowItWorksPage() {
               <li><code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>bestScore - secondBestScore &gt;= 1.0</code> - 十分な差</li>
             </ul>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              姓だけが辞書にある場合は、名が 2 文字以上、スコアが 4.5 以上、次点との差が 2.0 以上で、名の先頭字と末尾字の傾向が姓より名に近く、名が 3 文字以下で、全かなでなく、末尾が敬称や役職語でなければ信頼度 0.75 で採用します。
+              片側が読みだけの一致（読みデータ有効時）なら、同じ条件で信頼度 0.7 で採用します。姓だけが辞書にある場合は、名が 2 文字以上、スコアが 4.5 以上、次点との差が 2.0 以上で、名の先頭字と末尾字の傾向が姓より名に近く、名が 3 文字以下で、全かなでなく、末尾が敬称や役職語でなければ信頼度 0.75 で採用します。
             </p>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               閾値を満たさない場合は未分割で返します。<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>allowLowConfidence: true</code> を指定するとベストエフォートの結果を返します。

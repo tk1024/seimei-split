@@ -19,6 +19,8 @@ export type AnalyzeReason =
   | "dictionary"
   /** The surname is in the dictionary and the given name is shaped like one */
   | "sei-match"
+  /** One side matched as written and the other only by reading (needs reading data) */
+  | "reading"
   /** The best split matches a script boundary and has dictionary evidence */
   | "boundary"
   /** Katakana stage name followed by a known surname */
@@ -41,6 +43,7 @@ export interface AnalyzeResult {
    * - 1: split at whitespace or by strong dictionary evidence
    * - 0.8: split by a script boundary or the katakana surname rule
    * - 0.75: surname in the dictionary, given name not in it but shaped like one
+   * - 0.7: one side matched as written, the other only by reading
    * - above 0 and at most 0.7: best guess from `allowLowConfidence`
    * - 0: not split
    */

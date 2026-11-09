@@ -49,6 +49,19 @@ describe("decide", () => {
     expect(analyze("田中太郎").reason).toBe("no-dictionary");
   });
 
+  it("片側でも読みだけの一致なら信頼度 0.7 の reading で採用する", () => {
+    const readingOnly = [candidate("アメ", "リカ", 6.8, "reading", "surface"), candidate("ア", "メリカ", 4.0)];
+    const result = decide(readingOnly, context("アメリカ", { isKana: true }));
+    expect(result.best).toEqual({ sei: "アメ", mei: "リカ" });
+    expect(result.confidence).toBe(0.7);
+    expect(result.reason).toBe("reading");
+  });
+
+  it("読みの一致でも差が足りなければ採用しない", () => {
+    const close = [candidate("アメ", "リカ", 6.8, "reading", "surface"), candidate("ア", "メリカ", 6.5)];
+    expect(decide(close, context("アメリカ", { isKana: true })).reason).toBe("insufficient");
+  });
+
   it("閾値と差を満たせば信頼度 1.0 で採用する", () => {
     const candidates = [candidate("田中", "花", 6.0), candidate("田", "中花", 5.0)];
     expect(decide(candidates, context("田中花"))).toEqual({
