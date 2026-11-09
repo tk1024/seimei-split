@@ -49,6 +49,57 @@ describe("decide", () => {
     expect(analyze("田中太郎").reason).toBe("no-dictionary");
   });
 
+  describe("ひらがな→漢字の境界で閾値に届かない候補", () => {
+    const boundary = { index: 3, direction: "kana-to-kanji" } as const;
+    const ctx = (name: string) => context(name, { boundary });
+    const kana = (mei: string, score: number, match: MatchType = "surface") =>
+      candidate("ぺこら", mei, score, "none", match);
+    const other = candidate("ぺ", "こら美奈子", 1.0, "none", "none");
+
+    it("スコア 5.2 以上で信頼度 0.8 の boundary として採用する", () => {
+      const result = decide([kana("美奈子", 5.2), other], ctx("ぺこら美奈子"));
+      expect(result.best).toEqual({ sei: "ぺこら", mei: "美奈子" });
+      expect(result.confidence).toBe(0.8);
+      expect(result.reason).toBe("boundary");
+    });
+
+    it("スコアが 5.2 未満なら採用しない", () => {
+      expect(decide([kana("美奈子", 5.1), other], ctx("ぺこら美奈子")).reason).toBe("insufficient");
+    });
+
+    it("次点との差が 0.5 未満なら採用しない", () => {
+      const close = candidate("ぺ", "こら美奈子", 5.0, "none", "none");
+      expect(decide([kana("美奈子", 5.2), close], ctx("ぺこら美奈子")).reason).toBe("insufficient");
+    });
+
+    it("名が 1 文字なら採用しない", () => {
+      expect(decide([kana("美", 5.5), other], ctx("ぺこら美")).reason).toBe("insufficient");
+    });
+
+    it("名が異体字の一致なら採用しない", () => {
+      expect(decide([kana("美奈子", 5.5, "folded"), other], ctx("ぺこら美奈子")).reason).toBe("insufficient");
+    });
+
+    it("前半がカタカナだけなら採用しない", () => {
+      const katakana = candidate("ペコラ", "美奈子", 5.5, "none", "surface");
+      expect(decide([katakana, other], ctx("ペコラ美奈子")).reason).toBe("insufficient");
+    });
+
+    it("かなの先頭が 2 文字以上の辞書の姓なら採用しない", () => {
+      const shorter = candidate("ぺこ", "ら美奈子", 1.0, "surface", "none");
+      expect(decide([kana("美奈子", 5.5), shorter], ctx("ぺこら美奈子")).reason).toBe("insufficient");
+    });
+
+    it("かなの先頭が 1 文字の辞書の姓なら採用する", () => {
+      const shorter = candidate("ぺ", "こら美奈子", 1.0, "surface", "none");
+      expect(decide([kana("美奈子", 5.5), shorter], ctx("ぺこら美奈子")).reason).toBe("boundary");
+    });
+
+    it("名が役職語なら採用しない", () => {
+      expect(decide([kana("博士", 5.5), other], ctx("ぺこら博士")).reason).toBe("insufficient");
+    });
+  });
+
   it("片側でも読みだけの一致なら信頼度 0.7 の reading で採用する", () => {
     const readingOnly = [candidate("アメ", "リカ", 6.8, "reading", "surface"), candidate("ア", "メリカ", 4.0)];
     const result = decide(readingOnly, context("アメリカ", { isKana: true }));

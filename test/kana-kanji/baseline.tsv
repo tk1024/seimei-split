@@ -15,3 +15,9 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 ケーシー高峰	ケーシー/高峰	0.8	katakana-sei	ケーシー/高峰	0.8	katakana-sei
 ダン池田	ダン/池田	0.8	katakana-sei	ダン/池田	0.8	katakana-sei
 マイク眞木	マイク/眞木	0.8	katakana-sei	マイク/眞木	0.8	katakana-sei
+ぺこら美奈子	ぺこら/美奈子	0.8	boundary	ぺこら/美奈子	0.8	boundary
+たなかなお美	たなか/なお美	1	dictionary	たなか/なお美	1	dictionary
+あんどう樹里亜	あんどう/樹里亜	1	dictionary	あんどう/樹里亜	1	dictionary
+さとうお千代	さとう/お千代	1	dictionary	さとう/お千代	1	dictionary
+さとうま由美	(unsplit)	0	insufficient	さとうま/由美	0.665	low-confidence
+あんず美奈子	(unsplit)	0	insufficient	あんず/美奈子	0.665	low-confidence

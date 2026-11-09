@@ -73,7 +73,7 @@ For names without spaces, the library uses a dictionary-based scoring algorithm:
 1. **Candidate enumeration** — all possible split positions
 2. **Dictionary matching** — surface (4.0), folded (2.5), reading (1.0), none (0)
 3. **Scoring** — `matchScore + seiHitBonus + lengthScore + pairBonus + boundaryScore + seiShapePenalty + singleCharPenalty + positionScore`
-4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0` with both sides in the dictionary or a script boundary (confidence 0.7 when one side matched only by reading); a surname-only match with a name-like given name is accepted at confidence 0.75
+4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0` with both sides in the dictionary or a script boundary (confidence 0.7 when one side matched only by reading); below 6.0, a hiragana name before a dictionary given name of 2+ characters is accepted at confidence 0.8 from `score >= 5.2`; a surname-only match with a name-like given name is accepted at confidence 0.75
 5. **Exception flows** — katakana surname detection, kanji variant folding
 
 ## Status

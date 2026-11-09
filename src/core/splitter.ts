@@ -23,6 +23,7 @@ import {
   BOUNDARY_CONFIDENCE_GAP,
   CONFIDENCE_GAP,
   CONFIDENCE_THRESHOLD,
+  KANA_SEI_MIN_SCORE,
   LOW_CONFIDENCE_MAX,
   LOW_CONFIDENCE_MIN,
   READING_CONFIDENCE,
@@ -55,8 +56,8 @@ export interface AnalysisContext {
   allowLowConfidence: boolean;
 }
 
-// Job titles after a surname. Checked only when the given name is not in the
-// dictionary, because some of these are real given names (博士, for example).
+// Job titles after a surname. Some are real given names (博士, for example),
+// so they are checked only where the evidence for the whole name is weak.
 const ROLE_WORDS = [
   "社長", "会長", "部長", "課長", "係長", "店長", "院長", "校長", "園長",
   "市長", "町長", "村長", "知事", "総理", "大臣", "議員",
@@ -194,7 +195,26 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     }
   }
 
-  // 5. Surname match: the given name is unknown but shaped like one
+  // 5. Just under the threshold, a hiragana name followed by a dictionary given name
+  //    (ぺこら/美奈子), unless the kana starts with a known surname (さとう/ま由美)
+  if (
+    boundary?.direction === "kana-to-kanji"
+    && splitsAt(best, boundary)
+    && !isAllKatakana(best.sei)
+    && best.meiMatch === "surface"
+    && [...best.mei].length >= 2
+    && best.score >= KANA_SEI_MIN_SCORE
+    && gap >= BOUNDARY_CONFIDENCE_GAP
+    && !candidates.some((c) => {
+      const seiLen = [...c.sei].length;
+      return isWrittenFormMatch(c.seiMatch) && seiLen >= 2 && seiLen < boundary.index;
+    })
+    && !ROLE_WORDS.includes(bestMei)
+  ) {
+    return accept(best, BOUNDARY_CONFIDENCE, "boundary");
+  }
+
+  // 6. Surname match: the given name is unknown but shaped like one
   if (
     boundary === undefined
     && !isKana
@@ -208,7 +228,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     return accept(best, SEI_MATCH_CONFIDENCE, "sei-match");
   }
 
-  // 6. Low confidence mode
+  // 7. Low confidence mode
   if (allowLowConfidence) {
     return accept(best, lowConfidence(best.score), "low-confidence");
   }

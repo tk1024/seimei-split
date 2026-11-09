@@ -60,6 +60,9 @@ export const CONFIDENCE_GAP = 1.0;
 // and has dictionary evidence, grant confidence 0.8
 export const BOUNDARY_CONFIDENCE = 0.8;
 export const BOUNDARY_CONFIDENCE_GAP = 0.5;
+// A kana name before a dictionary given name: the match and the boundary alone,
+// so the length scores must not be negative overall
+export const KANA_SEI_MIN_SCORE = MATCH_SCORE.surface + BOUNDARY_MATCH_BONUS;
 
 // Surname in the dictionary, given name not in it but shaped like one.
 // Sits between low confidence and BOUNDARY_CONFIDENCE.
