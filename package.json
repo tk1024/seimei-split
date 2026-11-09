@@ -13,6 +13,16 @@
     "./core": {
       "types": "./dist/core.d.ts",
       "default": "./dist/core.js"
+    },
+    "./reading": {
+      "types": "./dist/reading.d.ts",
+      "default": "./dist/reading.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "core": ["./dist/core.d.ts"],
+      "reading": ["./dist/reading.d.ts"]
     }
   },
   "files": [

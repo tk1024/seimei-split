@@ -38,6 +38,13 @@ import { analyze } from "seimei-split";
 const result = analyze("田中太郎");
 // => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, reason: "dictionary", candidates: [...] }
 
+// 読みデータを読み込むと、全かなの氏名を分割できる（既定では無効）
+// カタカナの一般語（アメリカ など）も分割されることがあるため、入力が氏名のときに使う
+import { setReading } from "seimei-split";
+import { reading } from "seimei-split/reading";
+setReading(reading);
+split("はいだしょうこ"); // => { sei: "はいだ", mei: "しょうこ" }
+
 // 辞書なし版（独自辞書を使う場合）
 import { split, setLexicon } from "seimei-split/core";
 ```
@@ -115,21 +122,22 @@ score = matchScore(姓) + matchScore(名) + seiHitBonus + lengthScore + pairBonu
 |---|---|
 | 姓 | 18,364 |
 | 名 | 37,084 |
-| 異体字マッピング | 1,002 |
-| 読みエントリ（オプション） | 25,742 |
+| 異体字マッピング | 979 |
+| 読みエントリ（オプション） | 26,289 |
 
 ## バンドルサイズ
 
 | エントリポイント | 生サイズ | gzip |
 |---|---|---|
-| `seimei-split`（辞書同梱） | 463 KB | 216 KB |
-| `seimei-split/core`（辞書なし） | 4.5 KB | 1.8 KB |
+| `seimei-split`（辞書同梱） | 465 KB | 216 KB |
+| `seimei-split/core`（辞書なし） | 8.0 KB | 3.5 KB |
+| `seimei-split/reading`（読みデータ） | 483 KB | 81 KB |
 
-読みデータはデフォルトで tree shaking により除外されます。
+読みデータは別エントリなので、`seimei-split/reading` を import しない限りバンドルに含まれません。
 
 ## 開発状況
 
-12カテゴリ 339件のテストデータで精度を計測しています。
+12カテゴリ 368件の氏名と、氏名でない入力 72件のテストデータで精度を計測しています。
 
 | カテゴリ | 通常モード | allowLowConfidence |
 |---|---|---|
