@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { split, analyze, setLexicon } from "../../src/core/splitter";
-import { findSingleScriptBoundary, isAllKatakana } from "../../src/core/normalize";
+import { findSingleScriptBoundary, foldVariants, isAllKatakana } from "../../src/core/normalize";
 import type { PackedLexicon } from "../../src/core/types";
 
 const testLexicon: PackedLexicon = {
@@ -20,6 +20,20 @@ describe("split", () => {
   });
 
   describe("異体字の照合", () => {
+    it("旧字体を新字体に畳み込む", () => {
+      expect(foldVariants("柳樂眞")).toBe("柳楽真");
+    });
+
+    it("ヶ を ケ に畳み込み、ケ は変えない", () => {
+      expect(foldVariants("一ヶ瀬")).toBe("一ケ瀬");
+      expect(foldVariants("一ケ瀬")).toBe("一ケ瀬");
+      expect(foldVariants("安ヵ川")).toBe("安ケ川");
+    });
+
+    it("別字扱いの字は畳み込まない", () => {
+      expect(foldVariants("冨峯淵")).toBe("冨峯淵");
+    });
+
     it("元の表記がある種別では folded として一致する", () => {
       expect(analyze("斎藤太郎").candidates[0]).toMatchObject({
         sei: "斎藤",

@@ -9,8 +9,9 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 濵田崇裕	濵田/崇裕	0.75	sei-match	濵田/崇裕	0.75	sei-match
 兒玉清	兒玉/清	1	dictionary	兒玉/清	1	dictionary
 眞鍋かをり	眞鍋/かをり	1	dictionary	眞鍋/かをり	1	dictionary
-柳樂優弥	(unsplit)	0	insufficient	柳樂/優弥	0.6349	low-confidence
+柳樂優弥	柳樂/優弥	1	dictionary	柳樂/優弥	1	dictionary
 櫻井翔	櫻井/翔	1	dictionary	櫻井/翔	1	dictionary
 澤穂希	澤/穂希	1	dictionary	澤/穂希	1	dictionary
 榮倉奈々	榮倉/奈々	1	dictionary	榮倉/奈々	1	dictionary
 髙田延彦	髙田/延彦	1	dictionary	髙田/延彦	1	dictionary
+瀧本美織	瀧本/美織	1	dictionary	瀧本/美織	1	dictionary

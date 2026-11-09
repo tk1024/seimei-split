@@ -136,7 +136,7 @@ setReading(reading);`}</CodeBlock>
       <section className="mb-10">
         <h2 className="text-xl font-bold mb-4" id="core">軽量版 (core)</h2>
         <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-          辞書を同梱しない軽量版（約 8 KB）を使う場合は、<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>seimei-split/core</code> からインポートします。
+          辞書を同梱しない軽量版（約 10 KB）を使う場合は、<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>seimei-split/core</code> からインポートします。
         </p>
         <CodeBlock>{`import { split, setLexicon } from "seimei-split/core";
 
