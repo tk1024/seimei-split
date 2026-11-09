@@ -238,16 +238,16 @@ var d = {
 	4: 0,
 	5: -.2,
 	6: -.4
-}, m = .8, h = .5, g = -1.5, _ = .3, v = 1.5, ee = 1e-4, y = 1.2, b = .8, x = -1.8, S = -2.5, C = -1.5, w = .8, te = .75, ne = .3, T = .01, E = .7, D = E;
+}, m = .8, h = .5, g = -1.5, _ = .3, v = 1.5, y = 1e-4, b = 1.2, x = .8, S = -1.8, C = -2.5, w = -1.5, T = .8, E = d.surface + b, ee = .75, te = .3, D = .01, O = .7, k = O;
 // src/core/charStats.ts
-function O(e, t) {
+function A(e, t) {
 	e.set(t, (e.get(t) ?? 0) + 1);
 }
-function k(e) {
+function j(e) {
 	let t = /* @__PURE__ */ new Map(), n = /* @__PURE__ */ new Map();
 	for (let r of e) {
 		let e = [...r];
-		O(t, u(e[0])), O(n, u(e[e.length - 1]));
+		A(t, u(e[0])), A(n, u(e[e.length - 1]));
 	}
 	return {
 		first: t,
@@ -255,51 +255,51 @@ function k(e) {
 		total: Math.max(e.length, 1)
 	};
 }
-var A = /* @__PURE__ */ new WeakMap();
-function j(e) {
-	let t = A.get(e);
+var M = /* @__PURE__ */ new WeakMap();
+function N(e) {
+	let t = M.get(e);
 	return t || (t = {
-		sei: k(e.sei),
-		mei: k(e.mei)
-	}, A.set(e, t)), t;
+		sei: j(e.sei),
+		mei: j(e.mei)
+	}, M.set(e, t)), t;
 }
-function M(e, t, n) {
-	let r = (n) => (n[t].get(u(e)) ?? 0) / n.total + ee, i = Math.log(r(n.mei) / r(n.sei));
+function P(e, t, n) {
+	let r = (n) => (n[t].get(u(e)) ?? 0) / n.total + y, i = Math.log(r(n.mei) / r(n.sei));
 	return Math.max(-v, Math.min(v, i));
 }
-function N(e, t, n) {
+function F(e, t, n) {
 	let r = [...e];
 	if (!r.every((e) => c(e) === "K")) return 0;
-	let i = j(n), a = M(r[0], "first", i), o = r.length === 1 ? a : a + M(r[r.length - 1], "last", i);
+	let i = N(n), a = P(r[0], "first", i), o = r.length === 1 ? a : a + P(r[r.length - 1], "last", i);
 	return t === "mei" ? o : -o;
 }
-function re(e, t) {
+function ne(e, t) {
 	let n = [...e];
 	if (n.length < 2 || n.length > 3 || n.some((e) => c(e) === "O")) return !1;
-	let r = j(t), i = n[0], a = n[n.length - 1];
+	let r = N(t), i = n[0], a = n[n.length - 1];
 	if ((r.mei.first.get(u(i)) ?? 0) < 5 || (r.mei.last.get(u(a)) ?? 0) < 5) return !1;
-	let o = (e, t) => c(e) === "K" ? M(e, t, r) : 0;
-	return o(i, "first") + o(a, "last") >= ne;
+	let o = (e, t) => c(e) === "K" ? P(e, t, r) : 0;
+	return o(i, "first") + o(a, "last") >= te;
 }
 // src/core/scorer.ts
-var P = /* @__PURE__ */ new WeakMap();
-function F(e) {
-	let t = P.get(e);
+var I = /* @__PURE__ */ new WeakMap();
+function re(e) {
+	let t = I.get(e);
 	return t || (t = {
 		sei: new Set(e.sei),
 		mei: new Set(e.mei)
-	}, P.set(e, t)), t;
+	}, I.set(e, t)), t;
 }
-function I(e) {
+function L(e) {
 	return [...e].map(c).join("");
 }
-function L(e, t) {
+function R(e, t) {
 	if (t !== "none") return 0;
-	let n = I(e), r = /^K+([HT]+)$/.exec(n)?.[1];
-	return r ? r.length === 1 ? r[0] === "T" ? -3 : S : C : 0;
+	let n = L(e), r = /^K+([HT]+)$/.exec(n)?.[1];
+	return r ? r.length === 1 ? r[0] === "T" ? -3 : C : w : 0;
 }
-function R(t, n, r, i, a) {
-	let o = F(r), s = n === "sei" ? o.sei : o.mei;
+function z(t, n, r, i, a) {
+	let o = re(r), s = n === "sei" ? o.sei : o.mei;
 	if (s.has(t)) return "surface";
 	let c = u(t);
 	if (s.has(c) || r.folded[c]?.some((e) => s.has(e))) return "folded";
@@ -309,17 +309,17 @@ function R(t, n, r, i, a) {
 	}
 	return "none";
 }
-function z(e) {
+function B(e) {
 	return e === "surface" || e === "folded";
 }
-function B({ sei: e, mei: t, seiMatch: n, meiMatch: r, seiLen: i, meiLen: a, boundaryIndex: o, lexicon: s }) {
+function V({ sei: e, mei: t, seiMatch: n, meiMatch: r, seiLen: i, meiLen: a, boundaryIndex: o, lexicon: s }) {
 	let c = 0;
-	c += d[n], c += d[r], z(n) && (c += h), c += f[Math.min(i, 6)], c += p[Math.min(a, 6)];
+	c += d[n], c += d[r], B(n) && (c += h), c += f[Math.min(i, 6)], c += p[Math.min(a, 6)];
 	let l = n !== "none", u = r !== "none";
-	return l && u && (c += m), i === 1 && a === 1 && (n !== "surface" || r !== "surface") && (c += -1), i === 1 && !l ? -Infinity : (o === void 0 ? ((i === 1 && l && !u || a === 1 && u && !l) && (c += g), l || (c += _ * N(e, "sei", s)), u || (c += _ * N(t, "mei", s))) : i === o ? (c += y, z(n) && (c += b)) : c += i < o ? -3 : x, c += L(e, n), c);
+	return l && u && (c += m), i === 1 && a === 1 && (n !== "surface" || r !== "surface") && (c += -1), i === 1 && !l ? -Infinity : (o === void 0 ? ((i === 1 && l && !u || a === 1 && u && !l) && (c += g), l || (c += _ * F(e, "sei", s)), u || (c += _ * F(t, "mei", s))) : i === o ? (c += b, B(n) && (c += x)) : c += i < o ? -3 : S, c += R(e, n), c);
 }
 // src/core/splitter.ts
-var V = /* @__PURE__ */ new Set([
+var H = /* @__PURE__ */ new Set([
 	"さん",
 	"さま",
 	"様",
@@ -333,14 +333,14 @@ var V = /* @__PURE__ */ new Set([
 	"サマ",
 	"クン",
 	"チャン"
-]), H = /* @__PURE__ */ new Set(/* @__PURE__ */ "ビル.マンション.アパート.ホテル.商店.病院.医院.銀行.会社.学校.大学.工業.製薬.電器.食堂.精機.興業.通運.光学.法人.物産.産業.商事.建設.不動産.うどん.そば.ラーメン.カレー".split(".")), U = /* @__PURE__ */ "社長.会長.部長.課長.係長.店長.院長.校長.園長.市長.町長.村長.知事.総理.大臣.議員.選手.監督.教授.博士.医師.弁護士.税理士.先輩.主任.学長.総長.代議士.親方.和尚.夫人".split("."), W = [...V, ...U];
-function G({ name: e, lexicon: t, isKana: n, readingData: r }) {
-	return R(e, "sei", t, n, r) !== "none" || R(e, "mei", t, n, r) !== "none";
+]), U = /* @__PURE__ */ new Set(/* @__PURE__ */ "ビル.マンション.アパート.ホテル.商店.病院.医院.銀行.会社.学校.大学.工業.製薬.電器.食堂.精機.興業.通運.光学.法人.物産.産業.商事.建設.不動産.うどん.そば.ラーメン.カレー".split(".")), W = /* @__PURE__ */ "社長.会長.部長.課長.係長.店長.院長.校長.園長.市長.町長.村長.知事.総理.大臣.議員.選手.監督.教授.博士.医師.弁護士.税理士.先輩.主任.学長.総長.代議士.親方.和尚.夫人".split("."), G = [...H, ...W];
+function K({ name: e, lexicon: t, isKana: n, readingData: r }) {
+	return z(e, "sei", t, n, r) !== "none" || z(e, "mei", t, n, r) !== "none";
 }
-function K(e, t) {
+function q(e, t) {
 	return [...e.sei].length === t.index;
 }
-function q(e, t, n = []) {
+function J(e, t, n = []) {
 	return {
 		best: {
 			sei: e,
@@ -351,16 +351,16 @@ function q(e, t, n = []) {
 		candidates: n
 	};
 }
-function J(e) {
-	let t = e / 6 * E;
-	return Math.min(Math.max(t, T), E);
-}
 function Y(e) {
+	let t = e / 6 * O;
+	return Math.min(Math.max(t, D), O);
+}
+function ie(e) {
 	let { name: t, lexicon: n, isKana: r, readingData: i, boundary: a } = e, o = [...t], s = Math.min(n.maxSeiLen, o.length - 1), c = [];
 	for (let e = 1; e <= s; e++) {
 		let t = o.length - e;
 		if (t > n.maxMeiLen) continue;
-		let s = o.slice(0, e).join(""), l = o.slice(e).join(""), u = R(s, "sei", n, r, i), d = R(l, "mei", n, r, i), f = B({
+		let s = o.slice(0, e).join(""), l = o.slice(e).join(""), u = z(s, "sei", n, r, i), d = z(l, "mei", n, r, i), f = V({
 			sei: s,
 			mei: l,
 			seiMatch: u,
@@ -380,13 +380,13 @@ function Y(e) {
 	}
 	return c.sort((e, t) => t.score - e.score);
 }
-function ie(t, r) {
+function ae(t, r) {
 	let { name: i, lexicon: a, isKana: o, readingData: s, boundary: c, allowLowConfidence: l } = r, d = t[0];
-	if (!d) return q(i, "no-candidate");
+	if (!d) return J(i, "no-candidate");
 	let f = u(d.mei);
-	if (G(r) || V.has(f.replace(/ー/g, "")) || H.has(e(f)) || t.some((e) => H.has(u(e.mei)))) return q(i, "not-full-name", t);
+	if (K(r) || H.has(f.replace(/ー/g, "")) || U.has(e(f)) || t.some((e) => U.has(u(e.mei)))) return J(i, "not-full-name", t);
 	let p = t.filter((e) => Number.isFinite(e.score));
-	if (p.length === 0) return q(i, "insufficient", t);
+	if (p.length === 0) return J(i, "insufficient", t);
 	let m = (e, n, r) => ({
 		best: {
 			sei: e.sei,
@@ -395,34 +395,37 @@ function ie(t, r) {
 		confidence: n,
 		reason: r,
 		candidates: t
-	}), h = t[1], g = h ? d.score - h.score : Infinity, _ = d.score >= 6, v = c !== void 0 || z(d.seiMatch) && z(d.meiMatch);
+	}), h = t[1], g = h ? d.score - h.score : Infinity, _ = d.score >= 6, v = c !== void 0 || B(d.seiMatch) && B(d.meiMatch);
 	if (_ && g >= 1) {
 		if (v) return m(d, 1, "dictionary");
-		if (d.seiMatch !== "none" && d.meiMatch !== "none") return m(d, D, "reading");
+		if (d.seiMatch !== "none" && d.meiMatch !== "none") return m(d, k, "reading");
 	}
-	if (c && K(d, c) && z(c.direction === "kanji-to-kana" ? d.seiMatch : d.meiMatch) && _ && g >= .5) return m(d, w, "boundary");
+	if (c && q(d, c) && B(c.direction === "kanji-to-kana" ? d.seiMatch : d.meiMatch) && _ && g >= .5) return m(d, T, "boundary");
 	if (c?.direction === "kana-to-kanji") {
-		let e = p.find((e) => K(e, c) && n(e.sei));
-		if (e && z(R(e.mei, "sei", a, !1, s))) return m(e, w, "katakana-sei");
+		let e = p.find((e) => q(e, c) && n(e.sei));
+		if (e && B(z(e.mei, "sei", a, !1, s))) return m(e, T, "katakana-sei");
 	}
-	return c === void 0 && !o && z(d.seiMatch) && d.meiMatch === "none" && d.score >= 4.5 && g >= 2 && !W.some((e) => u(d.mei).endsWith(e)) && re(d.mei, a) ? m(d, te, "sei-match") : l ? m(d, J(d.score), "low-confidence") : q(i, "insufficient", t);
+	return c?.direction === "kana-to-kanji" && q(d, c) && !n(d.sei) && d.meiMatch === "surface" && [...d.mei].length >= 2 && d.score >= E && g >= .5 && !t.some((e) => {
+		let t = [...e.sei].length;
+		return B(e.seiMatch) && t >= 2 && t < c.index;
+	}) && !W.includes(f) ? m(d, T, "boundary") : c === void 0 && !o && B(d.seiMatch) && d.meiMatch === "none" && d.score >= 4.5 && g >= 2 && !G.some((e) => u(d.mei).endsWith(e)) && ne(d.mei, a) ? m(d, ee, "sei-match") : l ? m(d, Y(d.score), "low-confidence") : J(i, "insufficient", t);
 }
 var X, Z;
 function Q(e) {
 	X = e;
 }
-function ae(e) {
+function oe(e) {
 	Z = e;
 }
-function oe() {
+function se() {
 	return X;
 }
-function se(e, t) {
+function ce(e, t) {
 	return $(e, t).best;
 }
 function $(e, i) {
 	let a = e.trim();
-	if (!a) return q(a, "no-candidate");
+	if (!a) return J(a, "no-candidate");
 	let o = a.split(/[\s\u3000]+/);
 	if (o.length >= 2) return {
 		best: {
@@ -434,8 +437,8 @@ function $(e, i) {
 		candidates: []
 	};
 	let s = i?.lexicon ?? X;
-	if (!s) return q(a, "no-dictionary");
-	if (r(a)) return q(a, "no-candidate");
+	if (!s) return J(a, "no-dictionary");
+	if (r(a)) return J(a, "no-candidate");
 	let c = {
 		name: a,
 		lexicon: s,
@@ -444,7 +447,7 @@ function $(e, i) {
 		boundary: l(a),
 		allowLowConfidence: i?.allowLowConfidence ?? !1
 	};
-	return ie(Y(c), c);
+	return ae(ie(c), c);
 }
 // src/index.ts
 Q({
@@ -1124,4 +1127,4 @@ Q({
 	maxSeiLen: 11,
 	maxMeiLen: 9
 });
-export { $ as analyze, oe as getLexicon, Q as setLexicon, ae as setReading, se as split };
+export { $ as analyze, se as getLexicon, Q as setLexicon, oe as setReading, ce as split };
