@@ -84,3 +84,6 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 田中くーん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
 えーと田中	(unsplit)	0	insufficient	えーと/田中	0.56	low-confidence
 あー田中	(unsplit)	0	insufficient	あー/田中	0.5833	low-confidence
+ジョンソン博士	(unsplit)	0	insufficient	ジョンソン/博士	0.6417	low-confidence
+ぺこらん博士	(unsplit)	0	insufficient	ぺこらん/博士	0.665	low-confidence
+ラーメン二郎	(unsplit)	0	insufficient	ラーメン/二郎	0.665	low-confidence
