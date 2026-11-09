@@ -19,6 +19,8 @@ export interface AnalyzeResult {
 
 export type MatchType = "surface" | "folded" | "reading" | "none";
 
+export type NameKind = "sei" | "mei";
+
 export interface PackedLexicon {
   sei: string[];
   mei: string[];

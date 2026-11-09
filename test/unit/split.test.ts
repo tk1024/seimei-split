@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { split, analyze, setLexicon } from "../../src/core/splitter";
-import { findSingleScriptBoundary } from "../../src/core/normalize";
+import { findSingleScriptBoundary, isAllKatakana } from "../../src/core/normalize";
 import type { PackedLexicon } from "../../src/core/types";
 
 const testLexicon: PackedLexicon = {
@@ -155,6 +155,12 @@ describe("split", () => {
 
     it("ひらがな→漢字境界を検出する", () => {
       expect(findSingleScriptBoundary("かたせ梨乃")).toEqual({ index: 3, direction: "kana-to-kanji" });
+    });
+
+    it("ヶ と ヵ は漢字として扱う", () => {
+      expect(findSingleScriptBoundary("一ヶ瀬はるか")).toEqual({ index: 3, direction: "kanji-to-kana" });
+      expect(findSingleScriptBoundary("一ヵ瀬はるか")).toEqual({ index: 3, direction: "kanji-to-kana" });
+      expect(isAllKatakana("アヶミ")).toBe(false);
     });
 
     it("全漢字は undefined", () => {

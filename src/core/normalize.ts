@@ -18,7 +18,7 @@ export function isAllHiragana(str: string): boolean {
  * Check if a string is all katakana.
  */
 export function isAllKatakana(str: string): boolean {
-  return /^[\u30A1-\u30F6\u30FC]+$/.test(str);
+  return str !== "" && [...str].every((ch) => scriptOf(ch) === "T");
 }
 
 /**
@@ -40,13 +40,18 @@ const VARIANT_MAP: Record<string, string> = {
   "條": "条", "圓": "円",
 };
 
-type ScriptType = "kanji" | "hiragana" | "katakana" | "other";
+/** K: kanji (including 々〆ヶヵ), H: hiragana, T: katakana, O: other */
+type ScriptType = "K" | "H" | "T" | "O";
 
-function scriptOf(ch: string): ScriptType {
-  if (/[\u3041-\u3096]/.test(ch)) return "hiragana";
-  if (/[\u30A1-\u30F6\u30FC]/.test(ch)) return "katakana";
-  if (/[\p{Script=Han}々〆ヶ]/u.test(ch)) return "kanji";
-  return "other";
+const RE_KANJI = /[\p{Script=Han}々〆ヶヵ]/u;
+const RE_HIRAGANA = /[\u3041-\u3096]/;
+const RE_KATAKANA = /[\u30A1-\u30F4\u30FC]/;
+
+export function scriptOf(ch: string): ScriptType {
+  if (RE_KANJI.test(ch)) return "K";
+  if (RE_HIRAGANA.test(ch)) return "H";
+  if (RE_KATAKANA.test(ch)) return "T";
+  return "O";
 }
 
 /**
@@ -77,7 +82,7 @@ export function findSingleScriptBoundary(fullName: string): ScriptBoundary | und
     const prev = scriptOf(chars[i - 1]);
     const next = scriptOf(chars[i]);
     if (prev === next) continue;
-    if (prev === "other" || next === "other") return undefined;
+    if (prev === "O" || next === "O") return undefined;
     transitionCount++;
     if (transitionCount > 1) return undefined;
     splitIndex = i;
@@ -87,10 +92,10 @@ export function findSingleScriptBoundary(fullName: string): ScriptBoundary | und
 
   if (transitionCount !== 1 || splitIndex === undefined) return undefined;
 
-  const fromIsKanji = fromScript === "kanji";
-  const toIsKanji = toScript === "kanji";
-  const fromIsKana = fromScript === "hiragana" || fromScript === "katakana";
-  const toIsKana = toScript === "hiragana" || toScript === "katakana";
+  const fromIsKanji = fromScript === "K";
+  const toIsKanji = toScript === "K";
+  const fromIsKana = fromScript === "H" || fromScript === "T";
+  const toIsKana = toScript === "H" || toScript === "T";
 
   if (fromIsKanji && toIsKana) {
     return { index: splitIndex, direction: "kanji-to-kana" };
@@ -99,13 +104,6 @@ export function findSingleScriptBoundary(fullName: string): ScriptBoundary | und
     return { index: splitIndex, direction: "kana-to-kanji" };
   }
 
-  return undefined;
-}
-
-/** @deprecated Use findSingleScriptBoundary instead */
-export function findSingleKanjiToKanaBoundary(fullName: string): number | undefined {
-  const result = findSingleScriptBoundary(fullName);
-  if (result?.direction === "kanji-to-kana") return result.index;
   return undefined;
 }
 
