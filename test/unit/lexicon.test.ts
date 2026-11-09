@@ -19,12 +19,23 @@ describe("生成した辞書の folded", () => {
     expect(invalid).toEqual([]);
   });
 
-  it("異体字を含む表記がすべて登録されている", () => {
-    const missing = [...lexicon.sei, ...lexicon.mei].filter((surface) => {
-      const key = foldVariants(surface);
-      return key !== surface && !lexicon.folded[key]?.includes(surface);
-    });
+  const bothKinds = [new Set(lexicon.sei), new Set(lexicon.mei)];
+
+  it("同じ種別の辞書にない畳み込み先の表記がすべて登録されている", () => {
+    const missing = bothKinds.flatMap((surfaces) =>
+      [...surfaces].filter((surface) => {
+        const key = foldVariants(surface);
+        return key !== surface && !surfaces.has(key) && !lexicon.folded[key]?.includes(surface);
+      }),
+    );
     expect(missing).toEqual([]);
+  });
+
+  it("実行時に参照されない表記を含まない", () => {
+    const unused = entries.filter(([key, values]) =>
+      values.some((value) => !bothKinds.some((surfaces) => surfaces.has(value) && !surfaces.has(key))),
+    );
+    expect(unused).toEqual([]);
   });
 });
 

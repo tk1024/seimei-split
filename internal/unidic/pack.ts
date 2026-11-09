@@ -54,15 +54,17 @@ function buildLexicon(entries: RawEntry[]): { lexicon: PackedLexicon; reading: R
       meiSet.add(entry.surface);
       maxMeiLen = Math.max(maxMeiLen, [...entry.surface].length);
     }
+  }
 
-    // Build folded index for variant kanji
-    const foldedKey = foldVariants(entry.surface);
-    if (foldedKey !== entry.surface) {
-      if (!folded[foldedKey]) {
-        folded[foldedKey] = [];
-      }
-      if (!folded[foldedKey].includes(entry.surface)) {
-        folded[foldedKey].push(entry.surface);
+  // Variant index. A key that is itself in the same dictionary is matched
+  // directly, so the entry would never be read and only adds bundle size.
+  for (const surfaces of [seiSet, meiSet]) {
+    for (const surface of surfaces) {
+      const foldedKey = foldVariants(surface);
+      if (foldedKey === surface || surfaces.has(foldedKey)) continue;
+      folded[foldedKey] ??= [];
+      if (!folded[foldedKey].includes(surface)) {
+        folded[foldedKey].push(surface);
       }
     }
   }

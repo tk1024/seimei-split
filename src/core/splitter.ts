@@ -9,6 +9,7 @@ import type {
 } from "./types.js";
 import {
   findSingleScriptBoundary,
+  foldVariants,
   isAllHiragana,
   isAllKatakana,
   isNonJapanese,
@@ -131,8 +132,8 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
   // Business words are checked on every split, since statistics can reorder them.
   if (
     isSingleDictionaryWord(context)
-    || TITLES.has(best.mei)
-    || candidates.some((c) => BUSINESS_WORDS.has(c.mei))
+    || TITLES.has(foldVariants(best.mei))
+    || candidates.some((c) => BUSINESS_WORDS.has(foldVariants(c.mei)))
   ) {
     return unsplit(name, "not-full-name", candidates);
   }
@@ -190,7 +191,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     && best.meiMatch === "none"
     && best.score >= SEI_MATCH_MIN_SCORE
     && gap >= SEI_MATCH_GAP
-    && !NON_NAME_ENDINGS.some((word) => best.mei.endsWith(word))
+    && !NON_NAME_ENDINGS.some((word) => foldVariants(best.mei).endsWith(word))
     && hasNameLikeEnds(best.mei, lexicon)
   ) {
     return accept(best, SEI_MATCH_CONFIDENCE, "sei-match");

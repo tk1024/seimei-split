@@ -140,7 +140,7 @@ function HowItWorksPage() {
           齋→斎, 齊→斉, 邊→辺, 濱→浜, 﨑→崎, 髙→高, 德→徳, 廣→広, 嶋→島, 國→国, 澤→沢, 櫻→桜, 龍→竜 ...
         </div>
         <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-          合計 979 件の異体字マッピングが含まれています。
+          合計 669 件の異体字マッピングが含まれています。
         </p>
       </section>
 
@@ -160,7 +160,7 @@ function HowItWorksPage() {
             <tbody>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}><td className="py-2 px-3">姓</td><td className="py-2 px-3 font-mono">18,364</td></tr>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}><td className="py-2 px-3">名</td><td className="py-2 px-3 font-mono">37,084</td></tr>
-              <tr className="border-b" style={{ borderColor: "var(--border)" }}><td className="py-2 px-3">異体字マッピング</td><td className="py-2 px-3 font-mono">979</td></tr>
+              <tr className="border-b" style={{ borderColor: "var(--border)" }}><td className="py-2 px-3">異体字マッピング</td><td className="py-2 px-3 font-mono">669</td></tr>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}><td className="py-2 px-3">読みエントリ（オプション）</td><td className="py-2 px-3 font-mono">26,289</td></tr>
             </tbody>
           </table>
@@ -181,13 +181,13 @@ function HowItWorksPage() {
             <tbody>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}>
                 <td className="py-2 px-3 font-mono">seimei-split</td>
-                <td className="py-2 px-3 font-mono">465 KB</td>
+                <td className="py-2 px-3 font-mono">460 KB</td>
                 <td className="py-2 px-3 font-mono">216 KB</td>
               </tr>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}>
                 <td className="py-2 px-3 font-mono">seimei-split/core</td>
-                <td className="py-2 px-3 font-mono">8.0 KB</td>
-                <td className="py-2 px-3 font-mono">3.5 KB</td>
+                <td className="py-2 px-3 font-mono">10 KB</td>
+                <td className="py-2 px-3 font-mono">4.6 KB</td>
               </tr>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}>
                 <td className="py-2 px-3 font-mono">seimei-split/reading</td>

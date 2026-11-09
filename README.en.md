@@ -77,7 +77,7 @@ For names without spaces, the library uses a dictionary-based scoring algorithm:
 
 ## Status
 
-Accuracy is measured across 12 categories (368 names and 72 non-name inputs).
+Accuracy is measured across 12 categories (369 names and 76 non-name inputs).
 
 | Category | Normal | allowLowConfidence |
 |---|---|---|
@@ -88,7 +88,7 @@ Accuracy is measured across 12 categories (368 names and 72 non-name inputs).
 | VTuber names | 6.7% | 93.3% |
 | Single-char surname | 92.3% | 92.3% |
 | 3+ char surname | 83.3% | 100% |
-| Variant kanji | 93.3% | 100% |
+| Variant kanji | 100% | 100% |
 | ノ・ヶ・々 in surname | 90.9% | 100% |
 | All kana | 86.7% | 100% |
 | Mixed kana in name | 100% | 100% |
