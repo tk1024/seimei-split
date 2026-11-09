@@ -8,7 +8,15 @@ export const MATCH_SCORE: Record<MatchType, number> = {
   none: 0,
 };
 
-export const SEI_LENGTH_SCORE: Record<number, number> = {
+/** Lengths of 6 or more share the last entry of the length score tables. */
+export type LengthBucket = 1 | 2 | 3 | 4 | 5 | 6;
+
+/** `length` is at least 1: every candidate has a non-empty surname and given name. */
+export function lengthBucket(length: number): LengthBucket {
+  return Math.min(length, 6) as LengthBucket;
+}
+
+export const SEI_LENGTH_SCORE: Record<LengthBucket, number> = {
   1: 0.1,
   2: 0.5,
   3: 0.3,
@@ -17,7 +25,7 @@ export const SEI_LENGTH_SCORE: Record<number, number> = {
   6: -0.4,
 };
 
-export const MEI_LENGTH_SCORE: Record<number, number> = {
+export const MEI_LENGTH_SCORE: Record<LengthBucket, number> = {
   1: 0.3,
   2: 0.5,
   3: 0.2,

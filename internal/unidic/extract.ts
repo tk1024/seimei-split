@@ -52,7 +52,7 @@ async function extract(): Promise<void> {
       continue;
     }
 
-    const surface = cols[COL.SURFACE].trim();
+    const surface = cols[COL.SURFACE]!.trim();
     const reading = hiraganaToKatakana((cols[COL.READING] || cols[COL.PRON] || "").trim());
 
     if (!surface) continue;

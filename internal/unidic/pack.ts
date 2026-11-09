@@ -21,7 +21,7 @@ function loadTsv(): RawEntry[] {
   // Skip header
   return lines.slice(1).map((line) => {
     const [kind, surface, reading, _source, _sourceId, sourceFlags] =
-      line.split("\t");
+      line.split("\t") as [string, string, string, string, string, string];
     return {
       kind: kind as NameKind,
       surface,
