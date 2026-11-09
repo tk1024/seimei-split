@@ -1,49 +1,20 @@
 import type { MatchType, NameKind, PackedLexicon, ReadingData } from "./types.js";
 import { foldVariants, hiraganaToKatakana, scriptOf } from "./normalize.js";
-
-// Score weights — dictionary evidence is primary, length is secondary
-const MATCH_SCORE: Record<MatchType, number> = {
-  surface: 4.0,
-  folded: 2.5,
-  reading: 1.0,
-  none: 0,
-};
-
-const SEI_LENGTH_SCORE: Record<number, number> = {
-  1: 0.1,
-  2: 0.5,
-  3: 0.3,
-  4: 0.0,
-  5: -0.2,
-  6: -0.4,
-};
-
-const MEI_LENGTH_SCORE: Record<number, number> = {
-  1: 0.3,
-  2: 0.5,
-  3: 0.2,
-  4: 0.0,
-  5: -0.2,
-  6: -0.4,
-};
-
-const PAIR_BONUS = 0.8;
-const BOTH_SINGLE_CHAR_PENALTY = -1.0;
-
-// Surname hit is stronger evidence than given name hit,
-// because surnames are a finite known set while given names are creative
-const SEI_HIT_BONUS = 0.5;
-
-// Script boundary scoring
-const BOUNDARY_MATCH_BONUS = 1.2;
-const BOUNDARY_MATCH_WITH_DICT_BONUS = 0.8;
-const BOUNDARY_BEFORE_PENALTY = -3.0;
-const BOUNDARY_AFTER_PENALTY = -1.8;
-
-// Sei mixed-script penalty: OOV surname containing kana is unnatural
-const SEI_MIXED_SINGLE_HIRA_PENALTY = -2.5;
-const SEI_MIXED_SINGLE_KATA_PENALTY = -3.0;
-const SEI_MIXED_MULTI_KANA_PENALTY = -1.5;
+import {
+  BOTH_SINGLE_CHAR_PENALTY,
+  BOUNDARY_AFTER_PENALTY,
+  BOUNDARY_BEFORE_PENALTY,
+  BOUNDARY_MATCH_BONUS,
+  BOUNDARY_MATCH_WITH_DICT_BONUS,
+  MATCH_SCORE,
+  MEI_LENGTH_SCORE,
+  PAIR_BONUS,
+  SEI_HIT_BONUS,
+  SEI_LENGTH_SCORE,
+  SEI_MIXED_MULTI_KANA_PENALTY,
+  SEI_MIXED_SINGLE_HIRA_PENALTY,
+  SEI_MIXED_SINGLE_KATA_PENALTY,
+} from "./weights.js";
 
 // Cache for Set-based lookups built from string[]
 const setCache = new WeakMap<PackedLexicon, { sei: Set<string>; mei: Set<string> }>();
@@ -121,23 +92,32 @@ export function lookupMatch(
   return "none";
 }
 
+/** True for a match on the written form: surface or folded, not reading. */
+export function isWrittenFormMatch(match: MatchType): boolean {
+  return match === "surface" || match === "folded";
+}
+
+interface ScoreInput {
+  sei: string;
+  seiMatch: MatchType;
+  meiMatch: MatchType;
+  seiLen: number;
+  meiLen: number;
+  /** The unique script boundary position, or undefined if none. */
+  boundaryIndex: number | undefined;
+}
+
 /**
  * Calculate the score for a split candidate.
- *
- * @param sei - the surname candidate string
- * @param splitIndex - the character index where this candidate splits (i.e. sei length)
- * @param boundaryIndex - the unique kanji→kana boundary position, or undefined if none
  */
-export function calcScore(
-  sei: string,
-  mei: string,
-  seiMatch: MatchType,
-  meiMatch: MatchType,
-  seiLen: number,
-  meiLen: number,
-  splitIndex: number,
-  boundaryIndex: number | undefined,
-): number {
+export function calcScore({
+  sei,
+  seiMatch,
+  meiMatch,
+  seiLen,
+  meiLen,
+  boundaryIndex,
+}: ScoreInput): number {
   let score = 0;
 
   // Match scores (primary signal)
@@ -146,13 +126,13 @@ export function calcScore(
 
   // Surname hit bonus: surnames are a known finite set,
   // so a dictionary hit on sei is stronger evidence than on mei
-  if (seiMatch === "surface" || seiMatch === "folded") {
+  if (isWrittenFormMatch(seiMatch)) {
     score += SEI_HIT_BONUS;
   }
 
   // Length scores (secondary signal)
-  score += SEI_LENGTH_SCORE[Math.min(seiLen, 6)] ?? -0.5;
-  score += MEI_LENGTH_SCORE[Math.min(meiLen, 6)] ?? -0.5;
+  score += SEI_LENGTH_SCORE[Math.min(seiLen, 6)];
+  score += MEI_LENGTH_SCORE[Math.min(meiLen, 6)];
 
   // Pair bonus: both sides hit
   const seiHit = seiMatch !== "none";
@@ -176,12 +156,12 @@ export function calcScore(
 
   // Script boundary scoring
   if (boundaryIndex !== undefined) {
-    if (splitIndex === boundaryIndex) {
+    if (seiLen === boundaryIndex) {
       score += BOUNDARY_MATCH_BONUS;
-      if (seiMatch === "surface" || seiMatch === "folded") {
+      if (isWrittenFormMatch(seiMatch)) {
         score += BOUNDARY_MATCH_WITH_DICT_BONUS;
       }
-    } else if (splitIndex < boundaryIndex) {
+    } else if (seiLen < boundaryIndex) {
       score += BOUNDARY_BEFORE_PENALTY;
     } else {
       score += BOUNDARY_AFTER_PENALTY;
