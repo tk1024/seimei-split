@@ -1,13 +1,13 @@
 input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
 勅使河原宏	勅使河原/宏	1	dictionary	勅使河原/宏	1	dictionary
 長谷川博己	長谷川/博己	1	dictionary	長谷川/博己	1	dictionary
-五十嵐隼士	(unsplit)	0	insufficient	五十嵐/隼士	0.6183	low-confidence
+五十嵐隼士	五十嵐/隼士	0.75	sei-match	五十嵐/隼士	0.75	sei-match
 小比類巻かほる	小比類巻/かほる	1	dictionary	小比類巻/かほる	1	dictionary
 宇都宮徳馬	宇都宮/徳馬	1	dictionary	宇都宮/徳馬	1	dictionary
 二階堂ふみ	二階堂/ふみ	1	dictionary	二階堂/ふみ	1	dictionary
 東海林太郎	(unsplit)	0	insufficient	東海林/太郎	0.7	low-confidence
 小笠原道大	小笠原/道大	1	dictionary	小笠原/道大	1	dictionary
-上白石萌音	(unsplit)	0	insufficient	上白石/萌音	0.56	low-confidence
+上白石萌音	(unsplit)	0	insufficient	上白石/萌音	0.665	low-confidence
 四十住さくら	四十住/さくら	1	dictionary	四十住/さくら	1	dictionary
 西園寺公望	西園寺/公望	1	dictionary	西園寺/公望	1	dictionary
 大久保利通	大久保/利通	1	dictionary	大久保/利通	1	dictionary

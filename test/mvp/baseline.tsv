@@ -22,7 +22,7 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 村上春樹	村上/春樹	1	dictionary	村上/春樹	1	dictionary
 東野圭吾	東野/圭吾	1	dictionary	東野/圭吾	1	dictionary
 宮部みゆき	宮部/みゆき	1	dictionary	宮部/みゆき	1	dictionary
-池井戸潤	(unsplit)	0	insufficient	池井/戸潤	0.6417	low-confidence
+池井戸潤	(unsplit)	0	insufficient	池井/戸潤	0.619	low-confidence
 西園寺公望	西園寺/公望	1	dictionary	西園寺/公望	1	dictionary
 近衛文麿	近衛/文麿	1	dictionary	近衛/文麿	1	dictionary
 伊藤博文	伊藤/博文	1	dictionary	伊藤/博文	1	dictionary
@@ -49,7 +49,7 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 吉田沙保里	吉田/沙保里	1	dictionary	吉田/沙保里	1	dictionary
 伊調馨	伊調/馨	1	dictionary	伊調/馨	1	dictionary
 室伏広治	室伏/広治	1	dictionary	室伏/広治	1	dictionary
-桐生祥秀	(unsplit)	0	insufficient	桐生/祥秀	0.6417	low-confidence
+桐生祥秀	桐生/祥秀	0.75	sei-match	桐生/祥秀	0.75	sei-match
 山縣亮太	山縣/亮太	1	dictionary	山縣/亮太	1	dictionary
 坂本龍一	坂本/龍一	1	dictionary	坂本/龍一	1	dictionary
 久石譲	久石/譲	1	dictionary	久石/譲	1	dictionary
@@ -62,7 +62,7 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 手塚治虫	手塚/治虫	1	dictionary	手塚/治虫	1	dictionary
 鳥山明	鳥山/明	1	dictionary	鳥山/明	1	dictionary
 尾田栄一郎	尾田/栄一郎	1	dictionary	尾田/栄一郎	1	dictionary
-岸本斉史	(unsplit)	0	insufficient	岸本/斉史	0.6417	low-confidence
+岸本斉史	岸本/斉史	0.75	sei-match	岸本/斉史	0.75	sei-match
 井上雄彦	井上/雄彦	1	dictionary	井上/雄彦	1	dictionary
 高橋留美子	高橋/留美子	1	dictionary	高橋/留美子	1	dictionary
 荒木飛呂彦	荒木/飛呂彦	1	dictionary	荒木/飛呂彦	1	dictionary
@@ -107,8 +107,8 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 役所広司	役所/広司	1	dictionary	役所/広司	1	dictionary
 真田広之	真田/広之	1	dictionary	真田/広之	1	dictionary
 三浦春馬	三浦/春馬	1	dictionary	三浦/春馬	1	dictionary
-竹内涼真	(unsplit)	0	insufficient	竹内/涼真	0.6417	low-confidence
-山崎賢人	(unsplit)	0	insufficient	山崎/賢人	0.6417	low-confidence
+竹内涼真	竹内/涼真	0.75	sei-match	竹内/涼真	0.75	sei-match
+山崎賢人	山崎/賢人	0.75	sei-match	山崎/賢人	0.75	sei-match
 菅野美穂	菅野/美穂	1	dictionary	菅野/美穂	1	dictionary
 石田ゆり子	石田/ゆり子	1	dictionary	石田/ゆり子	1	dictionary
 長瀬智也	長瀬/智也	1	dictionary	長瀬/智也	1	dictionary
@@ -127,8 +127,8 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 遠藤さくら	遠藤/さくら	1	dictionary	遠藤/さくら	1	dictionary
 山下美月	山下/美月	1	dictionary	山下/美月	1	dictionary
 与田祐希	与田/祐希	1	dictionary	与田/祐希	1	dictionary
-久保史緒里	(unsplit)	0	insufficient	久保/史緒里	0.6067	low-confidence
-松村沙友理	(unsplit)	0	insufficient	松村/沙友理	0.6067	low-confidence
+久保史緒里	久保/史緒里	0.75	sei-match	久保/史緒里	0.75	sei-match
+松村沙友理	(unsplit)	0	insufficient	松村/沙友理	0.7	low-confidence
 秋元康	(unsplit)	0	insufficient	秋元/康	0.7	low-confidence
 前田敦子	前田/敦子	1	dictionary	前田/敦子	1	dictionary
 大島優子	大島/優子	1	dictionary	大島/優子	1	dictionary
@@ -140,8 +140,8 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 宮脇咲良	宮脇/咲良	1	dictionary	宮脇/咲良	1	dictionary
 矢吹奈子	矢吹/奈子	1	dictionary	矢吹/奈子	1	dictionary
 本田仁美	本田/仁美	1	dictionary	本田/仁美	1	dictionary
-松井珠理奈	(unsplit)	0	insufficient	松井/珠理奈	0.6067	low-confidence
-須田亜香里	(unsplit)	0	insufficient	須田/亜香里	0.6067	low-confidence
+松井珠理奈	(unsplit)	0	insufficient	松井/珠理奈	0.7	low-confidence
+須田亜香里	(unsplit)	0	insufficient	須田/亜香里	0.655	low-confidence
 古畑任三郎	古畑/任三郎	1	dictionary	古畑/任三郎	1	dictionary
 工藤新一	工藤/新一	1	dictionary	工藤/新一	1	dictionary
 毛利小五郎	毛利/小五郎	1	dictionary	毛利/小五郎	1	dictionary
@@ -205,5 +205,5 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 鈴木誠也	鈴木/誠也	1	dictionary	鈴木/誠也	1	dictionary
 吉田正尚	吉田/正尚	1	dictionary	吉田/正尚	1	dictionary
 村上宗隆	村上/宗隆	1	dictionary	村上/宗隆	1	dictionary
-佐々木朗希	(unsplit)	0	insufficient	佐々木/朗希	0.6183	low-confidence
+佐々木朗希	(unsplit)	0	insufficient	佐々木/朗希	0.7	low-confidence
 山本由伸	山本/由伸	1	dictionary	山本/由伸	1	dictionary

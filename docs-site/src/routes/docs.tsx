@@ -78,13 +78,13 @@ const result = analyze("田中太郎");
             <div className="text-xs font-semibold mb-1" style={{ color: "var(--text-tertiary)" }}>戻り値</div>
             <CodeBlock>{`interface AnalyzeResult {
   best: SeimeiResult;          // 最良の分割結果
-  confidence: number;          // 1: 空白区切り・辞書 / 0.8: 文字種境界・カタカナ姓 / 0.01〜0.7: 低信頼の推定 / 0: 未分割
+  confidence: number;          // 1: 空白区切り・辞書 / 0.8: 文字種境界・カタカナ姓 / 0.75: 姓の辞書一致 / 0.01〜0.7: 低信頼の推定 / 0: 未分割
   reason: AnalyzeReason;       // 分割した（しなかった）理由
   candidates: SeimeiCandidate[]; // 全候補（スコア降順）。katakana-sei では best が先頭と一致しないことがある
 }
 
 type AnalyzeReason =
-  | "space" | "dictionary" | "boundary" | "katakana-sei"
+  | "space" | "dictionary" | "sei-match" | "boundary" | "katakana-sei"
   | "low-confidence" | "not-full-name" | "insufficient"
   | "no-candidate" | "no-dictionary";
 

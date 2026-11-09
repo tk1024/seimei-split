@@ -1,9 +1,9 @@
 input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
 宮内美つ子	宮内/美つ子	1	dictionary	宮内/美つ子	1	dictionary
-西澤美ち子	(unsplit)	0	insufficient	西澤/美ち子	0.6067	low-confidence
-松金よね子	(unsplit)	0	insufficient	松金/よね子	0.6067	low-confidence
+西澤美ち子	西澤/美ち子	0.75	sei-match	西澤/美ち子	0.75	sei-match
+松金よね子	松金/よね子	0.75	sei-match	松金/よね子	0.75	sei-match
 日野てる子	日野/てる子	1	dictionary	日野/てる子	1	dictionary
-小林きな子	(unsplit)	0	insufficient	小林/きな子	0.6067	low-confidence
+小林きな子	小林/きな子	0.75	sei-match	小林/きな子	0.75	sei-match
 松尾よし子	松尾/よし子	1	dictionary	松尾/よし子	1	dictionary
 藤あや子	藤/あや子	1	dictionary	藤/あや子	1	dictionary
 丘みつ子	丘/みつ子	1	dictionary	丘/みつ子	1	dictionary

@@ -1,5 +1,6 @@
 import type { MatchType, NameKind, PackedLexicon, ReadingData } from "./types.js";
 import { foldVariants, hiraganaToKatakana, scriptOf } from "./normalize.js";
+import { positionLogRatio } from "./charStats.js";
 import {
   BOTH_SINGLE_CHAR_PENALTY,
   BOUNDARY_AFTER_PENALTY,
@@ -8,7 +9,9 @@ import {
   BOUNDARY_MATCH_WITH_DICT_BONUS,
   MATCH_SCORE,
   MEI_LENGTH_SCORE,
+  ONE_SIDED_SINGLE_CHAR_PENALTY,
   PAIR_BONUS,
+  POSITION_WEIGHT,
   SEI_HIT_BONUS,
   SEI_LENGTH_SCORE,
   SEI_MIXED_MULTI_KANA_PENALTY,
@@ -99,12 +102,14 @@ export function isWrittenFormMatch(match: MatchType): boolean {
 
 interface ScoreInput {
   sei: string;
+  mei: string;
   seiMatch: MatchType;
   meiMatch: MatchType;
   seiLen: number;
   meiLen: number;
   /** The unique script boundary position, or undefined if none. */
   boundaryIndex: number | undefined;
+  lexicon: PackedLexicon;
 }
 
 /**
@@ -112,11 +117,13 @@ interface ScoreInput {
  */
 export function calcScore({
   sei,
+  mei,
   seiMatch,
   meiMatch,
   seiLen,
   meiLen,
   boundaryIndex,
+  lexicon,
 }: ScoreInput): number {
   let score = 0;
 
@@ -150,12 +157,19 @@ export function calcScore({
   }
 
   // Single char sei without dict hit is not allowed
-  if (seiLen === 1 && !seiHit) {
-    score = -Infinity;
-  }
+  if (seiLen === 1 && !seiHit) return -Infinity;
 
-  // Script boundary scoring
-  if (boundaryIndex !== undefined) {
+  // Names with a script boundary already have a stronger signal,
+  // so these two adjustments apply only without one.
+  if (boundaryIndex === undefined) {
+    if ((seiLen === 1 && seiHit && !meiHit) || (meiLen === 1 && meiHit && !seiHit)) {
+      score += ONE_SIDED_SINGLE_CHAR_PENALTY;
+    }
+
+    // Character statistics adjust the side not in the dictionary
+    if (!seiHit) score += POSITION_WEIGHT * positionLogRatio(sei, "sei", lexicon);
+    if (!meiHit) score += POSITION_WEIGHT * positionLogRatio(mei, "mei", lexicon);
+  } else {
     if (seiLen === boundaryIndex) {
       score += BOUNDARY_MATCH_BONUS;
       if (isWrittenFormMatch(seiMatch)) {

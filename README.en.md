@@ -48,6 +48,7 @@ import { split, setLexicon } from "seimei-split/core";
 |---|---|---|
 | 1 | Whitespace, or strong dictionary evidence | `space` / `dictionary` |
 | 0.8 | Script boundary, or the katakana surname rule | `boundary` / `katakana-sei` |
+| 0.75 | Surname in the dictionary, and the given name is not but looks like one | `sei-match` |
 | 0.01–0.7 | Best guess from `allowLowConfidence` | `low-confidence` |
 | 0 | Not split | `not-full-name` / `insufficient` / `no-candidate` / `no-dictionary` |
 
@@ -63,8 +64,8 @@ For names without spaces, the library uses a dictionary-based scoring algorithm:
 
 1. **Candidate enumeration** — all possible split positions
 2. **Dictionary matching** — surface (4.0), folded (2.5), reading (1.0), none (0)
-3. **Scoring** — `matchScore + seiHitBonus + lengthScore + pairBonus + boundaryScore + seiShapePenalty`
-4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0`
+3. **Scoring** — `matchScore + seiHitBonus + lengthScore + pairBonus + boundaryScore + seiShapePenalty + singleCharPenalty + positionScore`
+4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0` with both sides in the dictionary or a script boundary; a surname-only match with a name-like given name is accepted at confidence 0.75
 5. **Exception flows** — katakana surname detection, kanji variant folding
 
 ## Status
@@ -73,18 +74,18 @@ Accuracy is measured across 12 categories (339 test cases).
 
 | Category | Normal | allowLowConfidence |
 |---|---|---|
-| MVP (208 names) | 94.7% | 99.5% |
+| MVP (208 names) | 97.1% | 99.5% |
 | Kanji surname + hiragana | 100% | 100% |
 | Kanji surname + katakana | 100% | 100% |
 | Kana surname + kanji | 87.5% | 100% |
 | VTuber names | 6.7% | 93.3% |
 | Single-char surname | 92.3% | 92.3% |
-| 3+ char surname | 75.0% | 100% |
-| Variant kanji | 86.7% | 100% |
-| ノ・ヶ・々 in surname | 81.8% | 100% |
+| 3+ char surname | 83.3% | 100% |
+| Variant kanji | 93.3% | 100% |
+| ノ・ヶ・々 in surname | 90.9% | 100% |
 | All kana | 86.7% | 100% |
-| Mixed kana in name | 70.0% | 100% |
-| Ambiguous splits | 80.0% | 100% |
+| Mixed kana in name | 100% | 100% |
+| Ambiguous splits | 90.9% | 100% |
 
 **Zero wrong splits across all categories.**
 

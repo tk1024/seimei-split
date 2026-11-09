@@ -23,7 +23,7 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 神楽めあ	(unsplit)	0	insufficient	神楽/めあ	0.2567	low-confidence
 周防パトラ	周防/パトラ	1	dictionary	周防/パトラ	1	dictionary
 もこ田めめめ	(unsplit)	0	insufficient	もこ/田めめめ	0.0583	low-confidence
-鳳玲天々	(unsplit)	0	insufficient	鳳/玲天々	0.56	low-confidence
+鳳玲天々	(unsplit)	0	insufficient	鳳/玲天々	0.4431	low-confidence
 宗谷いちか	(unsplit)	0	insufficient	宗谷/いちか	0.2217	low-confidence
 花奏かのん	(unsplit)	0	insufficient	花奏/かのん	0.6883	low-confidence
 奏天まひろ	(unsplit)	0	insufficient	奏天/まひろ	0.6883	low-confidence

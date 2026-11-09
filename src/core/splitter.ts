@@ -14,6 +14,7 @@ import {
   isNonJapanese,
 } from "./normalize.js";
 import type { ScriptBoundary } from "./normalize.js";
+import { hasNameLikeEnds } from "./charStats.js";
 import { calcScore, isWrittenFormMatch, lookupMatch } from "./scorer.js";
 import {
   BOUNDARY_CONFIDENCE,
@@ -22,15 +23,22 @@ import {
   CONFIDENCE_THRESHOLD,
   LOW_CONFIDENCE_MAX,
   LOW_CONFIDENCE_MIN,
+  SEI_MATCH_CONFIDENCE,
+  SEI_MATCH_GAP,
+  SEI_MATCH_MIN_SCORE,
 } from "./weights.js";
 
 // Words that follow a surname but are not a given name: titles and common
-// business words. This is a short list of frequent words, not a full dictionary.
-const NON_NAME_MEI = new Set([
+// business words. These are short lists of frequent words, not full dictionaries.
+const TITLES = new Set([
   "さん", "さま", "様", "くん", "君", "ちゃん", "殿", "氏", "先生",
   "サン", "サマ", "クン", "チャン",
+]);
+
+const BUSINESS_WORDS = new Set([
   "ビル", "マンション", "アパート", "ホテル", "商店", "病院", "医院",
   "銀行", "会社", "学校", "大学", "工業", "製薬", "電器", "食堂",
+  "精機", "興業", "通運", "光学", "法人", "物産", "産業", "商事", "建設", "不動産",
   "うどん", "そば", "ラーメン", "カレー",
 ]);
 
@@ -43,6 +51,16 @@ export interface AnalysisContext {
   boundary: ScriptBoundary | undefined;
   allowLowConfidence: boolean;
 }
+
+// Job titles after a surname. Checked only when the given name is not in the
+// dictionary, because some of these are real given names (博士, for example).
+const ROLE_WORDS = [
+  "社長", "会長", "部長", "課長", "係長", "店長", "院長", "校長", "園長",
+  "市長", "町長", "村長", "知事", "総理", "大臣", "議員",
+  "選手", "監督", "教授", "博士", "医師", "弁護士", "税理士", "先輩",
+  "主任", "学長", "総長", "代議士", "親方", "和尚", "夫人",
+];
+const NON_NAME_ENDINGS = [...TITLES, ...ROLE_WORDS];
 
 function isSingleDictionaryWord({ name, lexicon, isKana, readingData }: AnalysisContext): boolean {
   return lookupMatch(name, "sei", lexicon, isKana, readingData) !== "none"
@@ -85,11 +103,13 @@ function enumerateCandidates(context: AnalysisContext): SeimeiCandidate[] {
     const meiMatch = lookupMatch(mei, "mei", lexicon, isKana, readingData);
     const score = calcScore({
       sei,
+      mei,
       seiMatch,
       meiMatch,
       seiLen,
       meiLen,
       boundaryIndex: boundary?.index,
+      lexicon,
     });
 
     candidates.push({ sei, mei, score, seiMatch, meiMatch });
@@ -102,12 +122,18 @@ function enumerateCandidates(context: AnalysisContext): SeimeiCandidate[] {
  * Decide whether to adopt a split from candidates sorted best first.
  */
 export function decide(candidates: SeimeiCandidate[], context: AnalysisContext): AnalyzeResult {
-  const { name, lexicon, readingData, boundary, allowLowConfidence } = context;
+  const { name, lexicon, isKana, readingData, boundary, allowLowConfidence } = context;
   const best = candidates[0];
   if (!best) return unsplit(name, "no-candidate");
 
   // Not a full name: never split, even in low confidence mode
-  if (isSingleDictionaryWord(context) || NON_NAME_MEI.has(best.mei)) {
+  // Titles are checked on the best split only: 尊氏 ends with 氏 but is a given name.
+  // Business words are checked on every split, since statistics can reorder them.
+  if (
+    isSingleDictionaryWord(context)
+    || TITLES.has(best.mei)
+    || candidates.some((c) => BUSINESS_WORDS.has(c.mei))
+  ) {
     return unsplit(name, "not-full-name", candidates);
   }
 
@@ -130,8 +156,11 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
   const gap = second ? best.score - second.score : Infinity;
   const meetsThreshold = best.score >= CONFIDENCE_THRESHOLD;
 
-  // 1. Normal confidence: dictionary-based high score
-  if (meetsThreshold && gap >= CONFIDENCE_GAP) {
+  // 1. Normal confidence: both sides in the dictionary, or a script boundary
+  //    (the character statistics alone must not reach this tier)
+  const hasStrongEvidence = boundary !== undefined
+    || (best.seiMatch !== "none" && best.meiMatch !== "none");
+  if (hasStrongEvidence && meetsThreshold && gap >= CONFIDENCE_GAP) {
     return accept(best, 1.0, "dictionary");
   }
 
@@ -153,7 +182,21 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     }
   }
 
-  // 4. Low confidence mode
+  // 4. Surname match: the given name is unknown but shaped like one
+  if (
+    boundary === undefined
+    && !isKana
+    && isWrittenFormMatch(best.seiMatch)
+    && best.meiMatch === "none"
+    && best.score >= SEI_MATCH_MIN_SCORE
+    && gap >= SEI_MATCH_GAP
+    && !NON_NAME_ENDINGS.some((word) => best.mei.endsWith(word))
+    && hasNameLikeEnds(best.mei, lexicon)
+  ) {
+    return accept(best, SEI_MATCH_CONFIDENCE, "sei-match");
+  }
+
+  // 5. Low confidence mode
   if (allowLowConfidence) {
     return accept(best, lowConfidence(best.score), "low-confidence");
   }

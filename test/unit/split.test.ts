@@ -237,6 +237,17 @@ describe("split", () => {
     });
   });
 
+  describe("1 文字の辞書一致", () => {
+    it("反対側に根拠がなければ減点する", () => {
+      const candidate = analyze("林工場").candidates.find((c) => c.sei === "林" && c.mei === "工場");
+      expect(candidate?.score).toBeCloseTo(3.6);
+    });
+
+    it("文字種境界があれば減点しない", () => {
+      expect(split("林マリン")).toEqual({ sei: "林", mei: "マリン" });
+    });
+  });
+
   describe("姓ヒットボーナス", () => {
     it("姓辞書ヒットは名辞書ヒットより優先される", () => {
       // 松村/沙友理 (sei=surface) vs 松村沙/友理 (mei=surface)

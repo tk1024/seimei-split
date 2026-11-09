@@ -90,11 +90,12 @@ function HowItWorksPage() {
             <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--text-secondary)" }}>
               各候補のスコアを以下の式で算出します:
             </p>
-            <CodeBlock>{`score = matchScore(姓) + matchScore(名) + lengthScore(姓) + lengthScore(名) + pairBonus`}</CodeBlock>
+            <CodeBlock>{`score = matchScore(姓) + matchScore(名) + lengthScore(姓) + lengthScore(名) + pairBonus + 文字の統計`}</CodeBlock>
             <ul className="mt-3 space-y-2 text-sm" style={{ color: "var(--text-secondary)" }}>
               <li><strong className="font-semibold" style={{ color: "var(--text)" }}>matchScore:</strong> 辞書マッチスコア（上表参照）</li>
               <li><strong className="font-semibold" style={{ color: "var(--text)" }}>lengthScore:</strong> 文字数に基づくボーナス/ペナルティ。2文字が最高（+0.5）、5文字以上はペナルティ（-0.2 ~ -0.4）</li>
               <li><strong className="font-semibold" style={{ color: "var(--text)" }}>pairBonus:</strong> 姓名両方が辞書に一致すると +0.8</li>
+              <li><strong className="font-semibold" style={{ color: "var(--text)" }}>文字の統計:</strong> 文字種境界がない場合に、反対側に根拠のない 1 文字の一致を -1.5 し、辞書にない側を先頭字・末尾字の傾向で加減点</li>
               <li><strong className="font-semibold" style={{ color: "var(--text)" }}>制約:</strong> 1文字姓は辞書ヒット必須。ヒットしない場合は候補から除外</li>
             </ul>
           </div>
@@ -105,9 +106,13 @@ function HowItWorksPage() {
               最良候補が以下の条件を満たす場合に採用されます:
             </p>
             <ul className="space-y-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <li>姓名の両方が辞書にあるか、文字種境界があること</li>
               <li><code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>score &gt;= 6.0</code> - 信頼度閾値</li>
               <li><code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>bestScore - secondBestScore &gt;= 1.0</code> - 十分な差</li>
             </ul>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              姓だけが辞書にある場合は、名が 2 文字以上、スコアが 4.5 以上、次点との差が 2.0 以上で、名の先頭字と末尾字の傾向が姓より名に近く、名が 3 文字以下で、全かなでなく、末尾が敬称や役職語でなければ信頼度 0.75 で採用します。
+            </p>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               閾値を満たさない場合は未分割で返します。<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>allowLowConfidence: true</code> を指定するとベストエフォートの結果を返します。
             </p>
