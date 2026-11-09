@@ -189,9 +189,14 @@ function c(e) {
 	return a.test(e) ? "K" : o.test(e) ? "H" : s.test(e) ? "T" : "O";
 }
 function l(e) {
-	let t = [...e], n = 0, r, i, a;
+	let t = [];
+	for (let n of e) {
+		let e = n === "ー" && t[0] === "K" && t[t.length - 1] === "H";
+		t.push(e ? "H" : c(n));
+	}
+	let n = 0, r, i, a;
 	for (let e = 1; e < t.length; e++) {
-		let o = c(t[e - 1]), s = c(t[e]);
+		let o = t[e - 1], s = t[e];
 		if (o !== s) {
 			if (o === "O" || s === "O" || (n++, n > 1)) return;
 			r = e, i = o, a = s;
@@ -233,7 +238,7 @@ var d = {
 	4: 0,
 	5: -.2,
 	6: -.4
-}, m = .8, h = .5, g = -1.5, _ = .3, v = 1.5, ee = 1e-4, y = 1.2, b = .8, x = -1.8, S = -2.5, te = -1.5, C = .8, ne = .75, w = .3, T = .01, E = .7, D = E;
+}, m = .8, h = .5, g = -1.5, _ = .3, v = 1.5, ee = 1e-4, y = 1.2, b = .8, x = -1.8, S = -2.5, C = -1.5, w = .8, te = .75, ne = .3, T = .01, E = .7, D = E;
 // src/core/charStats.ts
 function O(e, t) {
 	e.set(t, (e.get(t) ?? 0) + 1);
@@ -274,7 +279,7 @@ function re(e, t) {
 	let r = j(t), i = n[0], a = n[n.length - 1];
 	if ((r.mei.first.get(u(i)) ?? 0) < 5 || (r.mei.last.get(u(a)) ?? 0) < 5) return !1;
 	let o = (e, t) => c(e) === "K" ? M(e, t, r) : 0;
-	return o(i, "first") + o(a, "last") >= w;
+	return o(i, "first") + o(a, "last") >= ne;
 }
 // src/core/scorer.ts
 var P = /* @__PURE__ */ new WeakMap();
@@ -291,7 +296,7 @@ function I(e) {
 function L(e, t) {
 	if (t !== "none") return 0;
 	let n = I(e), r = /^K+([HT]+)$/.exec(n)?.[1];
-	return r ? r.length === 1 ? r[0] === "T" ? -3 : S : te : 0;
+	return r ? r.length === 1 ? r[0] === "T" ? -3 : S : C : 0;
 }
 function R(t, n, r, i, a) {
 	let o = F(r), s = n === "sei" ? o.sei : o.mei;
@@ -375,31 +380,32 @@ function Y(e) {
 	}
 	return c.sort((e, t) => t.score - e.score);
 }
-function ie(e, t) {
-	let { name: r, lexicon: i, isKana: a, readingData: o, boundary: s, allowLowConfidence: c } = t, l = e[0];
-	if (!l) return q(r, "no-candidate");
-	if (G(t) || V.has(u(l.mei)) || e.some((e) => H.has(u(e.mei)))) return q(r, "not-full-name", e);
-	let d = e.filter((e) => Number.isFinite(e.score));
-	if (d.length === 0) return q(r, "insufficient", e);
-	let f = (t, n, r) => ({
+function ie(t, r) {
+	let { name: i, lexicon: a, isKana: o, readingData: s, boundary: c, allowLowConfidence: l } = r, d = t[0];
+	if (!d) return q(i, "no-candidate");
+	let f = u(d.mei);
+	if (G(r) || V.has(f.replace(/ー/g, "")) || H.has(e(f)) || t.some((e) => H.has(u(e.mei)))) return q(i, "not-full-name", t);
+	let p = t.filter((e) => Number.isFinite(e.score));
+	if (p.length === 0) return q(i, "insufficient", t);
+	let m = (e, n, r) => ({
 		best: {
-			sei: t.sei,
-			mei: t.mei
+			sei: e.sei,
+			mei: e.mei
 		},
 		confidence: n,
 		reason: r,
-		candidates: e
-	}), p = e[1], m = p ? l.score - p.score : Infinity, h = l.score >= 6, g = s !== void 0 || z(l.seiMatch) && z(l.meiMatch);
-	if (h && m >= 1) {
-		if (g) return f(l, 1, "dictionary");
-		if (l.seiMatch !== "none" && l.meiMatch !== "none") return f(l, D, "reading");
+		candidates: t
+	}), h = t[1], g = h ? d.score - h.score : Infinity, _ = d.score >= 6, v = c !== void 0 || z(d.seiMatch) && z(d.meiMatch);
+	if (_ && g >= 1) {
+		if (v) return m(d, 1, "dictionary");
+		if (d.seiMatch !== "none" && d.meiMatch !== "none") return m(d, D, "reading");
 	}
-	if (s && K(l, s) && z(s.direction === "kanji-to-kana" ? l.seiMatch : l.meiMatch) && h && m >= .5) return f(l, C, "boundary");
-	if (s?.direction === "kana-to-kanji") {
-		let e = d.find((e) => K(e, s) && n(e.sei));
-		if (e && z(R(e.mei, "sei", i, !1, o))) return f(e, C, "katakana-sei");
+	if (c && K(d, c) && z(c.direction === "kanji-to-kana" ? d.seiMatch : d.meiMatch) && _ && g >= .5) return m(d, w, "boundary");
+	if (c?.direction === "kana-to-kanji") {
+		let e = p.find((e) => K(e, c) && n(e.sei));
+		if (e && z(R(e.mei, "sei", a, !1, s))) return m(e, w, "katakana-sei");
 	}
-	return s === void 0 && !a && z(l.seiMatch) && l.meiMatch === "none" && l.score >= 4.5 && m >= 2 && !W.some((e) => u(l.mei).endsWith(e)) && re(l.mei, i) ? f(l, ne, "sei-match") : c ? f(l, J(l.score), "low-confidence") : q(r, "insufficient", e);
+	return c === void 0 && !o && z(d.seiMatch) && d.meiMatch === "none" && d.score >= 4.5 && g >= 2 && !W.some((e) => u(d.mei).endsWith(e)) && re(d.mei, a) ? m(d, te, "sei-match") : l ? m(d, J(d.score), "low-confidence") : q(i, "insufficient", t);
 }
 var X, Z;
 function Q(e) {
