@@ -1,13 +1,13 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-勅使河原宏	勅使河原/宏	1	勅使河原/宏	1
-長谷川博己	長谷川/博己	1	長谷川/博己	1
-五十嵐隼士	(unsplit)	0	五十嵐/隼士	0.8833
-小比類巻かほる	小比類巻/かほる	1	小比類巻/かほる	1
-宇都宮徳馬	宇都宮/徳馬	1	宇都宮/徳馬	1
-二階堂ふみ	二階堂/ふみ	1	二階堂/ふみ	1
-東海林太郎	(unsplit)	0	東海林/太郎	1.6833
-小笠原道大	小笠原/道大	1	小笠原/道大	1
-上白石萌音	(unsplit)	0	上白石/萌音	0.8
-四十住さくら	四十住/さくら	1	四十住/さくら	1
-西園寺公望	西園寺/公望	1	西園寺/公望	1
-大久保利通	大久保/利通	1	大久保/利通	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+勅使河原宏	勅使河原/宏	1	dictionary	勅使河原/宏	1	dictionary
+長谷川博己	長谷川/博己	1	dictionary	長谷川/博己	1	dictionary
+五十嵐隼士	(unsplit)	0	insufficient	五十嵐/隼士	0.6183	low-confidence
+小比類巻かほる	小比類巻/かほる	1	dictionary	小比類巻/かほる	1	dictionary
+宇都宮徳馬	宇都宮/徳馬	1	dictionary	宇都宮/徳馬	1	dictionary
+二階堂ふみ	二階堂/ふみ	1	dictionary	二階堂/ふみ	1	dictionary
+東海林太郎	(unsplit)	0	insufficient	東海林/太郎	0.7	low-confidence
+小笠原道大	小笠原/道大	1	dictionary	小笠原/道大	1	dictionary
+上白石萌音	(unsplit)	0	insufficient	上白石/萌音	0.56	low-confidence
+四十住さくら	四十住/さくら	1	dictionary	四十住/さくら	1	dictionary
+西園寺公望	西園寺/公望	1	dictionary	西園寺/公望	1	dictionary
+大久保利通	大久保/利通	1	dictionary	大久保/利通	1	dictionary

@@ -52,3 +52,7 @@ export const CONFIDENCE_GAP = 1.0;
 // and has dictionary evidence, grant confidence 0.8
 export const BOUNDARY_CONFIDENCE = 0.8;
 export const BOUNDARY_CONFIDENCE_GAP = 0.5;
+
+// Low confidence stays below BOUNDARY_CONFIDENCE and above 0, which means unsplit
+export const LOW_CONFIDENCE_MIN = 0.01;
+export const LOW_CONFIDENCE_MAX = 0.7;

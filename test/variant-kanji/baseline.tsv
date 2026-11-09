@@ -1,16 +1,16 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-齋藤飛鳥	齋藤/飛鳥	1	齋藤/飛鳥	1
-齊藤京子	齊藤/京子	1	齊藤/京子	1
-齊藤工	齊藤/工	1	齊藤/工	1
-髙橋大輔	髙橋/大輔	1	髙橋/大輔	1
-髙橋ひかる	髙橋/ひかる	1	髙橋/ひかる	1
-髙嶋政宏	髙嶋/政宏	1	髙嶋/政宏	1
-渡邊圭祐	渡邊/圭祐	1	渡邊/圭祐	1
-濵田崇裕	(unsplit)	0	濵田/崇裕	0.9167
-兒玉清	兒玉/清	1	兒玉/清	1
-眞鍋かをり	眞鍋/かをり	1	眞鍋/かをり	1
-柳樂優弥	(unsplit)	0	柳樂/優弥	0.8333
-櫻井翔	櫻井/翔	1	櫻井/翔	1
-澤穂希	澤/穂希	1	澤/穂希	1
-榮倉奈々	榮倉/奈々	1	榮倉/奈々	1
-髙田延彦	髙田/延彦	1	髙田/延彦	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+齋藤飛鳥	齋藤/飛鳥	1	dictionary	齋藤/飛鳥	1	dictionary
+齊藤京子	齊藤/京子	1	dictionary	齊藤/京子	1	dictionary
+齊藤工	齊藤/工	1	dictionary	齊藤/工	1	dictionary
+髙橋大輔	髙橋/大輔	1	dictionary	髙橋/大輔	1	dictionary
+髙橋ひかる	髙橋/ひかる	1	dictionary	髙橋/ひかる	1	dictionary
+髙嶋政宏	髙嶋/政宏	1	dictionary	髙嶋/政宏	1	dictionary
+渡邊圭祐	渡邊/圭祐	1	dictionary	渡邊/圭祐	1	dictionary
+濵田崇裕	(unsplit)	0	insufficient	濵田/崇裕	0.6417	low-confidence
+兒玉清	兒玉/清	1	dictionary	兒玉/清	1	dictionary
+眞鍋かをり	眞鍋/かをり	1	dictionary	眞鍋/かをり	1	dictionary
+柳樂優弥	(unsplit)	0	insufficient	柳樂/優弥	0.5833	low-confidence
+櫻井翔	櫻井/翔	1	dictionary	櫻井/翔	1	dictionary
+澤穂希	澤/穂希	1	dictionary	澤/穂希	1	dictionary
+榮倉奈々	榮倉/奈々	1	dictionary	榮倉/奈々	1	dictionary
+髙田延彦	髙田/延彦	1	dictionary	髙田/延彦	1	dictionary

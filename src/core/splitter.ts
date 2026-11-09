@@ -1,4 +1,5 @@
 import type {
+  AnalyzeReason,
   AnalyzeResult,
   PackedLexicon,
   ReadingData,
@@ -19,6 +20,8 @@ import {
   BOUNDARY_CONFIDENCE_GAP,
   CONFIDENCE_GAP,
   CONFIDENCE_THRESHOLD,
+  LOW_CONFIDENCE_MAX,
+  LOW_CONFIDENCE_MIN,
 } from "./weights.js";
 
 // Words that follow a surname but are not a given name: titles and common
@@ -50,8 +53,17 @@ function splitsAt(candidate: SeimeiCandidate, boundary: ScriptBoundary): boolean
   return [...candidate.sei].length === boundary.index;
 }
 
-function unsplit(name: string, candidates: SeimeiCandidate[] = []): AnalyzeResult {
-  return { best: { sei: name, mei: "" }, confidence: 0, candidates };
+function unsplit(
+  name: string,
+  reason: AnalyzeReason,
+  candidates: SeimeiCandidate[] = [],
+): AnalyzeResult {
+  return { best: { sei: name, mei: "" }, confidence: 0, reason, candidates };
+}
+
+function lowConfidence(score: number): number {
+  const scaled = (score / CONFIDENCE_THRESHOLD) * LOW_CONFIDENCE_MAX;
+  return Math.min(Math.max(scaled, LOW_CONFIDENCE_MIN), LOW_CONFIDENCE_MAX);
 }
 
 /**
@@ -92,16 +104,25 @@ function enumerateCandidates(context: AnalysisContext): SeimeiCandidate[] {
 export function decide(candidates: SeimeiCandidate[], context: AnalysisContext): AnalyzeResult {
   const { name, lexicon, readingData, boundary, allowLowConfidence } = context;
   const best = candidates[0];
-  if (!best) return unsplit(name);
+  if (!best) return unsplit(name, "no-candidate");
 
   // Not a full name: never split, even in low confidence mode
   if (isSingleDictionaryWord(context) || NON_NAME_MEI.has(best.mei)) {
-    return unsplit(name, candidates);
+    return unsplit(name, "not-full-name", candidates);
   }
 
-  const accept = (candidate: SeimeiCandidate, confidence: number): AnalyzeResult => ({
+  // A forbidden split (score -Infinity) is never adopted, even in low confidence mode
+  const adoptable = candidates.filter((c) => Number.isFinite(c.score));
+  if (adoptable.length === 0) return unsplit(name, "insufficient", candidates);
+
+  const accept = (
+    candidate: SeimeiCandidate,
+    confidence: number,
+    reason: AnalyzeReason,
+  ): AnalyzeResult => ({
     best: { sei: candidate.sei, mei: candidate.mei },
     confidence,
+    reason,
     candidates,
   });
 
@@ -111,7 +132,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
 
   // 1. Normal confidence: dictionary-based high score
   if (meetsThreshold && gap >= CONFIDENCE_GAP) {
-    return accept(best, 1.0);
+    return accept(best, 1.0, "dictionary");
   }
 
   // 2. Boundary confidence: best candidate aligns with script boundary
@@ -119,27 +140,25 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
   if (boundary && splitsAt(best, boundary)) {
     const evidence = boundary.direction === "kanji-to-kana" ? best.seiMatch : best.meiMatch;
     if (isWrittenFormMatch(evidence) && meetsThreshold && gap >= BOUNDARY_CONFIDENCE_GAP) {
-      return accept(best, BOUNDARY_CONFIDENCE);
+      return accept(best, BOUNDARY_CONFIDENCE, "boundary");
     }
   }
 
   // 3. Katakana-sei exception: real Japanese surnames are never pure katakana
   //    (e.g. ジャガー/横田), so look up the kanji part in the surname dictionary.
   if (boundary?.direction === "kana-to-kanji") {
-    const candidate = candidates.find(
-      (c) => splitsAt(c, boundary) && isAllKatakana(c.sei),
-    );
+    const candidate = adoptable.find((c) => splitsAt(c, boundary) && isAllKatakana(c.sei));
     if (candidate && isWrittenFormMatch(lookupMatch(candidate.mei, "sei", lexicon, false, readingData))) {
-      return accept(candidate, BOUNDARY_CONFIDENCE);
+      return accept(candidate, BOUNDARY_CONFIDENCE, "katakana-sei");
     }
   }
 
   // 4. Low confidence mode
   if (allowLowConfidence) {
-    return accept(best, best.score / CONFIDENCE_THRESHOLD);
+    return accept(best, lowConfidence(best.score), "low-confidence");
   }
 
-  return unsplit(name, candidates);
+  return unsplit(name, "insufficient", candidates);
 }
 
 let defaultLexicon: PackedLexicon | undefined;
@@ -181,16 +200,22 @@ export function split(fullName: string, options?: SplitOptions): SeimeiResult {
 export function analyze(fullName: string, options?: SplitOptions): AnalyzeResult {
   const trimmed = fullName.trim();
 
-  if (!trimmed) return unsplit(trimmed);
+  if (!trimmed) return unsplit(trimmed, "no-candidate");
 
   // Space-delimited: split directly
   const parts = trimmed.split(/[\s\u3000]+/);
   if (parts.length >= 2) {
-    return { best: { sei: parts[0], mei: parts.slice(1).join(" ") }, confidence: 1.0, candidates: [] };
+    return {
+      best: { sei: parts[0], mei: parts.slice(1).join(" ") },
+      confidence: 1.0,
+      reason: "space",
+      candidates: [],
+    };
   }
 
   const lexicon = options?.lexicon ?? defaultLexicon;
-  if (isNonJapanese(trimmed) || !lexicon) return unsplit(trimmed);
+  if (!lexicon) return unsplit(trimmed, "no-dictionary");
+  if (isNonJapanese(trimmed)) return unsplit(trimmed, "no-candidate");
 
   const context: AnalysisContext = {
     name: trimmed,

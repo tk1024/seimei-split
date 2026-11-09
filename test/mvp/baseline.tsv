@@ -1,209 +1,209 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-田中太郎	田中/太郎	1	田中/太郎	1
-佐藤花子	佐藤/花子	1	佐藤/花子	1
-鈴木一郎	鈴木/一郎	1	鈴木/一郎	1
-高橋健太	高橋/健太	1	高橋/健太	1
-渡辺美咲	渡辺/美咲	1	渡辺/美咲	1
-伊藤翔	伊藤/翔	1	伊藤/翔	1
-山本直樹	山本/直樹	1	山本/直樹	1
-中村優子	中村/優子	1	中村/優子	1
-小林大輔	小林/大輔	1	小林/大輔	1
-加藤真由美	加藤/真由美	1	加藤/真由美	1
-吉田拓也	吉田/拓也	1	吉田/拓也	1
-山田太一	山田/太一	1	山田/太一	1
-松本清張	松本/清張	1	松本/清張	1
-井上靖	井上/靖	1	井上/靖	1
-森鷗外	森/鷗外	1	森/鷗外	1
-夏目漱石	夏目/漱石	1	夏目/漱石	1
-芥川龍之介	芥川/龍之介	1	芥川/龍之介	1
-太宰治	太宰/治	1	太宰/治	1
-三島由紀夫	三島/由紀夫	1	三島/由紀夫	1
-川端康成	川端/康成	1	川端/康成	1
-村上春樹	村上/春樹	1	村上/春樹	1
-東野圭吾	東野/圭吾	1	東野/圭吾	1
-宮部みゆき	宮部/みゆき	1	宮部/みゆき	1
-池井戸潤	(unsplit)	0	池井/戸潤	0.9167
-西園寺公望	西園寺/公望	1	西園寺/公望	1
-近衛文麿	近衛/文麿	1	近衛/文麿	1
-伊藤博文	伊藤/博文	1	伊藤/博文	1
-岸田文雄	岸田/文雄	1	岸田/文雄	1
-安倍晋三	安倍/晋三	1	安倍/晋三	1
-菅義偉	菅/義偉	1	菅/義偉	1
-小泉純一郎	小泉/純一郎	1	小泉/純一郎	1
-福田康夫	福田/康夫	1	福田/康夫	1
-麻生太郎	麻生/太郎	1	麻生/太郎	1
-野田佳彦	野田/佳彦	1	野田/佳彦	1
-鳩山由紀夫	鳩山/由紀夫	1	鳩山/由紀夫	1
-橋本龍太郎	橋本/龍太郎	1	橋本/龍太郎	1
-小渕恵三	小渕/恵三	1	小渕/恵三	1
-森喜朗	森/喜朗	1	森/喜朗	1
-大谷翔平	大谷/翔平	1	大谷/翔平	1
-藤井聡太	藤井/聡太	1	藤井/聡太	1
-羽生善治	羽生/善治	1	羽生/善治	1
-羽生結弦	羽生/結弦	1	羽生/結弦	1
-浅田真央	浅田/真央	1	浅田/真央	1
-錦織圭	錦織/圭	1	錦織/圭	1
-石川佳純	石川/佳純	1	石川/佳純	1
-内村航平	内村/航平	1	内村/航平	1
-北島康介	北島/康介	1	北島/康介	1
-吉田沙保里	吉田/沙保里	1	吉田/沙保里	1
-伊調馨	伊調/馨	1	伊調/馨	1
-室伏広治	室伏/広治	1	室伏/広治	1
-桐生祥秀	(unsplit)	0	桐生/祥秀	0.9167
-山縣亮太	山縣/亮太	1	山縣/亮太	1
-坂本龍一	坂本/龍一	1	坂本/龍一	1
-久石譲	久石/譲	1	久石/譲	1
-宮崎駿	宮崎/駿	1	宮崎/駿	1
-黒澤明	黒澤/明	1	黒澤/明	1
-北野武	北野/武	1	北野/武	1
-是枝裕和	是枝/裕和	1	是枝/裕和	1
-新海誠	新海/誠	1	新海/誠	1
-庵野秀明	庵野/秀明	1	庵野/秀明	1
-手塚治虫	手塚/治虫	1	手塚/治虫	1
-鳥山明	鳥山/明	1	鳥山/明	1
-尾田栄一郎	尾田/栄一郎	1	尾田/栄一郎	1
-岸本斉史	(unsplit)	0	岸本/斉史	0.9167
-井上雄彦	井上/雄彦	1	井上/雄彦	1
-高橋留美子	高橋/留美子	1	高橋/留美子	1
-荒木飛呂彦	荒木/飛呂彦	1	荒木/飛呂彦	1
-冨樫義博	冨樫/義博	1	冨樫/義博	1
-諫山創	諫山/創	1	諫山/創	1
-藤本タツキ	藤本/タツキ	1	藤本/タツキ	1
-木村拓哉	木村/拓哉	1	木村/拓哉	1
-福山雅治	福山/雅治	1	福山/雅治	1
-松田聖子	松田/聖子	1	松田/聖子	1
-宇多田ヒカル	宇多田/ヒカル	1	宇多田/ヒカル	1
-米津玄師	米津/玄師	1	米津/玄師	1
-中島みゆき	中島/みゆき	1	中島/みゆき	1
-桑田佳祐	桑田/佳祐	1	桑田/佳祐	1
-山下達郎	山下/達郎	1	山下/達郎	1
-松任谷由実	松任谷/由実	1	松任谷/由実	1
-小田和正	小田/和正	1	小田/和正	1
-長渕剛	長渕/剛	1	長渕/剛	1
-浜崎あゆみ	浜崎/あゆみ	1	浜崎/あゆみ	1
-倖田來未	倖田/來未	1	倖田/來未	1
-西野カナ	西野/カナ	1	西野/カナ	1
-星野源	星野/源	1	星野/源	1
-菅田将暉	菅田/将暉	1	菅田/将暉	1
-綾瀬はるか	綾瀬/はるか	1	綾瀬/はるか	1
-石原さとみ	石原/さとみ	1	石原/さとみ	1
-新垣結衣	新垣/結衣	1	新垣/結衣	1
-広瀬すず	広瀬/すず	1	広瀬/すず	1
-橋本環奈	橋本/環奈	1	橋本/環奈	1
-深田恭子	深田/恭子	1	深田/恭子	1
-長澤まさみ	長澤/まさみ	1	長澤/まさみ	1
-北川景子	北川/景子	1	北川/景子	1
-吉永小百合	吉永/小百合	1	吉永/小百合	1
-樹木希林	樹木/希林	1	樹木/希林	1
-山口百恵	山口/百恵	1	山口/百恵	1
-大野智	大野/智	1	大野/智	1
-櫻井翔	櫻井/翔	1	櫻井/翔	1
-松本潤	松本/潤	1	松本/潤	1
-二宮和也	二宮/和也	1	二宮/和也	1
-相葉雅紀	相葉/雅紀	1	相葉/雅紀	1
-木村佳乃	木村/佳乃	1	木村/佳乃	1
-天海祐希	天海/祐希	1	天海/祐希	1
-渡辺謙	渡辺/謙	1	渡辺/謙	1
-役所広司	役所/広司	1	役所/広司	1
-真田広之	真田/広之	1	真田/広之	1
-三浦春馬	三浦/春馬	1	三浦/春馬	1
-竹内涼真	(unsplit)	0	竹内/涼真	0.9167
-山崎賢人	(unsplit)	0	山崎/賢人	0.9167
-菅野美穂	菅野/美穂	1	菅野/美穂	1
-石田ゆり子	石田/ゆり子	1	石田/ゆり子	1
-長瀬智也	長瀬/智也	1	長瀬/智也	1
-岡田准一	岡田/准一	1	岡田/准一	1
-堺雅人	堺/雅人	1	堺/雅人	1
-阿部寛	阿部/寛	1	阿部/寛	1
-妻夫木聡	妻夫木/聡	1	妻夫木/聡	1
-小栗旬	小栗/旬	1	小栗/旬	1
-瑛太	(unsplit)	0	(unsplit)	0
-林修	林/修	1	林/修	1
-池上彰	池上/彰	1	池上/彰	1
-齋藤飛鳥	齋藤/飛鳥	1	齋藤/飛鳥	1
-白石麻衣	白石/麻衣	1	白石/麻衣	1
-生駒里奈	生駒/里奈	1	生駒/里奈	1
-西野七瀬	西野/七瀬	1	西野/七瀬	1
-遠藤さくら	遠藤/さくら	1	遠藤/さくら	1
-山下美月	山下/美月	1	山下/美月	1
-与田祐希	与田/祐希	1	与田/祐希	1
-久保史緒里	(unsplit)	0	久保/史緒里	0.8667
-松村沙友理	(unsplit)	0	松村/沙友理	0.8667
-秋元康	(unsplit)	0	秋元/康	1.6833
-前田敦子	前田/敦子	1	前田/敦子	1
-大島優子	大島/優子	1	大島/優子	1
-指原莉乃	指原/莉乃	1	指原/莉乃	1
-渡辺麻友	渡辺/麻友	1	渡辺/麻友	1
-柏木由紀	柏木/由紀	1	柏木/由紀	1
-横山由依	横山/由依	1	横山/由依	1
-山本彩	山本/彩	1	山本/彩	1
-宮脇咲良	宮脇/咲良	1	宮脇/咲良	1
-矢吹奈子	矢吹/奈子	1	矢吹/奈子	1
-本田仁美	本田/仁美	1	本田/仁美	1
-松井珠理奈	(unsplit)	0	松井/珠理奈	0.8667
-須田亜香里	(unsplit)	0	須田/亜香里	0.8667
-古畑任三郎	古畑/任三郎	1	古畑/任三郎	1
-工藤新一	工藤/新一	1	工藤/新一	1
-毛利小五郎	毛利/小五郎	1	毛利/小五郎	1
-江戸川乱歩	江戸川/乱歩	1	江戸川/乱歩	1
-宮沢賢治	宮沢/賢治	1	宮沢/賢治	1
-石川啄木	石川/啄木	1	石川/啄木	1
-与謝野晶子	与謝野/晶子	1	与謝野/晶子	1
-樋口一葉	樋口/一葉	1	樋口/一葉	1
-正岡子規	正岡/子規	1	正岡/子規	1
-島崎藤村	島崎/藤村	1	島崎/藤村	1
-志賀直哉	志賀/直哉	1	志賀/直哉	1
-谷崎潤一郎	谷崎/潤一郎	1	谷崎/潤一郎	1
-横光利一	横光/利一	1	横光/利一	1
-梶井基次郎	梶井/基次郎	1	梶井/基次郎	1
-中原中也	中原/中也	1	中原/中也	1
-萩原朔太郎	萩原/朔太郎	1	萩原/朔太郎	1
-北原白秋	北原/白秋	1	北原/白秋	1
-高村光太郎	高村/光太郎	1	高村/光太郎	1
-室生犀星	室生/犀星	1	室生/犀星	1
-堀辰雄	堀/辰雄	1	堀/辰雄	1
-中上健次	中上/健次	1	中上/健次	1
-大江健三郎	大江/健三郎	1	大江/健三郎	1
-遠藤周作	遠藤/周作	1	遠藤/周作	1
-開高健	開高/健	1	開高/健	1
-安部公房	安部/公房	1	安部/公房	1
-井伏鱒二	井伏/鱒二	1	井伏/鱒二	1
-深沢七郎	深沢/七郎	1	深沢/七郎	1
-壇一雄	壇/一雄	1	壇/一雄	1
-檀一雄	檀/一雄	1	檀/一雄	1
-有吉佐和子	有吉/佐和子	1	有吉/佐和子	1
-瀬戸内寂聴	瀬戸内/寂聴	1	瀬戸内/寂聴	1
-曽野綾子	曽野/綾子	1	曽野/綾子	1
-田辺聖子	田辺/聖子	1	田辺/聖子	1
-林芙美子	林/芙美子	1	林/芙美子	1
-円地文子	円地/文子	1	円地/文子	1
-幸田露伴	幸田/露伴	1	幸田/露伴	1
-泉鏡花	泉/鏡花	1	泉/鏡花	1
-尾崎紅葉	尾崎/紅葉	1	尾崎/紅葉	1
-二葉亭四迷	二葉亭/四迷	1	二葉亭/四迷	1
-坪内逍遥	坪内/逍遥	1	坪内/逍遥	1
-福沢諭吉	福沢/諭吉	1	福沢/諭吉	1
-渋沢栄一	渋沢/栄一	1	渋沢/栄一	1
-岩崎弥太郎	岩崎/弥太郎	1	岩崎/弥太郎	1
-豊田喜一郎	豊田/喜一郎	1	豊田/喜一郎	1
-本田宗一郎	本田/宗一郎	1	本田/宗一郎	1
-松下幸之助	松下/幸之助	1	松下/幸之助	1
-盛田昭夫	盛田/昭夫	1	盛田/昭夫	1
-稲盛和夫	稲盛/和夫	1	稲盛/和夫	1
-孫正義	孫/正義	1	孫/正義	1
-柳井正	柳井/正	1	柳井/正	1
-三木谷浩史	三木谷/浩史	1	三木谷/浩史	1
-藤田晋	藤田/晋	1	藤田/晋	1
-前澤友作	前澤/友作	1	前澤/友作	1
-堀江貴文	堀江/貴文	1	堀江/貴文	1
-南場智子	南場/智子	1	南場/智子	1
-田中将大	田中/将大	1	田中/将大	1
-前田健太	前田/健太	1	前田/健太	1
-菊池雄星	菊池/雄星	1	菊池/雄星	1
-松坂大輔	松坂/大輔	1	松坂/大輔	1
-野茂英雄	野茂/英雄	1	野茂/英雄	1
-鈴木誠也	鈴木/誠也	1	鈴木/誠也	1
-吉田正尚	吉田/正尚	1	吉田/正尚	1
-村上宗隆	村上/宗隆	1	村上/宗隆	1
-佐々木朗希	(unsplit)	0	佐々木/朗希	0.8833
-山本由伸	山本/由伸	1	山本/由伸	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+田中太郎	田中/太郎	1	dictionary	田中/太郎	1	dictionary
+佐藤花子	佐藤/花子	1	dictionary	佐藤/花子	1	dictionary
+鈴木一郎	鈴木/一郎	1	dictionary	鈴木/一郎	1	dictionary
+高橋健太	高橋/健太	1	dictionary	高橋/健太	1	dictionary
+渡辺美咲	渡辺/美咲	1	dictionary	渡辺/美咲	1	dictionary
+伊藤翔	伊藤/翔	1	dictionary	伊藤/翔	1	dictionary
+山本直樹	山本/直樹	1	dictionary	山本/直樹	1	dictionary
+中村優子	中村/優子	1	dictionary	中村/優子	1	dictionary
+小林大輔	小林/大輔	1	dictionary	小林/大輔	1	dictionary
+加藤真由美	加藤/真由美	1	dictionary	加藤/真由美	1	dictionary
+吉田拓也	吉田/拓也	1	dictionary	吉田/拓也	1	dictionary
+山田太一	山田/太一	1	dictionary	山田/太一	1	dictionary
+松本清張	松本/清張	1	dictionary	松本/清張	1	dictionary
+井上靖	井上/靖	1	dictionary	井上/靖	1	dictionary
+森鷗外	森/鷗外	1	dictionary	森/鷗外	1	dictionary
+夏目漱石	夏目/漱石	1	dictionary	夏目/漱石	1	dictionary
+芥川龍之介	芥川/龍之介	1	dictionary	芥川/龍之介	1	dictionary
+太宰治	太宰/治	1	dictionary	太宰/治	1	dictionary
+三島由紀夫	三島/由紀夫	1	dictionary	三島/由紀夫	1	dictionary
+川端康成	川端/康成	1	dictionary	川端/康成	1	dictionary
+村上春樹	村上/春樹	1	dictionary	村上/春樹	1	dictionary
+東野圭吾	東野/圭吾	1	dictionary	東野/圭吾	1	dictionary
+宮部みゆき	宮部/みゆき	1	dictionary	宮部/みゆき	1	dictionary
+池井戸潤	(unsplit)	0	insufficient	池井/戸潤	0.6417	low-confidence
+西園寺公望	西園寺/公望	1	dictionary	西園寺/公望	1	dictionary
+近衛文麿	近衛/文麿	1	dictionary	近衛/文麿	1	dictionary
+伊藤博文	伊藤/博文	1	dictionary	伊藤/博文	1	dictionary
+岸田文雄	岸田/文雄	1	dictionary	岸田/文雄	1	dictionary
+安倍晋三	安倍/晋三	1	dictionary	安倍/晋三	1	dictionary
+菅義偉	菅/義偉	1	dictionary	菅/義偉	1	dictionary
+小泉純一郎	小泉/純一郎	1	dictionary	小泉/純一郎	1	dictionary
+福田康夫	福田/康夫	1	dictionary	福田/康夫	1	dictionary
+麻生太郎	麻生/太郎	1	dictionary	麻生/太郎	1	dictionary
+野田佳彦	野田/佳彦	1	dictionary	野田/佳彦	1	dictionary
+鳩山由紀夫	鳩山/由紀夫	1	dictionary	鳩山/由紀夫	1	dictionary
+橋本龍太郎	橋本/龍太郎	1	dictionary	橋本/龍太郎	1	dictionary
+小渕恵三	小渕/恵三	1	dictionary	小渕/恵三	1	dictionary
+森喜朗	森/喜朗	1	dictionary	森/喜朗	1	dictionary
+大谷翔平	大谷/翔平	1	dictionary	大谷/翔平	1	dictionary
+藤井聡太	藤井/聡太	1	dictionary	藤井/聡太	1	dictionary
+羽生善治	羽生/善治	1	dictionary	羽生/善治	1	dictionary
+羽生結弦	羽生/結弦	1	dictionary	羽生/結弦	1	dictionary
+浅田真央	浅田/真央	1	dictionary	浅田/真央	1	dictionary
+錦織圭	錦織/圭	1	dictionary	錦織/圭	1	dictionary
+石川佳純	石川/佳純	1	dictionary	石川/佳純	1	dictionary
+内村航平	内村/航平	1	dictionary	内村/航平	1	dictionary
+北島康介	北島/康介	1	dictionary	北島/康介	1	dictionary
+吉田沙保里	吉田/沙保里	1	dictionary	吉田/沙保里	1	dictionary
+伊調馨	伊調/馨	1	dictionary	伊調/馨	1	dictionary
+室伏広治	室伏/広治	1	dictionary	室伏/広治	1	dictionary
+桐生祥秀	(unsplit)	0	insufficient	桐生/祥秀	0.6417	low-confidence
+山縣亮太	山縣/亮太	1	dictionary	山縣/亮太	1	dictionary
+坂本龍一	坂本/龍一	1	dictionary	坂本/龍一	1	dictionary
+久石譲	久石/譲	1	dictionary	久石/譲	1	dictionary
+宮崎駿	宮崎/駿	1	dictionary	宮崎/駿	1	dictionary
+黒澤明	黒澤/明	1	dictionary	黒澤/明	1	dictionary
+北野武	北野/武	1	dictionary	北野/武	1	dictionary
+是枝裕和	是枝/裕和	1	dictionary	是枝/裕和	1	dictionary
+新海誠	新海/誠	1	dictionary	新海/誠	1	dictionary
+庵野秀明	庵野/秀明	1	dictionary	庵野/秀明	1	dictionary
+手塚治虫	手塚/治虫	1	dictionary	手塚/治虫	1	dictionary
+鳥山明	鳥山/明	1	dictionary	鳥山/明	1	dictionary
+尾田栄一郎	尾田/栄一郎	1	dictionary	尾田/栄一郎	1	dictionary
+岸本斉史	(unsplit)	0	insufficient	岸本/斉史	0.6417	low-confidence
+井上雄彦	井上/雄彦	1	dictionary	井上/雄彦	1	dictionary
+高橋留美子	高橋/留美子	1	dictionary	高橋/留美子	1	dictionary
+荒木飛呂彦	荒木/飛呂彦	1	dictionary	荒木/飛呂彦	1	dictionary
+冨樫義博	冨樫/義博	1	dictionary	冨樫/義博	1	dictionary
+諫山創	諫山/創	1	dictionary	諫山/創	1	dictionary
+藤本タツキ	藤本/タツキ	1	dictionary	藤本/タツキ	1	dictionary
+木村拓哉	木村/拓哉	1	dictionary	木村/拓哉	1	dictionary
+福山雅治	福山/雅治	1	dictionary	福山/雅治	1	dictionary
+松田聖子	松田/聖子	1	dictionary	松田/聖子	1	dictionary
+宇多田ヒカル	宇多田/ヒカル	1	dictionary	宇多田/ヒカル	1	dictionary
+米津玄師	米津/玄師	1	dictionary	米津/玄師	1	dictionary
+中島みゆき	中島/みゆき	1	dictionary	中島/みゆき	1	dictionary
+桑田佳祐	桑田/佳祐	1	dictionary	桑田/佳祐	1	dictionary
+山下達郎	山下/達郎	1	dictionary	山下/達郎	1	dictionary
+松任谷由実	松任谷/由実	1	dictionary	松任谷/由実	1	dictionary
+小田和正	小田/和正	1	dictionary	小田/和正	1	dictionary
+長渕剛	長渕/剛	1	dictionary	長渕/剛	1	dictionary
+浜崎あゆみ	浜崎/あゆみ	1	dictionary	浜崎/あゆみ	1	dictionary
+倖田來未	倖田/來未	1	dictionary	倖田/來未	1	dictionary
+西野カナ	西野/カナ	1	dictionary	西野/カナ	1	dictionary
+星野源	星野/源	1	dictionary	星野/源	1	dictionary
+菅田将暉	菅田/将暉	1	dictionary	菅田/将暉	1	dictionary
+綾瀬はるか	綾瀬/はるか	1	dictionary	綾瀬/はるか	1	dictionary
+石原さとみ	石原/さとみ	1	dictionary	石原/さとみ	1	dictionary
+新垣結衣	新垣/結衣	1	dictionary	新垣/結衣	1	dictionary
+広瀬すず	広瀬/すず	1	dictionary	広瀬/すず	1	dictionary
+橋本環奈	橋本/環奈	1	dictionary	橋本/環奈	1	dictionary
+深田恭子	深田/恭子	1	dictionary	深田/恭子	1	dictionary
+長澤まさみ	長澤/まさみ	1	dictionary	長澤/まさみ	1	dictionary
+北川景子	北川/景子	1	dictionary	北川/景子	1	dictionary
+吉永小百合	吉永/小百合	1	dictionary	吉永/小百合	1	dictionary
+樹木希林	樹木/希林	1	dictionary	樹木/希林	1	dictionary
+山口百恵	山口/百恵	1	dictionary	山口/百恵	1	dictionary
+大野智	大野/智	1	dictionary	大野/智	1	dictionary
+櫻井翔	櫻井/翔	1	dictionary	櫻井/翔	1	dictionary
+松本潤	松本/潤	1	dictionary	松本/潤	1	dictionary
+二宮和也	二宮/和也	1	dictionary	二宮/和也	1	dictionary
+相葉雅紀	相葉/雅紀	1	dictionary	相葉/雅紀	1	dictionary
+木村佳乃	木村/佳乃	1	dictionary	木村/佳乃	1	dictionary
+天海祐希	天海/祐希	1	dictionary	天海/祐希	1	dictionary
+渡辺謙	渡辺/謙	1	dictionary	渡辺/謙	1	dictionary
+役所広司	役所/広司	1	dictionary	役所/広司	1	dictionary
+真田広之	真田/広之	1	dictionary	真田/広之	1	dictionary
+三浦春馬	三浦/春馬	1	dictionary	三浦/春馬	1	dictionary
+竹内涼真	(unsplit)	0	insufficient	竹内/涼真	0.6417	low-confidence
+山崎賢人	(unsplit)	0	insufficient	山崎/賢人	0.6417	low-confidence
+菅野美穂	菅野/美穂	1	dictionary	菅野/美穂	1	dictionary
+石田ゆり子	石田/ゆり子	1	dictionary	石田/ゆり子	1	dictionary
+長瀬智也	長瀬/智也	1	dictionary	長瀬/智也	1	dictionary
+岡田准一	岡田/准一	1	dictionary	岡田/准一	1	dictionary
+堺雅人	堺/雅人	1	dictionary	堺/雅人	1	dictionary
+阿部寛	阿部/寛	1	dictionary	阿部/寛	1	dictionary
+妻夫木聡	妻夫木/聡	1	dictionary	妻夫木/聡	1	dictionary
+小栗旬	小栗/旬	1	dictionary	小栗/旬	1	dictionary
+瑛太	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+林修	林/修	1	dictionary	林/修	1	dictionary
+池上彰	池上/彰	1	dictionary	池上/彰	1	dictionary
+齋藤飛鳥	齋藤/飛鳥	1	dictionary	齋藤/飛鳥	1	dictionary
+白石麻衣	白石/麻衣	1	dictionary	白石/麻衣	1	dictionary
+生駒里奈	生駒/里奈	1	dictionary	生駒/里奈	1	dictionary
+西野七瀬	西野/七瀬	1	dictionary	西野/七瀬	1	dictionary
+遠藤さくら	遠藤/さくら	1	dictionary	遠藤/さくら	1	dictionary
+山下美月	山下/美月	1	dictionary	山下/美月	1	dictionary
+与田祐希	与田/祐希	1	dictionary	与田/祐希	1	dictionary
+久保史緒里	(unsplit)	0	insufficient	久保/史緒里	0.6067	low-confidence
+松村沙友理	(unsplit)	0	insufficient	松村/沙友理	0.6067	low-confidence
+秋元康	(unsplit)	0	insufficient	秋元/康	0.7	low-confidence
+前田敦子	前田/敦子	1	dictionary	前田/敦子	1	dictionary
+大島優子	大島/優子	1	dictionary	大島/優子	1	dictionary
+指原莉乃	指原/莉乃	1	dictionary	指原/莉乃	1	dictionary
+渡辺麻友	渡辺/麻友	1	dictionary	渡辺/麻友	1	dictionary
+柏木由紀	柏木/由紀	1	dictionary	柏木/由紀	1	dictionary
+横山由依	横山/由依	1	dictionary	横山/由依	1	dictionary
+山本彩	山本/彩	1	dictionary	山本/彩	1	dictionary
+宮脇咲良	宮脇/咲良	1	dictionary	宮脇/咲良	1	dictionary
+矢吹奈子	矢吹/奈子	1	dictionary	矢吹/奈子	1	dictionary
+本田仁美	本田/仁美	1	dictionary	本田/仁美	1	dictionary
+松井珠理奈	(unsplit)	0	insufficient	松井/珠理奈	0.6067	low-confidence
+須田亜香里	(unsplit)	0	insufficient	須田/亜香里	0.6067	low-confidence
+古畑任三郎	古畑/任三郎	1	dictionary	古畑/任三郎	1	dictionary
+工藤新一	工藤/新一	1	dictionary	工藤/新一	1	dictionary
+毛利小五郎	毛利/小五郎	1	dictionary	毛利/小五郎	1	dictionary
+江戸川乱歩	江戸川/乱歩	1	dictionary	江戸川/乱歩	1	dictionary
+宮沢賢治	宮沢/賢治	1	dictionary	宮沢/賢治	1	dictionary
+石川啄木	石川/啄木	1	dictionary	石川/啄木	1	dictionary
+与謝野晶子	与謝野/晶子	1	dictionary	与謝野/晶子	1	dictionary
+樋口一葉	樋口/一葉	1	dictionary	樋口/一葉	1	dictionary
+正岡子規	正岡/子規	1	dictionary	正岡/子規	1	dictionary
+島崎藤村	島崎/藤村	1	dictionary	島崎/藤村	1	dictionary
+志賀直哉	志賀/直哉	1	dictionary	志賀/直哉	1	dictionary
+谷崎潤一郎	谷崎/潤一郎	1	dictionary	谷崎/潤一郎	1	dictionary
+横光利一	横光/利一	1	dictionary	横光/利一	1	dictionary
+梶井基次郎	梶井/基次郎	1	dictionary	梶井/基次郎	1	dictionary
+中原中也	中原/中也	1	dictionary	中原/中也	1	dictionary
+萩原朔太郎	萩原/朔太郎	1	dictionary	萩原/朔太郎	1	dictionary
+北原白秋	北原/白秋	1	dictionary	北原/白秋	1	dictionary
+高村光太郎	高村/光太郎	1	dictionary	高村/光太郎	1	dictionary
+室生犀星	室生/犀星	1	dictionary	室生/犀星	1	dictionary
+堀辰雄	堀/辰雄	1	dictionary	堀/辰雄	1	dictionary
+中上健次	中上/健次	1	dictionary	中上/健次	1	dictionary
+大江健三郎	大江/健三郎	1	dictionary	大江/健三郎	1	dictionary
+遠藤周作	遠藤/周作	1	dictionary	遠藤/周作	1	dictionary
+開高健	開高/健	1	dictionary	開高/健	1	dictionary
+安部公房	安部/公房	1	dictionary	安部/公房	1	dictionary
+井伏鱒二	井伏/鱒二	1	dictionary	井伏/鱒二	1	dictionary
+深沢七郎	深沢/七郎	1	dictionary	深沢/七郎	1	dictionary
+壇一雄	壇/一雄	1	dictionary	壇/一雄	1	dictionary
+檀一雄	檀/一雄	1	dictionary	檀/一雄	1	dictionary
+有吉佐和子	有吉/佐和子	1	dictionary	有吉/佐和子	1	dictionary
+瀬戸内寂聴	瀬戸内/寂聴	1	dictionary	瀬戸内/寂聴	1	dictionary
+曽野綾子	曽野/綾子	1	dictionary	曽野/綾子	1	dictionary
+田辺聖子	田辺/聖子	1	dictionary	田辺/聖子	1	dictionary
+林芙美子	林/芙美子	1	dictionary	林/芙美子	1	dictionary
+円地文子	円地/文子	1	dictionary	円地/文子	1	dictionary
+幸田露伴	幸田/露伴	1	dictionary	幸田/露伴	1	dictionary
+泉鏡花	泉/鏡花	1	dictionary	泉/鏡花	1	dictionary
+尾崎紅葉	尾崎/紅葉	1	dictionary	尾崎/紅葉	1	dictionary
+二葉亭四迷	二葉亭/四迷	1	dictionary	二葉亭/四迷	1	dictionary
+坪内逍遥	坪内/逍遥	1	dictionary	坪内/逍遥	1	dictionary
+福沢諭吉	福沢/諭吉	1	dictionary	福沢/諭吉	1	dictionary
+渋沢栄一	渋沢/栄一	1	dictionary	渋沢/栄一	1	dictionary
+岩崎弥太郎	岩崎/弥太郎	1	dictionary	岩崎/弥太郎	1	dictionary
+豊田喜一郎	豊田/喜一郎	1	dictionary	豊田/喜一郎	1	dictionary
+本田宗一郎	本田/宗一郎	1	dictionary	本田/宗一郎	1	dictionary
+松下幸之助	松下/幸之助	1	dictionary	松下/幸之助	1	dictionary
+盛田昭夫	盛田/昭夫	1	dictionary	盛田/昭夫	1	dictionary
+稲盛和夫	稲盛/和夫	1	dictionary	稲盛/和夫	1	dictionary
+孫正義	孫/正義	1	dictionary	孫/正義	1	dictionary
+柳井正	柳井/正	1	dictionary	柳井/正	1	dictionary
+三木谷浩史	三木谷/浩史	1	dictionary	三木谷/浩史	1	dictionary
+藤田晋	藤田/晋	1	dictionary	藤田/晋	1	dictionary
+前澤友作	前澤/友作	1	dictionary	前澤/友作	1	dictionary
+堀江貴文	堀江/貴文	1	dictionary	堀江/貴文	1	dictionary
+南場智子	南場/智子	1	dictionary	南場/智子	1	dictionary
+田中将大	田中/将大	1	dictionary	田中/将大	1	dictionary
+前田健太	前田/健太	1	dictionary	前田/健太	1	dictionary
+菊池雄星	菊池/雄星	1	dictionary	菊池/雄星	1	dictionary
+松坂大輔	松坂/大輔	1	dictionary	松坂/大輔	1	dictionary
+野茂英雄	野茂/英雄	1	dictionary	野茂/英雄	1	dictionary
+鈴木誠也	鈴木/誠也	1	dictionary	鈴木/誠也	1	dictionary
+吉田正尚	吉田/正尚	1	dictionary	吉田/正尚	1	dictionary
+村上宗隆	村上/宗隆	1	dictionary	村上/宗隆	1	dictionary
+佐々木朗希	(unsplit)	0	insufficient	佐々木/朗希	0.6183	low-confidence
+山本由伸	山本/由伸	1	dictionary	山本/由伸	1	dictionary

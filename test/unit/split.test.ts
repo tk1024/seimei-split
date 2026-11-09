@@ -276,6 +276,13 @@ describe("split", () => {
     it("スペース区切りの場合はconfidence 1.0", () => {
       const result = analyze("田中 太郎");
       expect(result.confidence).toBe(1.0);
+      expect(result.reason).toBe("space");
+    });
+
+    it("候補を作れない入力は no-candidate を返す", () => {
+      expect(analyze("").reason).toBe("no-candidate");
+      expect(analyze("John田中").reason).toBe("no-candidate");
+      expect(analyze("林").reason).toBe("no-candidate");
     });
   });
 });

@@ -1,31 +1,31 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-宝鐘マリン	(unsplit)	0	宝鐘/マリン	0.3167
-星街すいせい	(unsplit)	0	星街/すいせい	0.2833
-猫又おかゆ	(unsplit)	0	猫又/おかゆ	0.3167
-戌神ころね	(unsplit)	0	戌神/ころね	0.3167
-夏色まつり	(unsplit)	0	夏色/まつり	0.3167
-白銀ノエル	(unsplit)	0	白銀/ノエル	0.3167
-角巻わため	(unsplit)	0	角巻/わため	0.3167
-天音かなた	(unsplit)	0	天音/かなた	0.3167
-常闇トワ	(unsplit)	0	常闇/トワ	0.3667
-姫森ルーナ	(unsplit)	0	姫森/ルーナ	0.3167
-雪花ラミィ	(unsplit)	0	雪花/ラミィ	0.3167
-尾丸ポルカ	(unsplit)	0	尾丸/ポルカ	0.3167
-風真いろは	(unsplit)	0	風真/いろは	0.3167
-博衣こより	(unsplit)	0	博衣/こより	0.3167
-沙花叉クロヱ	(unsplit)	0	沙花叉/クロヱ	0.2833
-癒月ちょこ	(unsplit)	0	癒月/ちょこ	0.3167
-宇志海いちご	(unsplit)	0	宇志海/いちご	0.2833
-勇気ちひろ	(unsplit)	0	勇気/ちひろ	0.9833
-春崎エアル	(unsplit)	0	春崎/エアル	0.3167
-歌衣メイカ	(unsplit)	0	歌衣/メイカ	0.3167
-犬山たまき	犬山/たまき	1	犬山/たまき	1
-神楽めあ	(unsplit)	0	神楽/めあ	0.3667
-周防パトラ	周防/パトラ	1	周防/パトラ	1
-もこ田めめめ	(unsplit)	0	もこ/田めめめ	0.0833
-鳳玲天々	(unsplit)	0	鳳/玲天々	0.8
-宗谷いちか	(unsplit)	0	宗谷/いちか	0.3167
-花奏かのん	(unsplit)	0	花奏/かのん	0.9833
-奏天まひろ	(unsplit)	0	奏天/まひろ	0.9833
-花芽すみれ	(unsplit)	0	花芽/すみれ	0.9833
-神成きゅぴ	(unsplit)	0	神成/きゅぴ	0.3167
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+宝鐘マリン	(unsplit)	0	insufficient	宝鐘/マリン	0.2217	low-confidence
+星街すいせい	(unsplit)	0	insufficient	星街/すいせい	0.1983	low-confidence
+猫又おかゆ	(unsplit)	0	insufficient	猫又/おかゆ	0.2217	low-confidence
+戌神ころね	(unsplit)	0	insufficient	戌神/ころね	0.2217	low-confidence
+夏色まつり	(unsplit)	0	insufficient	夏色/まつり	0.2217	low-confidence
+白銀ノエル	(unsplit)	0	insufficient	白銀/ノエル	0.2217	low-confidence
+角巻わため	(unsplit)	0	insufficient	角巻/わため	0.2217	low-confidence
+天音かなた	(unsplit)	0	insufficient	天音/かなた	0.2217	low-confidence
+常闇トワ	(unsplit)	0	insufficient	常闇/トワ	0.2567	low-confidence
+姫森ルーナ	(unsplit)	0	insufficient	姫森/ルーナ	0.2217	low-confidence
+雪花ラミィ	(unsplit)	0	insufficient	雪花/ラミィ	0.2217	low-confidence
+尾丸ポルカ	(unsplit)	0	insufficient	尾丸/ポルカ	0.2217	low-confidence
+風真いろは	(unsplit)	0	insufficient	風真/いろは	0.2217	low-confidence
+博衣こより	(unsplit)	0	insufficient	博衣/こより	0.2217	low-confidence
+沙花叉クロヱ	(unsplit)	0	insufficient	沙花叉/クロヱ	0.1983	low-confidence
+癒月ちょこ	(unsplit)	0	insufficient	癒月/ちょこ	0.2217	low-confidence
+宇志海いちご	(unsplit)	0	insufficient	宇志海/いちご	0.1983	low-confidence
+勇気ちひろ	(unsplit)	0	insufficient	勇気/ちひろ	0.6883	low-confidence
+春崎エアル	(unsplit)	0	insufficient	春崎/エアル	0.2217	low-confidence
+歌衣メイカ	(unsplit)	0	insufficient	歌衣/メイカ	0.2217	low-confidence
+犬山たまき	犬山/たまき	1	dictionary	犬山/たまき	1	dictionary
+神楽めあ	(unsplit)	0	insufficient	神楽/めあ	0.2567	low-confidence
+周防パトラ	周防/パトラ	1	dictionary	周防/パトラ	1	dictionary
+もこ田めめめ	(unsplit)	0	insufficient	もこ/田めめめ	0.0583	low-confidence
+鳳玲天々	(unsplit)	0	insufficient	鳳/玲天々	0.56	low-confidence
+宗谷いちか	(unsplit)	0	insufficient	宗谷/いちか	0.2217	low-confidence
+花奏かのん	(unsplit)	0	insufficient	花奏/かのん	0.6883	low-confidence
+奏天まひろ	(unsplit)	0	insufficient	奏天/まひろ	0.6883	low-confidence
+花芽すみれ	(unsplit)	0	insufficient	花芽/すみれ	0.6883	low-confidence
+神成きゅぴ	(unsplit)	0	insufficient	神成/きゅぴ	0.2217	low-confidence

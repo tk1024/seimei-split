@@ -33,7 +33,8 @@ split("さとうはなこ"); // => { sei: "さとう", mei: "はなこ" }`}</Cod
 
 const result = analyze("田中太郎");
 // result.best       => { sei: "田中", mei: "太郎" }
-// result.confidence  => スコア値
+// result.confidence  => 0〜1 の信頼度
+// result.reason      => 分割した（しなかった）理由
 // result.candidates  => 全候補の配列`}</CodeBlock>
       </section>
 
@@ -64,7 +65,7 @@ const result = analyze("田中太郎");
         <div className="rounded-xl p-6 border mb-4" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
           <h3 className="font-bold font-mono text-lg mb-2">analyze(name, options?)</h3>
           <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>
-            氏名を分析し、信頼度スコアと全候補を返します。
+            氏名を分析し、信頼度、理由、全候補を返します。
           </p>
           <div className="mb-3">
             <div className="text-xs font-semibold mb-1" style={{ color: "var(--text-tertiary)" }}>引数</div>
@@ -77,9 +78,15 @@ const result = analyze("田中太郎");
             <div className="text-xs font-semibold mb-1" style={{ color: "var(--text-tertiary)" }}>戻り値</div>
             <CodeBlock>{`interface AnalyzeResult {
   best: SeimeiResult;          // 最良の分割結果
-  confidence: number;          // 信頼度スコア
-  candidates: SeimeiCandidate[]; // 全候補（スコア降順）
+  confidence: number;          // 1: 空白区切り・辞書 / 0.8: 文字種境界・カタカナ姓 / 0.01〜0.7: 低信頼の推定 / 0: 未分割
+  reason: AnalyzeReason;       // 分割した（しなかった）理由
+  candidates: SeimeiCandidate[]; // 全候補（スコア降順）。katakana-sei では best が先頭と一致しないことがある
 }
+
+type AnalyzeReason =
+  | "space" | "dictionary" | "boundary" | "katakana-sei"
+  | "low-confidence" | "not-full-name" | "insufficient"
+  | "no-candidate" | "no-dictionary";
 
 interface SeimeiCandidate {
   sei: string;

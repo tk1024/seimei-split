@@ -36,11 +36,20 @@ split("宝鐘マリン", { allowLowConfidence: true });
 // Get candidates and confidence
 import { analyze } from "seimei-split";
 const result = analyze("田中太郎");
-// => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, candidates: [...] }
+// => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, reason: "dictionary", candidates: [...] }
 
 // Without bundled dictionary (bring your own)
 import { split, setLexicon } from "seimei-split/core";
 ```
+
+`confidence` is always between 0 and 1, and `reason` says why the name was or was not split.
+
+| `confidence` | Meaning | `reason` |
+|---|---|---|
+| 1 | Whitespace, or strong dictionary evidence | `space` / `dictionary` |
+| 0.8 | Script boundary, or the katakana surname rule | `boundary` / `katakana-sei` |
+| 0.01–0.7 | Best guess from `allowLowConfidence` | `low-confidence` |
+| 0 | Not split | `not-full-name` / `insufficient` / `no-candidate` / `no-dictionary` |
 
 ## How It Works
 
@@ -69,7 +78,7 @@ Accuracy is measured across 12 categories (339 test cases).
 | Kanji surname + katakana | 100% | 100% |
 | Kana surname + kanji | 87.5% | 100% |
 | VTuber names | 6.7% | 93.3% |
-| Single-char surname | 92.3% | 100% |
+| Single-char surname | 92.3% | 92.3% |
 | 3+ char surname | 75.0% | 100% |
 | Variant kanji | 86.7% | 100% |
 | ノ・ヶ・々 in surname | 81.8% | 100% |

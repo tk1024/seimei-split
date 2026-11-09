@@ -1,40 +1,40 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-田中	(unsplit)	0	(unsplit)	0
-佐藤	(unsplit)	0	(unsplit)	0
-鈴木	(unsplit)	0	(unsplit)	0
-高橋	(unsplit)	0	(unsplit)	0
-渡辺	(unsplit)	0	(unsplit)	0
-東海林	(unsplit)	0	(unsplit)	0
-五十嵐	(unsplit)	0	(unsplit)	0
-太郎	(unsplit)	0	(unsplit)	0
-花子	(unsplit)	0	(unsplit)	0
-健太	(unsplit)	0	(unsplit)	0
-美咲	(unsplit)	0	(unsplit)	0
-翔太	(unsplit)	0	(unsplit)	0
-山田さん	(unsplit)	0	(unsplit)	0
-田中様	(unsplit)	0	(unsplit)	0
-佐藤先生	(unsplit)	0	(unsplit)	0
-鈴木くん	(unsplit)	0	(unsplit)	0
-高橋ちゃん	(unsplit)	0	(unsplit)	0
-田中商店	(unsplit)	0	(unsplit)	0
-佐藤病院	(unsplit)	0	(unsplit)	0
-小林製薬	(unsplit)	0	(unsplit)	0
-松下電器	(unsplit)	0	(unsplit)	0
-田中ビル	(unsplit)	0	(unsplit)	0
-鈴木アパート	(unsplit)	0	(unsplit)	0
-山田うどん	(unsplit)	0	(unsplit)	0
-吉野家	(unsplit)	0	吉野/家	0.8833
-東京タワー	(unsplit)	0	東京/タワー	0.3167
-日本テレビ	(unsplit)	0	日本/テレビ	0.3167
-新宿アルタ	(unsplit)	0	新宿/アルタ	0.3167
-東京都	(unsplit)	0	東/京都	0.85
-大阪市	(unsplit)	0	大阪/市	0.1333
-北海道	(unsplit)	0	北/海道	0.85
-横浜駅	(unsplit)	0	横浜/駅	0.1333
-会社	(unsplit)	0	会/社	-Infinity
-学校	(unsplit)	0	学/校	-Infinity
-電話番号	(unsplit)	0	電話/番号	0.1667
-株式会社	(unsplit)	0	(unsplit)	0
-コーヒー	(unsplit)	0	コー/ヒー	0.1667
-ありがとう	(unsplit)	0	ありが/とう	0.1333
-お問い合わせ	(unsplit)	0	お問/い合わせ	0.0833
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+田中	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+佐藤	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+鈴木	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+高橋	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+渡辺	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+東海林	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+五十嵐	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+太郎	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+花子	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+健太	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+美咲	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+翔太	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+山田さん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中様	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+佐藤先生	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+鈴木くん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+高橋ちゃん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中商店	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+佐藤病院	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+小林製薬	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+松下電器	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中ビル	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+鈴木アパート	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+山田うどん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+吉野家	(unsplit)	0	insufficient	吉野/家	0.6183	low-confidence
+東京タワー	(unsplit)	0	insufficient	東京/タワー	0.2217	low-confidence
+日本テレビ	(unsplit)	0	insufficient	日本/テレビ	0.2217	low-confidence
+新宿アルタ	(unsplit)	0	insufficient	新宿/アルタ	0.2217	low-confidence
+東京都	(unsplit)	0	insufficient	東/京都	0.595	low-confidence
+大阪市	(unsplit)	0	insufficient	大阪/市	0.0933	low-confidence
+北海道	(unsplit)	0	insufficient	北/海道	0.595	low-confidence
+横浜駅	(unsplit)	0	insufficient	横浜/駅	0.0933	low-confidence
+会社	(unsplit)	0	insufficient	(unsplit)	0	insufficient
+学校	(unsplit)	0	insufficient	(unsplit)	0	insufficient
+電話番号	(unsplit)	0	insufficient	電話/番号	0.1167	low-confidence
+株式会社	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+コーヒー	(unsplit)	0	insufficient	コー/ヒー	0.1167	low-confidence
+ありがとう	(unsplit)	0	insufficient	ありが/とう	0.0933	low-confidence
+お問い合わせ	(unsplit)	0	insufficient	お問/い合わせ	0.0583	low-confidence

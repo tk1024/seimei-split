@@ -1,12 +1,12 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-一ノ瀬ワタル	一ノ瀬/ワタル	1	一ノ瀬/ワタル	1
-一ノ瀬美空	(unsplit)	0	一ノ瀬/美空	0.8833
-一ノ瀬颯	一ノ瀬/颯	1	一ノ瀬/颯	1
-井ノ原快彦	井ノ原/快彦	1	井ノ原/快彦	1
-久ヶ沢徹	(unsplit)	0	久ヶ沢/徹	0.7667
-三ヶ島かな	三ヶ島/かな	1	三ヶ島/かな	1
-佐々木希	佐々木/希	1	佐々木/希	1
-佐々木蔵之介	佐々木/蔵之介	1	佐々木/蔵之介	1
-野々村真	野々村/真	1	野々村/真	1
-佐々岡真司	佐々岡/真司	1	佐々岡/真司	1
-佐々成政	佐々/成政	1	佐々/成政	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+一ノ瀬ワタル	一ノ瀬/ワタル	1	dictionary	一ノ瀬/ワタル	1	dictionary
+一ノ瀬美空	(unsplit)	0	insufficient	一ノ瀬/美空	0.6183	low-confidence
+一ノ瀬颯	一ノ瀬/颯	1	dictionary	一ノ瀬/颯	1	dictionary
+井ノ原快彦	井ノ原/快彦	1	dictionary	井ノ原/快彦	1	dictionary
+久ヶ沢徹	(unsplit)	0	insufficient	久ヶ沢/徹	0.5367	low-confidence
+三ヶ島かな	三ヶ島/かな	1	dictionary	三ヶ島/かな	1	dictionary
+佐々木希	佐々木/希	1	dictionary	佐々木/希	1	dictionary
+佐々木蔵之介	佐々木/蔵之介	1	dictionary	佐々木/蔵之介	1	dictionary
+野々村真	野々村/真	1	dictionary	野々村/真	1	dictionary
+佐々岡真司	佐々岡/真司	1	dictionary	佐々岡/真司	1	dictionary
+佐々成政	佐々/成政	1	dictionary	佐々/成政	1	dictionary

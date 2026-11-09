@@ -1,16 +1,16 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-えなりかずき	えなり/かずき	1	えなり/かずき	1
-ふかわりょう	ふかわ/りょう	1	ふかわ/りょう	1
-いとうせいこう	いとう/せいこう	1	いとう/せいこう	1
-みうらじゅん	みうら/じゅん	1	みうら/じゅん	1
-さだまさし	さだ/まさし	1	さだ/まさし	1
-ささきいさお	ささき/いさお	1	ささき/いさお	1
-はいだしょうこ	(unsplit)	0	はいだ/しょうこ	0.7167
-いしだあゆみ	いしだ/あゆみ	1	いしだ/あゆみ	1
-やくみつる	やく/みつる	1	やく/みつる	1
-くまだまさし	(unsplit)	0	くまだ/まさし	0.75
-やまだひさし	やまだ/ひさし	1	やまだ/ひさし	1
-うじきつよし	うじき/つよし	1	うじき/つよし	1
-もたいまさこ	もたい/まさこ	1	もたい/まさこ	1
-コシノジュンコ	コシノ/ジュンコ	1	コシノ/ジュンコ	1
-オノヨーコ	オノ/ヨーコ	1	オノ/ヨーコ	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+えなりかずき	えなり/かずき	1	dictionary	えなり/かずき	1	dictionary
+ふかわりょう	ふかわ/りょう	1	dictionary	ふかわ/りょう	1	dictionary
+いとうせいこう	いとう/せいこう	1	dictionary	いとう/せいこう	1	dictionary
+みうらじゅん	みうら/じゅん	1	dictionary	みうら/じゅん	1	dictionary
+さだまさし	さだ/まさし	1	dictionary	さだ/まさし	1	dictionary
+ささきいさお	ささき/いさお	1	dictionary	ささき/いさお	1	dictionary
+はいだしょうこ	(unsplit)	0	insufficient	はいだ/しょうこ	0.5017	low-confidence
+いしだあゆみ	いしだ/あゆみ	1	dictionary	いしだ/あゆみ	1	dictionary
+やくみつる	やく/みつる	1	dictionary	やく/みつる	1	dictionary
+くまだまさし	(unsplit)	0	insufficient	くまだ/まさし	0.525	low-confidence
+やまだひさし	やまだ/ひさし	1	dictionary	やまだ/ひさし	1	dictionary
+うじきつよし	うじき/つよし	1	dictionary	うじき/つよし	1	dictionary
+もたいまさこ	もたい/まさこ	1	dictionary	もたい/まさこ	1	dictionary
+コシノジュンコ	コシノ/ジュンコ	1	dictionary	コシノ/ジュンコ	1	dictionary
+オノヨーコ	オノ/ヨーコ	1	dictionary	オノ/ヨーコ	1	dictionary
