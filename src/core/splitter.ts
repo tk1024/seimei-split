@@ -24,6 +24,7 @@ import {
   CONFIDENCE_THRESHOLD,
   LOW_CONFIDENCE_MAX,
   LOW_CONFIDENCE_MIN,
+  READING_CONFIDENCE,
   SEI_MATCH_CONFIDENCE,
   SEI_MATCH_GAP,
   SEI_MATCH_MIN_SCORE,
@@ -157,15 +158,21 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
   const gap = second ? best.score - second.score : Infinity;
   const meetsThreshold = best.score >= CONFIDENCE_THRESHOLD;
 
-  // 1. Normal confidence: both sides in the dictionary, or a script boundary
+  // 1. Normal confidence: both sides written in the dictionary, or a script boundary
   //    (the character statistics alone must not reach this tier)
   const hasStrongEvidence = boundary !== undefined
-    || (best.seiMatch !== "none" && best.meiMatch !== "none");
-  if (hasStrongEvidence && meetsThreshold && gap >= CONFIDENCE_GAP) {
-    return accept(best, 1.0, "dictionary");
+    || (isWrittenFormMatch(best.seiMatch) && isWrittenFormMatch(best.meiMatch));
+  if (meetsThreshold && gap >= CONFIDENCE_GAP) {
+    if (hasStrongEvidence) return accept(best, 1.0, "dictionary");
+
+    // 2. Reading confidence: one side matched only by reading
+    //    (two readings score too low to reach the threshold)
+    if (best.seiMatch !== "none" && best.meiMatch !== "none") {
+      return accept(best, READING_CONFIDENCE, "reading");
+    }
   }
 
-  // 2. Boundary confidence: best candidate aligns with script boundary
+  // 3. Boundary confidence: best candidate aligns with script boundary
   //    and has dictionary evidence on the appropriate side
   if (boundary && splitsAt(best, boundary)) {
     const evidence = boundary.direction === "kanji-to-kana" ? best.seiMatch : best.meiMatch;
@@ -174,7 +181,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     }
   }
 
-  // 3. Katakana-sei exception: real Japanese surnames are never pure katakana
+  // 4. Katakana-sei exception: real Japanese surnames are never pure katakana
   //    (e.g. ジャガー/横田), so look up the kanji part in the surname dictionary.
   if (boundary?.direction === "kana-to-kanji") {
     const candidate = adoptable.find((c) => splitsAt(c, boundary) && isAllKatakana(c.sei));
@@ -183,7 +190,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     }
   }
 
-  // 4. Surname match: the given name is unknown but shaped like one
+  // 5. Surname match: the given name is unknown but shaped like one
   if (
     boundary === undefined
     && !isKana
@@ -197,7 +204,7 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
     return accept(best, SEI_MATCH_CONFIDENCE, "sei-match");
   }
 
-  // 5. Low confidence mode
+  // 6. Low confidence mode
   if (allowLowConfidence) {
     return accept(best, lowConfidence(best.score), "low-confidence");
   }

@@ -56,6 +56,7 @@ import { split, setLexicon } from "seimei-split/core";
 | 1 | Whitespace, or strong dictionary evidence | `space` / `dictionary` |
 | 0.8 | Script boundary, or the katakana surname rule | `boundary` / `katakana-sei` |
 | 0.75 | Surname in the dictionary, and the given name is not but looks like one | `sei-match` |
+| 0.7 | One side matched as written, the other only by reading (with reading data) | `reading` |
 | 0.01–0.7 | Best guess from `allowLowConfidence` | `low-confidence` |
 | 0 | Not split | `not-full-name` / `insufficient` / `no-candidate` / `no-dictionary` |
 
@@ -72,7 +73,7 @@ For names without spaces, the library uses a dictionary-based scoring algorithm:
 1. **Candidate enumeration** — all possible split positions
 2. **Dictionary matching** — surface (4.0), folded (2.5), reading (1.0), none (0)
 3. **Scoring** — `matchScore + seiHitBonus + lengthScore + pairBonus + boundaryScore + seiShapePenalty + singleCharPenalty + positionScore`
-4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0` with both sides in the dictionary or a script boundary; a surname-only match with a name-like given name is accepted at confidence 0.75
+4. **Confidence threshold** — `score >= 6.0` and `gap >= 1.0` with both sides in the dictionary or a script boundary (confidence 0.7 when one side matched only by reading); a surname-only match with a name-like given name is accepted at confidence 0.75
 5. **Exception flows** — katakana surname detection, kanji variant folding
 
 ## Status
