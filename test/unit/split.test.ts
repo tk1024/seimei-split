@@ -177,6 +177,18 @@ describe("split", () => {
       expect(isAllKatakana("アヶミ")).toBe(false);
     });
 
+    it("漢字で始まる入力では、ひらがなの直後の ー をひらがなとして扱う", () => {
+      expect(findSingleScriptBoundary("田中ゆーこ")).toEqual({ index: 2, direction: "kanji-to-kana" });
+    });
+
+    it("かなで始まる入力の ー はカタカナのまま", () => {
+      expect(findSingleScriptBoundary("えーと田中")).toBeUndefined();
+    });
+
+    it("漢字の直後の ー はカタカナのまま", () => {
+      expect(findSingleScriptBoundary("田中ーこ")).toBeUndefined();
+    });
+
     it("全漢字は undefined", () => {
       expect(findSingleScriptBoundary("田中太郎")).toBeUndefined();
     });

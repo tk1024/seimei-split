@@ -75,3 +75,12 @@ input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confi
 田中光學	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
 鈴木學長	(unsplit)	0	insufficient	鈴木/學長	0.7	low-confidence
 佐藤辯護士	(unsplit)	0	insufficient	佐藤/辯護士	0.7	low-confidence
+田中らーめん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中かれー	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中あぱーと	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中びる	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中さーん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中ちゃーん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+田中くーん	(unsplit)	0	not-full-name	(unsplit)	0	not-full-name
+えーと田中	(unsplit)	0	insufficient	えーと/田中	0.56	low-confidence
+あー田中	(unsplit)	0	insufficient	あー/田中	0.5833	low-confidence

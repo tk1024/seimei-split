@@ -10,6 +10,7 @@ import type {
 import {
   findSingleScriptBoundary,
   foldVariants,
+  hiraganaToKatakana,
   isAllHiragana,
   isAllKatakana,
   isNonJapanese,
@@ -130,10 +131,13 @@ export function decide(candidates: SeimeiCandidate[], context: AnalysisContext):
 
   // Not a full name: never split, even in low confidence mode
   // Titles are checked on the best split only: 尊氏 ends with 氏 but is a given name.
-  // Business words are checked on every split, since statistics can reorder them.
+  // Business words are checked on every split, since statistics can reorder them,
+  // but hiragana spellings only on the best one: 佐藤あ/びる must not reject 佐藤/あびる.
+  const bestMei = foldVariants(best.mei);
   if (
     isSingleDictionaryWord(context)
-    || TITLES.has(foldVariants(best.mei))
+    || TITLES.has(bestMei.replace(/ー/g, ""))
+    || BUSINESS_WORDS.has(hiraganaToKatakana(bestMei))
     || candidates.some((c) => BUSINESS_WORDS.has(foldVariants(c.mei)))
   ) {
     return unsplit(name, "not-full-name", candidates);
