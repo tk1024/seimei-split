@@ -1,13 +1,13 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-宇多田ヒカル	宇多田/ヒカル	1	宇多田/ヒカル	1
-西野カナ	西野/カナ	1	西野/カナ	1
-木村カエラ	木村/カエラ	1	木村/カエラ	1
-土屋アンナ	土屋/アンナ	1	土屋/アンナ	1
-加藤ミリヤ	加藤/ミリヤ	1	加藤/ミリヤ	1
-黒木メイサ	黒木/メイサ	1	黒木/メイサ	1
-橋本マナミ	橋本/マナミ	1	橋本/マナミ	1
-滝沢カレン	滝沢/カレン	1	滝沢/カレン	1
-葉加瀬マイ	葉加瀬/マイ	1	葉加瀬/マイ	1
-山本モナ	山本/モナ	1	山本/モナ	1
-高橋メアリージュン	高橋/メアリージュン	1	高橋/メアリージュン	1
-小柳ルミ子	小柳/ルミ子	1	小柳/ルミ子	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+宇多田ヒカル	宇多田/ヒカル	1	dictionary	宇多田/ヒカル	1	dictionary
+西野カナ	西野/カナ	1	dictionary	西野/カナ	1	dictionary
+木村カエラ	木村/カエラ	1	dictionary	木村/カエラ	1	dictionary
+土屋アンナ	土屋/アンナ	1	dictionary	土屋/アンナ	1	dictionary
+加藤ミリヤ	加藤/ミリヤ	1	dictionary	加藤/ミリヤ	1	dictionary
+黒木メイサ	黒木/メイサ	1	dictionary	黒木/メイサ	1	dictionary
+橋本マナミ	橋本/マナミ	1	dictionary	橋本/マナミ	1	dictionary
+滝沢カレン	滝沢/カレン	1	dictionary	滝沢/カレン	1	dictionary
+葉加瀬マイ	葉加瀬/マイ	1	dictionary	葉加瀬/マイ	1	dictionary
+山本モナ	山本/モナ	1	dictionary	山本/モナ	1	dictionary
+高橋メアリージュン	高橋/メアリージュン	1	dictionary	高橋/メアリージュン	1	dictionary
+小柳ルミ子	小柳/ルミ子	1	dictionary	小柳/ルミ子	1	dictionary

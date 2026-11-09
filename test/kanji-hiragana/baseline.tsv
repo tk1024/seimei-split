@@ -1,16 +1,16 @@
-input	normal	normal_confidence	low_confidence	low_confidence_confidence
-綾瀬はるか	綾瀬/はるか	1	綾瀬/はるか	1
-安めぐみ	安/めぐみ	1	安/めぐみ	1
-井上あさひ	井上/あさひ	1	井上/あさひ	1
-大竹しのぶ	大竹/しのぶ	1	大竹/しのぶ	1
-田中れいな	田中/れいな	1	田中/れいな	1
-加護あい	加護/あい	1	加護/あい	1
-椎名へきる	椎名/へきる	1	椎名/へきる	1
-岡本あずさ	岡本/あずさ	1	岡本/あずさ	1
-山田まりや	山田/まりや	1	山田/まりや	1
-川崎あや	川崎/あや	1	川崎/あや	1
-相田みつを	相田/みつを	1	相田/みつを	1
-飯島あい	飯島/あい	1	飯島/あい	1
-杉田かおる	杉田/かおる	1	杉田/かおる	1
-加藤あい	加藤/あい	1	加藤/あい	1
-浅田あつこ	浅田/あつこ	1	浅田/あつこ	1
+input	normal	normal_confidence	normal_reason	low_confidence	low_confidence_confidence	low_confidence_reason
+綾瀬はるか	綾瀬/はるか	1	dictionary	綾瀬/はるか	1	dictionary
+安めぐみ	安/めぐみ	1	dictionary	安/めぐみ	1	dictionary
+井上あさひ	井上/あさひ	1	dictionary	井上/あさひ	1	dictionary
+大竹しのぶ	大竹/しのぶ	1	dictionary	大竹/しのぶ	1	dictionary
+田中れいな	田中/れいな	1	dictionary	田中/れいな	1	dictionary
+加護あい	加護/あい	1	dictionary	加護/あい	1	dictionary
+椎名へきる	椎名/へきる	1	dictionary	椎名/へきる	1	dictionary
+岡本あずさ	岡本/あずさ	1	dictionary	岡本/あずさ	1	dictionary
+山田まりや	山田/まりや	1	dictionary	山田/まりや	1	dictionary
+川崎あや	川崎/あや	1	dictionary	川崎/あや	1	dictionary
+相田みつを	相田/みつを	1	dictionary	相田/みつを	1	dictionary
+飯島あい	飯島/あい	1	dictionary	飯島/あい	1	dictionary
+杉田かおる	杉田/かおる	1	dictionary	杉田/かおる	1	dictionary
+加藤あい	加藤/あい	1	dictionary	加藤/あい	1	dictionary
+浅田あつこ	浅田/あつこ	1	dictionary	浅田/あつこ	1	dictionary

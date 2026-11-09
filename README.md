@@ -36,11 +36,20 @@ split("宝鐘マリン", { allowLowConfidence: true });
 // 候補一覧と信頼度を取得
 import { analyze } from "seimei-split";
 const result = analyze("田中太郎");
-// => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, candidates: [...] }
+// => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, reason: "dictionary", candidates: [...] }
 
 // 辞書なし版（独自辞書を使う場合）
 import { split, setLexicon } from "seimei-split/core";
 ```
+
+`confidence` は常に 0 以上 1 以下で、`reason` が分割した（しなかった）理由を示します。
+
+| `confidence` | 意味 | `reason` |
+|---|---|---|
+| 1 | 空白区切り、または辞書の根拠が十分 | `space` / `dictionary` |
+| 0.8 | 文字種境界、またはカタカナ姓の規則 | `boundary` / `katakana-sei` |
+| 0.01〜0.7 | `allowLowConfidence` での推定 | `low-confidence` |
+| 0 | 分割しない | `not-full-name` / `insufficient` / `no-candidate` / `no-dictionary` |
 
 ## 仕組み
 
@@ -126,7 +135,7 @@ score = matchScore(姓) + matchScore(名) + seiHitBonus + lengthScore + pairBonu
 | 漢字姓+カタカナ名 | 100% | 100% |
 | かな姓+漢字名 | 87.5% | 100% |
 | VTuber名 | 6.7% | 93.3% |
-| 1文字姓 | 92.3% | 100% |
+| 1文字姓 | 92.3% | 92.3% |
 | 3文字以上の姓 | 75.0% | 100% |
 | 異体字・旧字体 | 86.7% | 100% |
 | ノ・ヶ・々を含む姓 | 81.8% | 100% |

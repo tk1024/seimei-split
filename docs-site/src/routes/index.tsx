@@ -335,7 +335,9 @@ function ResultRow({
                       className="border-b last:border-b-0"
                       style={{
                         borderColor: "var(--border)",
-                        backgroundColor: j === 0 ? "rgba(59,130,246,0.05)" : "transparent",
+                        backgroundColor: c.sei === analyzeResult.best.sei && c.mei === analyzeResult.best.mei
+                          ? "rgba(59,130,246,0.05)"
+                          : "transparent",
                       }}
                     >
                       <td className="py-1.5 px-3 font-mono" style={{ color: "var(--text-tertiary)" }}>{j + 1}</td>

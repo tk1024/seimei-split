@@ -23,10 +23,7 @@ function loadTsv(tsvPath: string): TestCase[] {
 
 function formatResult(result: AnalyzeResult): string {
   const split = result.best.mei === "" ? "(unsplit)" : `${result.best.sei}/${result.best.mei}`;
-  const confidence = Number.isFinite(result.confidence)
-    ? Number(result.confidence.toFixed(4))
-    : result.confidence;
-  return `${split}\t${confidence}`;
+  return `${split}\t${Number(result.confidence.toFixed(4))}\t${result.reason}`;
 }
 
 /**
@@ -34,7 +31,7 @@ function formatResult(result: AnalyzeResult): string {
  * so that a behavior change shows up as a readable per-input diff.
  */
 function renderBaseline(cases: TestCase[]): string {
-  const header = "input\tnormal\tnormal_confidence\tlow_confidence\tlow_confidence_confidence";
+  const header = "input\tnormal\tnormal_confidence\tnormal_reason\tlow_confidence\tlow_confidence_confidence\tlow_confidence_reason";
   const rows = cases.map((tc) => {
     const normal = analyze(tc.input);
     const low = analyze(tc.input, { allowLowConfidence: true });

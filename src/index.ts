@@ -4,6 +4,7 @@ export type {
   SeimeiResult,
   SeimeiCandidate,
   AnalyzeResult,
+  AnalyzeReason,
   SplitOptions,
   PackedLexicon,
   ReadingData,
