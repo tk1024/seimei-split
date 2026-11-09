@@ -96,15 +96,22 @@ export interface ScriptBoundary {
 }
 
 export function findSingleScriptBoundary(fullName: string): ScriptBoundary | undefined {
-  const chars = [...fullName];
+  const scripts: ScriptType[] = [];
+  for (const ch of fullName) {
+    // ー continues a hiragana given name (田中ゆーこ). Everywhere else it counts as
+    // katakana, so that a kana prefix such as えーと田中 does not gain a boundary.
+    const continuesName = ch === "ー" && scripts[0] === "K" && scripts[scripts.length - 1] === "H";
+    scripts.push(continuesName ? "H" : scriptOf(ch));
+  }
+
   let transitionCount = 0;
   let splitIndex: number | undefined;
   let fromScript: ScriptType | undefined;
   let toScript: ScriptType | undefined;
 
-  for (let i = 1; i < chars.length; i++) {
-    const prev = scriptOf(chars[i - 1]);
-    const next = scriptOf(chars[i]);
+  for (let i = 1; i < scripts.length; i++) {
+    const prev = scripts[i - 1];
+    const next = scripts[i];
     if (prev === next) continue;
     if (prev === "O" || next === "O") return undefined;
     transitionCount++;
