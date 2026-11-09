@@ -60,9 +60,9 @@ function getSets(lexicon: PackedLexicon): { sei: Set<string>; mei: Set<string> }
   return cached;
 }
 
-const RE_KANJI = /[\p{Script=Han}々〆ヶ]/u;
+const RE_KANJI = /[\p{Script=Han}々〆ヶヵ]/u;
 const RE_HIRAGANA = /[\u3041-\u3096]/;
-const RE_KATAKANA = /[\u30A1-\u30F6\u30FC]/;
+const RE_KATAKANA = /[\u30A1-\u30F4\u30FC]/;
 
 function scriptOf(ch: string): "K" | "H" | "T" | "O" {
   if (RE_KANJI.test(ch)) return "K";

@@ -18,7 +18,7 @@ export function isAllHiragana(str: string): boolean {
  * Check if a string is all katakana.
  */
 export function isAllKatakana(str: string): boolean {
-  return /^[\u30A1-\u30F6\u30FC]+$/.test(str);
+  return /^[\u30A1-\u30F4\u30FC]+$/.test(str);
 }
 
 /**
@@ -43,9 +43,9 @@ const VARIANT_MAP: Record<string, string> = {
 type ScriptType = "kanji" | "hiragana" | "katakana" | "other";
 
 function scriptOf(ch: string): ScriptType {
+  if (/[\p{Script=Han}々〆ヶヵ]/u.test(ch)) return "kanji";
   if (/[\u3041-\u3096]/.test(ch)) return "hiragana";
-  if (/[\u30A1-\u30F6\u30FC]/.test(ch)) return "katakana";
-  if (/[\p{Script=Han}々〆ヶ]/u.test(ch)) return "kanji";
+  if (/[\u30A1-\u30F4\u30FC]/.test(ch)) return "katakana";
   return "other";
 }
 
