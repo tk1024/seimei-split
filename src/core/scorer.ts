@@ -1,5 +1,5 @@
-import type { MatchType, PackedLexicon, ReadingData } from "./types.js";
-import { foldVariants, hiraganaToKatakana } from "./normalize.js";
+import type { MatchType, NameKind, PackedLexicon, ReadingData } from "./types.js";
+import { foldVariants, hiraganaToKatakana, scriptOf } from "./normalize.js";
 
 // Score weights — dictionary evidence is primary, length is secondary
 const MATCH_SCORE: Record<MatchType, number> = {
@@ -60,17 +60,6 @@ function getSets(lexicon: PackedLexicon): { sei: Set<string>; mei: Set<string> }
   return cached;
 }
 
-const RE_KANJI = /[\p{Script=Han}々〆ヶヵ]/u;
-const RE_HIRAGANA = /[\u3041-\u3096]/;
-const RE_KATAKANA = /[\u30A1-\u30F4\u30FC]/;
-
-function scriptOf(ch: string): "K" | "H" | "T" | "O" {
-  if (RE_KANJI.test(ch)) return "K";
-  if (RE_HIRAGANA.test(ch)) return "H";
-  if (RE_KATAKANA.test(ch)) return "T";
-  return "O";
-}
-
 function scriptPattern(s: string): string {
   return [...s].map(scriptOf).join("");
 }
@@ -84,31 +73,11 @@ function seiMixedScriptPenalty(sei: string, seiMatch: MatchType): number {
   if (seiMatch !== "none") return 0;
 
   const p = scriptPattern(sei);
-  if (!/^K+[HT]+$/.test(p)) return 0;
+  const suffix = /^K+([HT]+)$/.exec(p)?.[1];
+  if (!suffix) return 0;
 
-  const suffix = p.match(/[HT]+$/)![0];
   if (suffix.length === 1) {
     return suffix[0] === "T"
-      ? SEI_MIXED_SINGLE_KATA_PENALTY
-      : SEI_MIXED_SINGLE_HIRA_PENALTY;
-  }
-  return SEI_MIXED_MULTI_KANA_PENALTY;
-}
-
-/**
- * Penalty for OOV given names that start with kana followed by kanji (e.g. モン閣下, イク眞木).
- * When a kana→kanji boundary exists, the mei side should be pure kanji.
- * Only applied when the given name has no dictionary hit.
- */
-function meiMixedScriptPenalty(mei: string, meiMatch: MatchType): number {
-  if (meiMatch !== "none") return 0;
-
-  const p = scriptPattern(mei);
-  if (!/^[HT]+K+$/.test(p)) return 0;
-
-  const prefix = p.match(/^[HT]+/)![0];
-  if (prefix.length === 1) {
-    return prefix[0] === "T"
       ? SEI_MIXED_SINGLE_KATA_PENALTY
       : SEI_MIXED_SINGLE_HIRA_PENALTY;
   }
@@ -121,7 +90,7 @@ function meiMixedScriptPenalty(mei: string, meiMatch: MatchType): number {
  */
 export function lookupMatch(
   candidate: string,
-  kind: "sei" | "mei",
+  kind: NameKind,
   lexicon: PackedLexicon,
   isKana: boolean,
   readingData?: ReadingData,

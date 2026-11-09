@@ -1,7 +1,8 @@
 import { createReadStream, mkdirSync, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
-import { normalizeReading, normalizeSurface } from "./shared/normalize.js";
-import type { ExtractedEntry, NameKind } from "./shared/types.js";
+import { hiraganaToKatakana } from "../../src/core/normalize.js";
+import type { NameKind } from "../../src/core/types.js";
+import type { ExtractedEntry } from "./shared/types.js";
 import { SOURCE_FLAGS } from "./shared/types.js";
 
 const LEX_CSV_PATH = "internal/vendor/unidic/current/lex.csv";
@@ -16,8 +17,6 @@ const COL = {
   POS4: 7,    // 姓 / 名
   READING: 10,
   PRON: 11,
-  ORTH_BASE: 12,
-  ORTH: 14,
 } as const;
 
 async function extract(): Promise<void> {
@@ -32,7 +31,7 @@ async function extract(): Promise<void> {
   for await (const line of rl) {
     lineNum++;
     const cols = line.split(",");
-    if (cols.length < 15) continue;
+    if (cols.length <= COL.PRON) continue;
 
     // Filter: 名詞,固有名詞,人名,{姓|名}
     if (
@@ -53,9 +52,8 @@ async function extract(): Promise<void> {
       continue;
     }
 
-    const surface = normalizeSurface(cols[COL.SURFACE]);
-    const reading = normalizeReading(cols[COL.READING] || cols[COL.PRON] || "");
-    const normalized = cols[COL.ORTH_BASE] || cols[COL.ORTH] || surface;
+    const surface = cols[COL.SURFACE].trim();
+    const reading = hiraganaToKatakana((cols[COL.READING] || cols[COL.PRON] || "").trim());
 
     if (!surface) continue;
 
@@ -63,7 +61,6 @@ async function extract(): Promise<void> {
       kind,
       surface,
       reading,
-      normalized,
       source: "unidic",
       sourceId: `unidic:line=${lineNum}`,
       sourceFlags: SOURCE_FLAGS.UNIDIC,
@@ -83,10 +80,10 @@ async function extract(): Promise<void> {
 
   // Write TSV
   mkdirSync("internal/.cache", { recursive: true });
-  const header = "kind\tsurface\treading\tnormalized\tsource\tsource_id\tsource_flags";
+  const header = "kind\tsurface\treading\tsource\tsource_id\tsource_flags";
   const lines = deduped.map(
     (e) =>
-      `${e.kind}\t${e.surface}\t${e.reading}\t${e.normalized}\t${e.source}\t${e.sourceId}\t${e.sourceFlags}`
+      `${e.kind}\t${e.surface}\t${e.reading}\t${e.source}\t${e.sourceId}\t${e.sourceFlags}`
   );
   writeFileSync(OUTPUT_PATH, [header, ...lines].join("\n") + "\n", "utf-8");
 
