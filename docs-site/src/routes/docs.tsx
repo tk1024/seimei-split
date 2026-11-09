@@ -124,19 +124,19 @@ split("田中太郎");`}</CodeBlock>
         <div className="rounded-xl p-6 border" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
           <h3 className="font-bold font-mono mb-2">setReading(readingData)</h3>
           <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>
-            かな入力用の読みデータを設定します。設定すると、ひらがな・カタカナ入力時の精度が向上します。
+            かな入力用の読みデータを設定します。全かなの氏名を分割できるようになりますが、カタカナの一般語（アメリカ など）も分割されることがあるため、入力が氏名のときに使ってください。
           </p>
           <CodeBlock>{`import { setReading } from "seimei-split";
-import readingData from "./reading-data.json";
+import { reading } from "seimei-split/reading";
 
-setReading(readingData);`}</CodeBlock>
+setReading(reading);`}</CodeBlock>
         </div>
       </section>
 
       <section className="mb-10">
         <h2 className="text-xl font-bold mb-4" id="core">軽量版 (core)</h2>
         <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-          辞書を同梱しない軽量版（約 3.5 KB）を使う場合は、<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>seimei-split/core</code> からインポートします。
+          辞書を同梱しない軽量版（約 8 KB）を使う場合は、<code className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bg-tertiary)" }}>seimei-split/core</code> からインポートします。
         </p>
         <CodeBlock>{`import { split, setLexicon } from "seimei-split/core";
 

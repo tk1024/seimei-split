@@ -7,6 +7,7 @@ export default defineConfig({
       entry: {
         index: "src/index.ts",
         core: "src/core.ts",
+        reading: "src/reading.ts",
       },
       formats: ["es"],
     },

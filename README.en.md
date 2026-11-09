@@ -38,6 +38,13 @@ import { analyze } from "seimei-split";
 const result = analyze("田中太郎");
 // => { best: { sei: "田中", mei: "太郎" }, confidence: 1.0, reason: "dictionary", candidates: [...] }
 
+// Reading data lets all-kana names be split (off by default)
+// Ordinary katakana words such as アメリカ may also split, so use it only for name input
+import { setReading } from "seimei-split";
+import { reading } from "seimei-split/reading";
+setReading(reading);
+split("はいだしょうこ"); // => { sei: "はいだ", mei: "しょうこ" }
+
 // Without bundled dictionary (bring your own)
 import { split, setLexicon } from "seimei-split/core";
 ```
@@ -70,7 +77,7 @@ For names without spaces, the library uses a dictionary-based scoring algorithm:
 
 ## Status
 
-Accuracy is measured across 12 categories (339 test cases).
+Accuracy is measured across 12 categories (368 names and 72 non-name inputs).
 
 | Category | Normal | allowLowConfidence |
 |---|---|---|

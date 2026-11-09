@@ -40,25 +40,19 @@ function buildLexicon(entries: RawEntry[]): { lexicon: PackedLexicon; reading: R
   let maxSeiLen = 0;
   let maxMeiLen = 0;
 
-  // Deduplicate by kind + surface
-  const seen = new Set<string>();
+  // One surface can appear several times with different readings
   for (const entry of entries) {
-    const key = `${entry.kind}\t${entry.surface}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
+    if (entry.reading) {
+      const readings = entry.kind === "sei" ? readingSei : readingMei;
+      readings[entry.reading] = (readings[entry.reading] ?? 0) | entry.sourceFlags;
+    }
 
     if (entry.kind === "sei") {
       seiSet.add(entry.surface);
       maxSeiLen = Math.max(maxSeiLen, [...entry.surface].length);
-      if (entry.reading) {
-        readingSei[entry.reading] = (readingSei[entry.reading] ?? 0) | entry.sourceFlags;
-      }
     } else {
       meiSet.add(entry.surface);
       maxMeiLen = Math.max(maxMeiLen, [...entry.surface].length);
-      if (entry.reading) {
-        readingMei[entry.reading] = (readingMei[entry.reading] ?? 0) | entry.sourceFlags;
-      }
     }
 
     // Build folded index for variant kanji
