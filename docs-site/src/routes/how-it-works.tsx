@@ -181,8 +181,8 @@ function HowItWorksPage() {
             <tbody>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}>
                 <td className="py-2 px-3 font-mono">seimei-split</td>
-                <td className="py-2 px-3 font-mono">460 KB</td>
-                <td className="py-2 px-3 font-mono">216 KB</td>
+                <td className="py-2 px-3 font-mono">406 KB</td>
+                <td className="py-2 px-3 font-mono">187 KB</td>
               </tr>
               <tr className="border-b" style={{ borderColor: "var(--border)" }}>
                 <td className="py-2 px-3 font-mono">seimei-split/core</td>

@@ -130,7 +130,7 @@ score = matchScore(姓) + matchScore(名) + seiHitBonus + lengthScore + pairBonu
 
 | エントリポイント | 生サイズ | gzip |
 |---|---|---|
-| `seimei-split`（辞書同梱） | 460 KB | 216 KB |
+| `seimei-split`（辞書同梱） | 406 KB | 187 KB |
 | `seimei-split/core`（辞書なし） | 10 KB | 4.6 KB |
 | `seimei-split/reading`（読みデータ） | 483 KB | 81 KB |
 
